@@ -74,18 +74,18 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1202" column="62" selection-start="75599" selection-end="75599" vertical-scroll-proportion="0.36459908">
+            <state line="1018" column="16" selection-start="64253" selection-end="64253" vertical-scroll-proportion="0.5945537">
               <folding>
                 <element signature="docComment;class#mainForm#0" expanded="false" />
                 <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
-                <marker date="1348144610000" expanded="false" signature="1760:3055" placeholder="..." />
+                <marker date="1348159292000" expanded="false" signature="1760:3055" placeholder="..." />
                 <element signature="method#baksmali#0;class#mainForm#0" expanded="false" />
                 <element signature="method#smali#0;class#mainForm#0" expanded="false" />
                 <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
-                <marker date="1348144610000" expanded="false" signature="7471:9072" placeholder="..." />
+                <marker date="1348159292000" expanded="false" signature="7471:9072" placeholder="..." />
                 <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
                 <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
@@ -107,31 +107,30 @@
                 <element signature="e#35429#35490#0" expanded="false" />
                 <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
                 <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-                <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
                 <element signature="e#59064#59218#0" expanded="false" />
                 <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-                <element signature="e#69522#69559#0" expanded="false" />
+                <element signature="e#69524#69561#0" expanded="false" />
                 <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="class#71857:72323" expanded="false" />
-                <element signature="method#accept#0;class#71857:72323" expanded="false" />
-                <element signature="method#getDescription#0;class#71857:72323" expanded="false" />
+                <element signature="class#71859:72325" expanded="false" />
+                <element signature="method#accept#0;class#71859:72325" expanded="false" />
+                <element signature="method#getDescription#0;class#71859:72325" expanded="false" />
                 <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
                 <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-                <marker date="1348144610000" expanded="false" signature="75797:84617" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-                <element signature="class#82339:82742" expanded="false" />
-                <element signature="method#getSize#0;class#82339:82742" expanded="false" />
-                <element signature="method#getElementAt#0;class#82339:82742" expanded="false" />
+                <marker date="1348159292000" expanded="false" signature="75799:84619" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <element signature="class#82341:82744" expanded="false" />
+                <element signature="method#getSize#0;class#82341:82744" expanded="false" />
+                <element signature="method#getElementAt#0;class#82341:82744" expanded="false" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
-                <element signature="e#84967#85002#0" expanded="false" />
+                <element signature="e#84969#85004#0" expanded="false" />
                 <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-                <marker date="1348144610000" expanded="false" signature="87503:88616" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+                <marker date="1348159292000" expanded="false" signature="87505:88618" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
             </state>
           </provider>
@@ -196,7 +195,7 @@
       </profile-state>
     </entry>
   </component>
-  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <OptionsSetting value="true" id="Add" />
     <OptionsSetting value="true" id="Remove" />
     <OptionsSetting value="true" id="Checkout" />
@@ -232,6 +231,20 @@
           </PATH>
         </subPane>
       </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -252,20 +265,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -278,21 +277,21 @@
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
     <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="options.lastSelected" value="project.propVCSSupport.Mappings" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="FullScreen" value="false" />
     <property name="MemberChooser.showClasses" value="true" />
-    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="FullScreen" value="false" />
     <property name="GenerateAntBuildDialog.backupFiles" value="false" />
-    <property name="options.searchVisible" value="true" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="GoToClass.includeLibraries" value="false" />
     <property name="dynamic.classpath" value="false" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="options.searchVisible" value="true" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -345,24 +344,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -388,6 +369,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -507,7 +506,6 @@
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
     <editor active="false" />
     <layout>
-      <window_info id="IntelliGuard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266762" sideWeight="0.49675325" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -524,6 +522,7 @@
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18425325" sideWeight="0.6704708" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="IntelliGuard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266762" sideWeight="0.49675325" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="JFormDesigner Error Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.49675325" order="7" side_tool="false" content_ui="tabs" />
@@ -566,7 +565,7 @@
     <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
     <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
     <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
-    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="false" />
     <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
     <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
     <option name="LAST_COMMIT_MESSAGE" />
@@ -662,63 +661,33 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/build.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1" column="33" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0">
-          <folding />
-        </state>
+        <state line="1" column="33" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="214" column="56" selection-start="7619" selection-end="7619" vertical-scroll-proportion="1.9515885">
-          <folding>
-            <element signature="e#199#256#0" expanded="false" />
-            <element signature="tag#patternset#0;tag#project#0" expanded="false" />
-            <element signature="tag#patternset#1;tag#project#0" expanded="false" />
-            <element signature="tag#patternset#2;tag#project#0" expanded="false" />
-            <element signature="tag#path#0;tag#project#0" expanded="false" />
-            <element signature="tag#path#1;tag#project#0" expanded="false" />
-            <element signature="tag#path#2;tag#project#0" expanded="false" />
-            <element signature="tag#path#3;tag#project#0" expanded="false" />
-            <element signature="tag#path#4;tag#project#0" expanded="false" />
-            <element signature="tag#path#7;tag#project#0" expanded="false" />
-            <element signature="tag#path#8;tag#project#0" expanded="false" />
-            <element signature="tag#path#9;tag#project#0" expanded="false" />
-            <element signature="tag#patternset#3;tag#project#0" expanded="false" />
-            <element signature="tag#patternset#4;tag#project#0" expanded="false" />
-            <element signature="tag#path#10;tag#project#0" expanded="false" />
-            <element signature="tag#target#0;tag#project#0" expanded="false" />
-            <element signature="tag#target#1;tag#project#0" expanded="false" />
-            <element signature="tag#target#3;tag#project#0" expanded="false" />
-            <element signature="tag#target#5;tag#project#0" expanded="false" />
-            <element signature="tag#target#6;tag#project#0" expanded="false" />
-            <element signature="tag#target#9;tag#project#0" expanded="false" />
-            <element signature="tag#target#10;tag#project#0" expanded="false" />
-            <element signature="tag#target#11;tag#project#0" expanded="false" />
-          </folding>
-        </state>
+        <state line="214" column="56" selection-start="7619" selection-end="7619" vertical-scroll-proportion="1.9515885" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/config.pro">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-7.68623">
-          <folding />
-        </state>
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-7.68623" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1202" column="62" selection-start="75599" selection-end="75599" vertical-scroll-proportion="0.36459908">
+        <state line="1018" column="16" selection-start="64253" selection-end="64253" vertical-scroll-proportion="0.5945537">
           <folding>
             <element signature="docComment;class#mainForm#0" expanded="false" />
             <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
-            <marker date="1348144610000" expanded="false" signature="1760:3055" placeholder="..." />
+            <marker date="1348159292000" expanded="false" signature="1760:3055" placeholder="..." />
             <element signature="method#baksmali#0;class#mainForm#0" expanded="false" />
             <element signature="method#smali#0;class#mainForm#0" expanded="false" />
             <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
             <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
             <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
-            <marker date="1348144610000" expanded="false" signature="7471:9072" placeholder="..." />
+            <marker date="1348159292000" expanded="false" signature="7471:9072" placeholder="..." />
             <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
             <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
             <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
@@ -740,31 +709,30 @@
             <element signature="e#35429#35490#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
             <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-            <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
             <element signature="e#59064#59218#0" expanded="false" />
             <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-            <element signature="e#69522#69559#0" expanded="false" />
+            <element signature="e#69524#69561#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#71857:72323" expanded="false" />
-            <element signature="method#accept#0;class#71857:72323" expanded="false" />
-            <element signature="method#getDescription#0;class#71857:72323" expanded="false" />
+            <element signature="class#71859:72325" expanded="false" />
+            <element signature="method#accept#0;class#71859:72325" expanded="false" />
+            <element signature="method#getDescription#0;class#71859:72325" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <marker date="1348144610000" expanded="false" signature="75797:84617" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <element signature="class#82339:82742" expanded="false" />
-            <element signature="method#getSize#0;class#82339:82742" expanded="false" />
-            <element signature="method#getElementAt#0;class#82339:82742" expanded="false" />
+            <marker date="1348159292000" expanded="false" signature="75799:84619" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <element signature="class#82341:82744" expanded="false" />
+            <element signature="method#getSize#0;class#82341:82744" expanded="false" />
+            <element signature="method#getElementAt#0;class#82341:82744" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#84967#85002#0" expanded="false" />
+            <element signature="e#84969#85004#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1348144610000" expanded="false" signature="87503:88616" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1348159292000" expanded="false" signature="87505:88618" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>

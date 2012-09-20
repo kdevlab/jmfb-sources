@@ -1008,15 +1008,15 @@ public class mainForm extends JFrame {
 
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").delete();
 
-                ZipFile LockscreenZip = new ZipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen");
+                /*ZipFile LockscreenZip = new ZipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen");
                 ZipParameters parameters = new ZipParameters();
                 parameters.setCompressionMethod(Zip4jConstants.COMP_STORE);
                 parameters.setCompressionLevel(0);
                 parameters.setIncludeRootFolder(false);
                 parameters.setRootFolderInZip("/");
-                LockscreenZip.addFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", parameters);
+                LockscreenZip.addFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", parameters);*/
 
-                //zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
+                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
 
                 zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
                 String firmwareVersion = readBuildProp(buildPropPath, "ro.build.version.incremental");
