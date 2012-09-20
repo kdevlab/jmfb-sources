@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="kdglib">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/lib/kdglib.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$PROJECT_DIR$/lib/kdglib.jar!/" />
+    </SOURCES>
+  </library>
+</component>

@@ -1,0 +1,886 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AnalysisUIOptions">
+    <option name="SCOPE_TYPE" value="3" />
+  </component>
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="BuildFull" />
+    </artifacts-to-build>
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="5273302d-c4be-4b52-935c-c78201c3f4f4" name="Default" comment="" />
+    <ignored path="jMFB.iws" />
+    <ignored path=".idea/workspace.xml" />
+    <option name="TRACKING_ENABLED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager" flattened_view="true" show_ignored="false" />
+  <component name="Commander">
+    <leftPanel />
+    <rightPanel />
+    <splitter proportion="0.5" />
+  </component>
+  <component name="CreatePatchCommitExecutor">
+    <option name="PATCH_PATH" value="" />
+  </component>
+  <component name="DaemonCodeAnalyzer">
+    <disable_hints />
+  </component>
+  <component name="DebuggerManager">
+    <breakpoint_any>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+      <breakpoint>
+        <option name="NOTIFY_CAUGHT" value="true" />
+        <option name="NOTIFY_UNCAUGHT" value="true" />
+        <option name="ENABLED" value="false" />
+        <option name="LOG_ENABLED" value="false" />
+        <option name="LOG_EXPRESSION_ENABLED" value="false" />
+        <option name="SUSPEND_POLICY" value="SuspendAll" />
+        <option name="COUNT_FILTER_ENABLED" value="false" />
+        <option name="COUNT_FILTER" value="0" />
+        <option name="CONDITION_ENABLED" value="false" />
+        <option name="CLASS_FILTERS_ENABLED" value="false" />
+        <option name="INSTANCE_FILTERS_ENABLED" value="false" />
+        <option name="CONDITION" value="" />
+        <option name="LOG_MESSAGE" value="" />
+      </breakpoint>
+    </breakpoint_any>
+    <breakpoint_rules />
+    <ui_properties />
+  </component>
+  <component name="FavoritesManager">
+    <favorites_list name="jMFB" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf>
+      <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="1202" column="62" selection-start="75599" selection-end="75599" vertical-scroll-proportion="0.36459908">
+              <folding>
+                <element signature="docComment;class#mainForm#0" expanded="false" />
+                <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
+                <marker date="1348144610000" expanded="false" signature="1760:3055" placeholder="..." />
+                <element signature="method#baksmali#0;class#mainForm#0" expanded="false" />
+                <element signature="method#smali#0;class#mainForm#0" expanded="false" />
+                <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
+                <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
+                <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
+                <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
+                <marker date="1348144610000" expanded="false" signature="7471:9072" placeholder="..." />
+                <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
+                <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
+                <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
+                <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
+                <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
+                <element signature="method#getOSDir#0;class#mainForm#0" expanded="false" />
+                <element signature="method#extractFolder#0;class#mainForm#0" expanded="false" />
+                <element signature="method#initMFB#0;class#mainForm#0" expanded="false" />
+                <element signature="e#14931#14971#0" expanded="false" />
+                <element signature="method#installFrameworks#0;class#mainForm#0" expanded="false" />
+                <element signature="method#execFile#0;class#mainForm#0" expanded="false" />
+                <element signature="method#getFilesFromGit#0;class#mainForm#0" expanded="false" />
+                <element signature="method#getFilesFromGit#1;class#mainForm#0" expanded="false" />
+                <element signature="method#decompileFile#0;class#mainForm#0" expanded="false" />
+                <element signature="method#decompileFile#1;class#mainForm#0" expanded="false" />
+                <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
+                <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
+                <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
+                <element signature="e#35429#35490#0" expanded="false" />
+                <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
+                <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
+                <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
+                <element signature="e#59064#59218#0" expanded="false" />
+                <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
+                <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
+                <element signature="e#69522#69559#0" expanded="false" />
+                <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
+                <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
+                <element signature="class#71857:72323" expanded="false" />
+                <element signature="method#accept#0;class#71857:72323" expanded="false" />
+                <element signature="method#getDescription#0;class#71857:72323" expanded="false" />
+                <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
+                <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
+                <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
+                <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
+                <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
+                <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
+                <marker date="1348144610000" expanded="false" signature="75797:84617" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <element signature="class#82339:82742" expanded="false" />
+                <element signature="method#getSize#0;class#82339:82742" expanded="false" />
+                <element signature="method#getElementAt#0;class#82339:82742" expanded="false" />
+                <element signature="method#main#0;class#mainForm#0" expanded="false" />
+                <element signature="e#84967#85002#0" expanded="false" />
+                <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
+                <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
+                <marker date="1348144610000" expanded="false" signature="87503:88616" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FindManager">
+    <FindUsagesManager>
+      <setting name="OPEN_NEW_TAB" value="false" />
+    </FindUsagesManager>
+  </component>
+  <component name="GradleLocalSettings">
+    <option name="expandStates">
+      <map>
+        <entry key="jMFB" value="true" />
+      </map>
+    </option>
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="changedFiles">
+      <list>
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/util/ExtMXSerializer.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResScalarValue.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/xml/ResXmlEncoders.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/AXmlResourceParser.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResID.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResPackage.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResValuesFile.java" />
+        <option value="$PROJECT_DIR$/.idea/compiler.xml" />
+        <option value="$PROJECT_DIR$/src/org/xmlpull/mxp1_serializer/MXSerializer.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResArrayValue.java" />
+        <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/patchsupport/XMLMerge.java" />
+        <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/signApk.java" />
+        <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/zipTools.java" />
+        <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java" />
+      </list>
+    </option>
+  </component>
+  <component name="MavenProjectNavigator">
+    <treeState />
+  </component>
+  <component name="ProjectFrameBounds">
+    <option name="width" value="1280" />
+    <option name="height" value="800" />
+  </component>
+  <component name="ProjectInspectionProfilesVisibleTreeState">
+    <entry key="Project Default">
+      <profile-state>
+        <expanded-state>
+          <State>
+            <id />
+          </State>
+        </expanded-state>
+        <selected-state>
+          <State>
+            <id>Abstraction issues</id>
+          </State>
+        </selected-state>
+      </profile-state>
+    </entry>
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="false">
+    <OptionsSetting value="true" id="Add" />
+    <OptionsSetting value="true" id="Remove" />
+    <OptionsSetting value="true" id="Checkout" />
+    <OptionsSetting value="true" id="Update" />
+    <OptionsSetting value="true" id="Status" />
+    <OptionsSetting value="true" id="Edit" />
+    <ConfirmationsSetting value="0" id="Add" />
+    <ConfirmationsSetting value="0" id="Remove" />
+  </component>
+  <component name="ProjectReloadState">
+    <option name="STATE" value="0" />
+  </component>
+  <component name="ProjectView">
+    <navigator currentView="ProjectPane" proportions="" version="1" splitterProportion="0.5">
+      <flattenPackages />
+      <showMembers />
+      <showModules />
+      <showLibraryContents />
+      <hideEmptyPackages />
+      <abbreviatePackageNames />
+      <autoscrollToSource />
+      <autoscrollFromSource />
+      <sortByType />
+    </navigator>
+    <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="ProjectPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
+    <property name="GoToFile.includeJavaFiles" value="false" />
+    <property name="project.structure.last.edited" value="Artifacts" />
+    <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
+    <property name="options.splitter.main.proportions" value="0.3" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
+    <property name="options.lastSelected" value="preferences.pluginManager" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
+    <property name="project.structure.side.proportion" value="0.2" />
+    <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
+    <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
+    <property name="GoToClass.toSaveIncludeLibraries" value="false" />
+    <property name="FullScreen" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
+    <property name="GoToClass.includeLibraries" value="false" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="false" />
+    <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
+  </component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/com/kdgdev/jMFB" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="" />
+      <recent name="brut" />
+      <recent name="com.kdgdev" />
+      <recent name="org.xmlpull" />
+    </key>
+  </component>
+  <component name="RunManager" selected="Application.mainForm">
+    <configuration default="false" name="mainForm" type="Application" factoryName="Application" temporary="true">
+      <option name="MAIN_CLASS_NAME" value="com.kdgdev.jMFB.mainForm" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="jMFB" />
+      <envs />
+      <RunnerSettings RunnerId="Run" />
+      <ConfigurationWrapper RunnerId="Run" />
+      <method />
+    </configuration>
+    <configuration default="true" type="#org.jetbrains.idea.devkit.run.PluginConfigurationType" factoryName="Plugin">
+      <module name="" />
+      <option name="VM_PARAMETERS" value="-Xmx512m -Xms256m -XX:MaxPermSize=250m" />
+      <option name="PROGRAM_PARAMETERS" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Remote" factoryName="Remote">
+      <option name="USE_SOCKET_TRANSPORT" value="true" />
+      <option name="SERVER_MODE" value="false" />
+      <option name="SHMEM_ADDRESS" value="javadebug" />
+      <option name="HOST" value="localhost" />
+      <option name="PORT" value="5005" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="TestNG" factoryName="TestNG">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="SUITE_NAME" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="GROUP_NAME" />
+      <option name="TEST_OBJECT" value="CLASS" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="OUTPUT_DIRECTORY" />
+      <option name="ANNOTATION_TYPE" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <option name="USE_DEFAULT_REPORTERS" value="false" />
+      <option name="PROPERTIES_FILE" />
+      <envs />
+      <properties />
+      <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="mainForm" />
+      <option name="VM_PARAMETERS" value="" />
+      <option name="PROGRAM_PARAMETERS" value="" />
+      <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" value="" />
+      <option name="ENABLE_SWING_INSPECTOR" value="false" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <module name="" />
+      <envs />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="JUnit" factoryName="JUnit">
+      <module name="" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <option name="PACKAGE_NAME" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="METHOD_NAME" />
+      <option name="TEST_OBJECT" value="class" />
+      <option name="VM_PARAMETERS" value="-ea" />
+      <option name="PARAMETERS" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="ENV_VARIABLES" />
+      <option name="PASS_PARENT_ENVS" value="true" />
+      <option name="TEST_SEARCH_SCOPE">
+        <value defaultName="moduleWithDependencies" />
+      </option>
+      <envs />
+      <patterns />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <list size="1">
+      <item index="0" class="java.lang.String" itemvalue="Application.mainForm" />
+    </list>
+    <configuration name="&lt;template&gt;" type="WebApp" default="true" selected="false">
+      <Host>localhost</Host>
+      <Port>5050</Port>
+    </configuration>
+  </component>
+  <component name="ShelveChangesManager" show_recycled="false" />
+  <component name="SliceManager">
+    <option name="analysisUIOptions">
+      <AnalysisUIOptions />
+    </option>
+  </component>
+  <component name="StructureViewFactory">
+    <option name="AUTOSCROLL_FROM_SOURCE" value="true" />
+  </component>
+  <component name="SvnConfiguration" maxAnnotateRevisions="500" myUseAcceleration="nothing" myAutoUpdateAfterCommit="false" cleanupOnStartRun="false">
+    <option name="USER" value="" />
+    <option name="PASSWORD" value="" />
+    <option name="mySSHConnectionTimeout" value="30000" />
+    <option name="mySSHReadTimeout" value="30000" />
+    <option name="LAST_MERGED_REVISION" />
+    <option name="MERGE_DRY_RUN" value="false" />
+    <option name="MERGE_DIFF_USE_ANCESTRY" value="true" />
+    <option name="UPDATE_LOCK_ON_DEMAND" value="false" />
+    <option name="IGNORE_SPACES_IN_MERGE" value="false" />
+    <option name="DETECT_NESTED_COPIES" value="true" />
+    <option name="CHECK_NESTED_FOR_QUICK_MERGE" value="false" />
+    <option name="IGNORE_SPACES_IN_ANNOTATE" value="true" />
+    <option name="SHOW_MERGE_SOURCES_IN_ANNOTATE" value="true" />
+    <option name="FORCE_UPDATE" value="false" />
+    <option name="IGNORE_EXTERNALS" value="false" />
+    <configuration useDefault="true">$USER_HOME$/.subversion_IDEA</configuration>
+    <myIsUseDefaultProxy>false</myIsUseDefaultProxy>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="5273302d-c4be-4b52-935c-c78201c3f4f4" name="Default" comment="" />
+      <created>1341923441460</created>
+      <updated>1341923441460</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="TodoView" selected-index="0">
+    <todo-panel id="selected-file">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="all">
+      <are-packages-shown value="true" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="true" />
+    </todo-panel>
+    <todo-panel id="default-changelist">
+      <are-packages-shown value="false" />
+      <are-modules-shown value="false" />
+      <flatten-packages value="false" />
+      <is-autoscroll-to-source value="false" />
+    </todo-panel>
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="0" y="0" width="1280" height="800" extended-state="0" />
+    <editor active="false" />
+    <layout>
+      <window_info id="IntelliGuard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266762" sideWeight="0.49675325" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.49756494" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
+      <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.4935065" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24918832" sideWeight="0.21825963" order="1" side_tool="true" content_ui="tabs" />
+      <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39935064" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18425325" sideWeight="0.6704708" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="JFormDesigner Error Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.49675325" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Module Dependencies" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
+    </layout>
+  </component>
+  <component name="VcsContentAnnotationSettings">
+    <option name="myLimit" value="2678400000" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <option name="OFFER_MOVE_TO_ANOTHER_CHANGELIST_ON_PARTIAL_COMMIT" value="true" />
+    <option name="CHECK_CODE_SMELLS_BEFORE_PROJECT_COMMIT" value="true" />
+    <option name="CHECK_NEW_TODO" value="true" />
+    <option name="myTodoPanelSettings">
+      <value>
+        <are-packages-shown value="false" />
+        <are-modules-shown value="false" />
+        <flatten-packages value="false" />
+        <is-autoscroll-to-source value="false" />
+      </value>
+    </option>
+    <option name="PERFORM_UPDATE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_COMMIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_EDIT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_CHECKOUT_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ADD_REMOVE_IN_BACKGROUND" value="true" />
+    <option name="PERFORM_ROLLBACK_IN_BACKGROUND" value="false" />
+    <option name="CHECK_LOCALLY_CHANGED_CONFLICTS_IN_BACKGROUND" value="false" />
+    <option name="ENABLE_BACKGROUND_PROCESSES" value="false" />
+    <option name="CHANGED_ON_SERVER_INTERVAL" value="60" />
+    <option name="SHOW_ONLY_CHANGED_IN_SELECTION_DIFF" value="true" />
+    <option name="CHECK_COMMIT_MESSAGE_SPELLING" value="true" />
+    <option name="DEFAULT_PATCH_EXTENSION" value="patch" />
+    <option name="SHORT_DIFF_HORISONTALLY" value="true" />
+    <option name="SHORT_DIFF_EXTRA_LINES" value="2" />
+    <option name="SOFT_WRAPS_IN_SHORT_DIFF" value="true" />
+    <option name="INCLUDE_TEXT_INTO_PATCH" value="false" />
+    <option name="INCLUDE_TEXT_INTO_SHELF" value="false" />
+    <option name="CREATE_PATCH_EXPAND_DETAILS_DEFAULT" value="true" />
+    <option name="SHOW_FILE_HISTORY_DETAILS" value="true" />
+    <option name="SHOW_VCS_ERROR_NOTIFICATIONS" value="true" />
+    <option name="FORCE_NON_EMPTY_COMMENT" value="false" />
+    <option name="CLEAR_INITIAL_COMMIT_MESSAGE" value="false" />
+    <option name="LAST_COMMIT_MESSAGE" />
+    <option name="MAKE_NEW_CHANGELIST_ACTIVE" value="false" />
+    <option name="OPTIMIZE_IMPORTS_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="CHECK_FILES_UP_TO_DATE_BEFORE_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_PROJECT_COMMIT" value="false" />
+    <option name="REFORMAT_BEFORE_FILE_COMMIT" value="false" />
+    <option name="FILE_HISTORY_DIALOG_COMMENTS_SPLITTER_PROPORTION" value="0.8" />
+    <option name="FILE_HISTORY_DIALOG_SPLITTER_PROPORTION" value="0.5" />
+    <option name="ACTIVE_VCS_NAME" />
+    <option name="UPDATE_GROUP_BY_PACKAGES" value="false" />
+    <option name="UPDATE_GROUP_BY_CHANGELIST" value="false" />
+    <option name="SHOW_FILE_HISTORY_AS_TREE" value="false" />
+    <option name="FILE_HISTORY_SPLITTER_PROPORTION" value="0.6" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager />
+  </component>
+  <component name="antWorkspaceConfiguration">
+    <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
+    <option name="FILTER_TARGETS" value="false" />
+    <buildFile url="file://$PROJECT_DIR$/build.xml">
+      <antCommandLine value="" />
+      <runInBackground value="true" />
+      <targetFilters />
+      <treeView value="true" />
+      <verbose value="true" />
+      <viewClosedWhenNoErrors value="false" />
+      <expanded value="true" />
+    </buildFile>
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResPackage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="210" column="17" selection-start="6592" selection-end="6592" vertical-scroll-proportion="0.6216617" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="360" column="8" selection-start="12529" selection-end="12529" vertical-scroll-proportion="0.95548964" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/.idea/compiler.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="52" selection-start="156" selection-end="156" vertical-scroll-proportion="0.06676558" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/Androlib.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="19" column="24" selection-start="725" selection-end="725" vertical-scroll-proportion="0.022255193" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResValuesFile.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="86" column="17" selection-start="2531" selection-end="2531" vertical-scroll-proportion="0.77744806" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStringValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="27" column="13" selection-start="943" selection-end="943" vertical-scroll-proportion="0.20029673" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/org/xmlpull/mxp1_serializer/MXSerializer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="953" column="36" selection-start="36368" selection-end="36368" vertical-scroll-proportion="0.47806355" />
+      </provider>
+    </entry>
+    <entry file="jar://$PROJECT_DIR$/lib/kdglib.jar!/org/xmlpull/v1/XmlSerializer.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="5" column="17" selection-start="156" selection-end="156" vertical-scroll-proportion="-0.3443396" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResArrayValue.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="57" column="67" selection-start="2110" selection-end="2110" vertical-scroll-proportion="0.48961425" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/patchsupport/XMLMerge.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="103" column="66" selection-start="3550" selection-end="3550" vertical-scroll-proportion="0.6580938" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/signApk.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="485" column="41" selection-start="19402" selection-end="19402" vertical-scroll-proportion="0.15430267" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/zipTools.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="7" column="30" selection-start="146" selection-end="146" vertical-scroll-proportion="0.15578635" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.properties">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1" column="33" selection-start="93" selection-end="93" vertical-scroll-proportion="0.0">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/build.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="214" column="56" selection-start="7619" selection-end="7619" vertical-scroll-proportion="1.9515885">
+          <folding>
+            <element signature="e#199#256#0" expanded="false" />
+            <element signature="tag#patternset#0;tag#project#0" expanded="false" />
+            <element signature="tag#patternset#1;tag#project#0" expanded="false" />
+            <element signature="tag#patternset#2;tag#project#0" expanded="false" />
+            <element signature="tag#path#0;tag#project#0" expanded="false" />
+            <element signature="tag#path#1;tag#project#0" expanded="false" />
+            <element signature="tag#path#2;tag#project#0" expanded="false" />
+            <element signature="tag#path#3;tag#project#0" expanded="false" />
+            <element signature="tag#path#4;tag#project#0" expanded="false" />
+            <element signature="tag#path#7;tag#project#0" expanded="false" />
+            <element signature="tag#path#8;tag#project#0" expanded="false" />
+            <element signature="tag#path#9;tag#project#0" expanded="false" />
+            <element signature="tag#patternset#3;tag#project#0" expanded="false" />
+            <element signature="tag#patternset#4;tag#project#0" expanded="false" />
+            <element signature="tag#path#10;tag#project#0" expanded="false" />
+            <element signature="tag#target#0;tag#project#0" expanded="false" />
+            <element signature="tag#target#1;tag#project#0" expanded="false" />
+            <element signature="tag#target#3;tag#project#0" expanded="false" />
+            <element signature="tag#target#5;tag#project#0" expanded="false" />
+            <element signature="tag#target#6;tag#project#0" expanded="false" />
+            <element signature="tag#target#9;tag#project#0" expanded="false" />
+            <element signature="tag#target#10;tag#project#0" expanded="false" />
+            <element signature="tag#target#11;tag#project#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/config.pro">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="-7.68623">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1202" column="62" selection-start="75599" selection-end="75599" vertical-scroll-proportion="0.36459908">
+          <folding>
+            <element signature="docComment;class#mainForm#0" expanded="false" />
+            <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
+            <marker date="1348144610000" expanded="false" signature="1760:3055" placeholder="..." />
+            <element signature="method#baksmali#0;class#mainForm#0" expanded="false" />
+            <element signature="method#smali#0;class#mainForm#0" expanded="false" />
+            <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
+            <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
+            <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
+            <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
+            <marker date="1348144610000" expanded="false" signature="7471:9072" placeholder="..." />
+            <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
+            <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
+            <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
+            <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
+            <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
+            <element signature="method#getOSDir#0;class#mainForm#0" expanded="false" />
+            <element signature="method#extractFolder#0;class#mainForm#0" expanded="false" />
+            <element signature="method#initMFB#0;class#mainForm#0" expanded="false" />
+            <element signature="e#14931#14971#0" expanded="false" />
+            <element signature="method#installFrameworks#0;class#mainForm#0" expanded="false" />
+            <element signature="method#execFile#0;class#mainForm#0" expanded="false" />
+            <element signature="method#getFilesFromGit#0;class#mainForm#0" expanded="false" />
+            <element signature="method#getFilesFromGit#1;class#mainForm#0" expanded="false" />
+            <element signature="method#decompileFile#0;class#mainForm#0" expanded="false" />
+            <element signature="method#decompileFile#1;class#mainForm#0" expanded="false" />
+            <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
+            <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
+            <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
+            <element signature="e#35429#35490#0" expanded="false" />
+            <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
+            <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
+            <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
+            <element signature="e#59064#59218#0" expanded="false" />
+            <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
+            <element signature="e#69522#69559#0" expanded="false" />
+            <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
+            <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
+            <element signature="class#71857:72323" expanded="false" />
+            <element signature="method#accept#0;class#71857:72323" expanded="false" />
+            <element signature="method#getDescription#0;class#71857:72323" expanded="false" />
+            <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
+            <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
+            <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
+            <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
+            <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
+            <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
+            <marker date="1348144610000" expanded="false" signature="75797:84617" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <element signature="class#82339:82742" expanded="false" />
+            <element signature="method#getSize#0;class#82339:82742" expanded="false" />
+            <element signature="method#getElementAt#0;class#82339:82742" expanded="false" />
+            <element signature="method#main#0;class#mainForm#0" expanded="false" />
+            <element signature="e#84967#85002#0" expanded="false" />
+            <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
+            <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
+            <marker date="1348144610000" expanded="false" signature="87503:88616" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ArtifactsStructureConfigurable.UI">
+        <settings>
+          <artifact-editor />
+          <last-edited>BuildFull</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+                <option value="0.5" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="Copyright.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="FacetStructureConfigurable.UI">
+        <settings>
+          <last-edited>No facets are configured</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="GlobalLibrariesConfigurable.UI">
+        <settings>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="JdkListConfigurable.UI">
+        <settings>
+          <last-edited>Android 4.0.3 Platform</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ModuleStructureConfigurable.UI">
+        <settings>
+          <last-edited>jMFB</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.6</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ProjectLibrariesConfigurable.UI">
+        <settings>
+          <last-edited>commons-io-2.4</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+      <state key="ScopeChooserConfigurable.UI">
+        <settings>
+          <last-edited>docs</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>
+

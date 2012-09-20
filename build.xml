@@ -1,0 +1,272 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="jmfb" default="all">
+  
+  
+  <property file="build.properties"/>
+  <!-- Uncomment the following property if no tests compilation is needed -->
+  <!-- 
+  <property name="skip.tests" value="true"/>
+   -->
+  
+  <!-- Compiler options -->
+  
+  <property name="compiler.debug" value="on"/>
+  <property name="compiler.generate.no.warnings" value="off"/>
+  <property name="compiler.args" value=""/>
+  <property name="compiler.max.memory" value="128m"/>
+  <patternset id="ignored.files">
+    <exclude name="**/CVS/**"/>
+    <exclude name="**/SCCS/**"/>
+    <exclude name="**/RCS/**"/>
+    <exclude name="**/rcs/**"/>
+    <exclude name="**/.DS_Store/**"/>
+    <exclude name="**/.svn/**"/>
+    <exclude name="**/.pyc/**"/>
+    <exclude name="**/.pyo/**"/>
+    <exclude name="**/*.pyc/**"/>
+    <exclude name="**/*.pyo/**"/>
+    <exclude name="**/.git/**"/>
+    <exclude name="**/*.hprof/**"/>
+    <exclude name="**/_svn/**"/>
+    <exclude name="**/.hg/**"/>
+    <exclude name="**/*.lib/**"/>
+    <exclude name="**/*~/**"/>
+    <exclude name="**/__pycache__/**"/>
+    <exclude name="**/.bundle/**"/>
+    <exclude name="**/*.rbc/**"/>
+  </patternset>
+  <patternset id="library.patterns">
+    <include name="*.zip"/>
+    <include name="*.apk"/>
+    <include name="*.war"/>
+    <include name="*.egg"/>
+    <include name="*.ear"/>
+    <include name="*.ane"/>
+    <include name="*.swc"/>
+    <include name="*.jar"/>
+  </patternset>
+  <patternset id="compiler.resources">
+    <include name="**/?*.properties"/>
+    <include name="**/?*.xml"/>
+    <include name="**/?*.gif"/>
+    <include name="**/?*.png"/>
+    <include name="**/?*.jpeg"/>
+    <include name="**/?*.jpg"/>
+    <include name="**/?*.html"/>
+    <include name="**/?*.dtd"/>
+    <include name="**/?*.tld"/>
+    <include name="**/?*.ftl"/>
+  </patternset>
+  
+  <!-- JDK definitions -->
+  
+  <property name="jdk.bin.1.6" value="${jdk.home.1.6}/bin"/>
+  <path id="jdk.classpath.1.6">
+    <fileset dir="${jdk.home.1.6}">
+      <include name="lib/deploy.jar"/>
+      <include name="lib/dt.jar"/>
+      <include name="lib/javaws.jar"/>
+      <include name="lib/jce.jar"/>
+      <include name="lib/jconsole.jar"/>
+      <include name="lib/management-agent.jar"/>
+      <include name="lib/plugin.jar"/>
+      <include name="lib/sa-jdi.jar"/>
+      <include name="../Classes/charsets.jar"/>
+      <include name="../Classes/classes.jar"/>
+      <include name="../Classes/jsse.jar"/>
+      <include name="../Classes/ui.jar"/>
+      <include name="lib/ext/apple_provider.jar"/>
+      <include name="lib/ext/dnsns.jar"/>
+      <include name="lib/ext/localedata.jar"/>
+      <include name="lib/ext/sunjce_provider.jar"/>
+      <include name="lib/ext/sunpkcs11.jar"/>
+    </fileset>
+  </path>
+  
+  <property name="project.jdk.home" value="${jdk.home.1.6}"/>
+  <property name="project.jdk.bin" value="${jdk.bin.1.6}"/>
+  <property name="project.jdk.classpath" value="jdk.classpath.1.6"/>
+  
+  
+  <!-- Project Libraries -->
+  
+  <path id="library.commons-io-2.4.classpath">
+    <pathelement location="${basedir}/lib/commons-io-2.4.jar"/>
+  </path>
+  
+  <path id="library.commons-lang3-3.1.classpath">
+    <pathelement location="${basedir}/lib/commons-lang3-3.1.jar"/>
+  </path>
+  
+  <path id="library.jgoodies_forms.classpath">
+    <pathelement location="${basedir}/lib/jgoodies-common.jar"/>
+    <pathelement location="${basedir}/lib/jgoodies-forms.jar"/>
+  </path>
+  
+  <path id="library.kdglib.classpath">
+    <pathelement location="${basedir}/lib/kdglib.jar"/>
+  </path>
+  
+  <!-- Modules -->
+  
+  
+  <!-- Module jMFB -->
+  
+  <dirname property="module.jmfb.basedir" file="${ant.file}"/>
+  
+  
+  <property name="module.jdk.home.jmfb" value="${project.jdk.home}"/>
+  <property name="module.jdk.bin.jmfb" value="${project.jdk.bin}"/>
+  <property name="module.jdk.classpath.jmfb" value="${project.jdk.classpath}"/>
+  
+  <property name="compiler.args.jmfb" value="${compiler.args}"/>
+  
+  <property name="jmfb.output.dir" value="${module.jmfb.basedir}/out/production/jMFB"/>
+  <property name="jmfb.testoutput.dir" value="${module.jmfb.basedir}/out/test/jMFB"/>
+  
+  <path id="jmfb.module.bootclasspath">
+    <!-- Paths to be included in compilation bootclasspath -->
+  </path>
+  
+  <path id="jmfb.module.production.classpath">
+    <path refid="${module.jdk.classpath.jmfb}"/>
+    <path refid="library.jgoodies_forms.classpath"/>
+    <path refid="library.kdglib.classpath"/>
+    <path refid="library.commons-io-2.4.classpath"/>
+    <path refid="library.commons-lang3-3.1.classpath"/>
+  </path>
+  
+  <path id="jmfb.runtime.production.module.classpath">
+    <pathelement location="${jmfb.output.dir}"/>
+    <path refid="library.jgoodies_forms.classpath"/>
+    <path refid="library.kdglib.classpath"/>
+    <path refid="library.commons-io-2.4.classpath"/>
+    <path refid="library.commons-lang3-3.1.classpath"/>
+  </path>
+  
+  <path id="jmfb.module.classpath">
+    <path refid="${module.jdk.classpath.jmfb}"/>
+    <pathelement location="${jmfb.output.dir}"/>
+    <path refid="library.jgoodies_forms.classpath"/>
+    <path refid="library.kdglib.classpath"/>
+    <path refid="library.commons-io-2.4.classpath"/>
+    <path refid="library.commons-lang3-3.1.classpath"/>
+  </path>
+  
+  <path id="jmfb.runtime.module.classpath">
+    <pathelement location="${jmfb.testoutput.dir}"/>
+    <pathelement location="${jmfb.output.dir}"/>
+    <path refid="library.jgoodies_forms.classpath"/>
+    <path refid="library.kdglib.classpath"/>
+    <path refid="library.commons-io-2.4.classpath"/>
+    <path refid="library.commons-lang3-3.1.classpath"/>
+  </path>
+  
+  
+  <patternset id="excluded.from.module.jmfb">
+    <patternset refid="ignored.files"/>
+  </patternset>
+  
+  <patternset id="excluded.from.compilation.jmfb">
+    <patternset refid="excluded.from.module.jmfb"/>
+  </patternset>
+  
+  <path id="jmfb.module.sourcepath">
+    <dirset dir="${module.jmfb.basedir}">
+      <include name="src"/>
+    </dirset>
+  </path>
+
+
+  <target name="proguard.module.jmfb" description="cleanup module">
+  	<taskdef resource="proguard/ant/task.properties" classpath="proguard/lib/proguard.jar" />
+  	<proguard configuration="config.pro"/>
+       <delete file="out/artifacts/jMFB_Release/jMFB_out.jar"/>
+  </target>
+  
+  <target name="compile.module.jmfb" depends="compile.module.jmfb.production,compile.module.jmfb.tests" description="Compile module jMFB"/>
+  
+  <target name="compile.module.jmfb.production" description="Compile module jMFB; production classes">
+    <mkdir dir="${jmfb.output.dir}"/>
+    <javac destdir="${jmfb.output.dir}" debug="${compiler.debug}" nowarn="${compiler.generate.no.warnings}" memorymaximumsize="${compiler.max.memory}" fork="true" executable="${module.jdk.bin.jmfb}/javac">
+      <compilerarg line="${compiler.args.jmfb}"/>
+      <bootclasspath refid="jmfb.module.bootclasspath"/>
+      <classpath refid="jmfb.module.production.classpath"/>
+      <src refid="jmfb.module.sourcepath"/>
+      <patternset refid="excluded.from.compilation.jmfb"/>
+    </javac>
+    
+    <copy todir="${jmfb.output.dir}">
+      <fileset dir="${module.jmfb.basedir}/src">
+        <patternset refid="compiler.resources"/>
+        <type type="file"/>
+      </fileset>
+    </copy>
+  </target>
+  
+  <target name="compile.module.jmfb.tests" depends="compile.module.jmfb.production" description="compile module jMFB; test classes" unless="skip.tests"/>
+  
+  <target name="clean.module.jmfb" description="cleanup module">
+    <delete dir="${jmfb.output.dir}"/>
+    <delete dir="${jmfb.testoutput.dir}"/>
+  </target>
+  
+  <target name="init" description="Build initialization">
+    <!-- Perform any build initialization in this target -->
+  </target>
+  
+  <target name="clean" depends="clean.module.jmfb" description="cleanup all"/>
+  
+  <target name="build.modules" depends="init, clean, compile.module.jmfb" description="build all modules"/>
+  
+  <target name="init.artifacts">
+    <property name="artifacts.temp.dir" value="${basedir}/__artifacts_temp"/>
+    <property name="artifact.output.buildfull" value="${basedir}/out/artifacts/jMFB_Release"/>
+    <property name="artifact.output.buildwolibs" value="${basedir}/out/artifacts/BuildWOLibs"/>
+    <mkdir dir="${artifacts.temp.dir}"/>
+    <property name="temp.jar.path.jMFB.jar" value="${artifacts.temp.dir}/jMFB.jar"/>
+    <property name="temp.jar.path.jMFB.jar2" value="${artifacts.temp.dir}/1/jMFB.jar"/>
+    <mkdir dir="${artifacts.temp.dir}/1"/>
+  </target>
+  
+  <target name="artifact.buildfull" depends="init.artifacts, compile.module.jmfb" description="Build &#39;BuildFull&#39; artifact">
+    <property name="artifact.temp.output.buildfull" value="${artifacts.temp.dir}/BuildFull"/>
+    <mkdir dir="${artifact.temp.output.buildfull}"/>
+    <jar destfile="${temp.jar.path.jMFB.jar}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/src/META-INF/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset dir="${jmfb.output.dir}"/>
+      <zipfileset src="${basedir}/lib/commons-io-2.4.jar"/>
+      <zipfileset src="${basedir}/lib/kdglib.jar"/>
+      <zipfileset src="${basedir}/lib/jgoodies-forms.jar"/>
+      <zipfileset src="${basedir}/lib/jgoodies-common.jar"/>
+      <zipfileset src="${basedir}/lib/commons-lang3-3.1.jar"/>
+    </jar>
+    <copy file="${temp.jar.path.jMFB.jar}" tofile="${artifact.temp.output.buildfull}/jMFB.jar"/>
+  </target>
+  
+  <target name="artifact.buildwolibs" depends="init.artifacts, compile.module.jmfb" description="Build &#39;BuildWOLibs&#39; artifact">
+    <property name="artifact.temp.output.buildwolibs" value="${artifacts.temp.dir}/BuildWOLibs"/>
+    <mkdir dir="${artifact.temp.output.buildwolibs}"/>
+    <jar destfile="${temp.jar.path.jMFB.jar2}" duplicate="preserve" filesetmanifest="mergewithoutmain">
+      <zipfileset file="${basedir}/src/META-INF/MANIFEST.MF" prefix="META-INF"/>
+      <zipfileset dir="${jmfb.output.dir}"/>
+    </jar>
+    <copy file="${temp.jar.path.jMFB.jar2}" tofile="${artifact.temp.output.buildwolibs}/jMFB.jar"/>
+  </target>
+  
+  <target name="build.all.artifacts" depends="artifact.buildfull, artifact.buildwolibs" description="Build all artifacts">
+    <mkdir dir="${artifact.output.buildfull}"/>
+    <copy todir="${artifact.output.buildfull}">
+      <fileset dir="${artifact.temp.output.buildfull}"/>
+    </copy>
+    <mkdir dir="${artifact.output.buildwolibs}"/>
+    <copy todir="${artifact.output.buildwolibs}">
+      <fileset dir="${artifact.temp.output.buildwolibs}"/>
+    </copy>
+    
+    <!-- Delete temporary files -->
+    <delete dir="${artifacts.temp.dir}"/>
+  </target>
+  
+  <target name="all" depends="build.modules, build.all.artifacts" description="build all"/>
+</project>
