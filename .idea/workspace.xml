@@ -74,7 +74,7 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="427" column="13" selection-start="16716" selection-end="16716" vertical-scroll-proportion="0.36459908">
+            <state line="422" column="12" selection-start="16370" selection-end="16716" vertical-scroll-proportion="0.25113463">
               <folding>
                 <element signature="docComment;class#mainForm#0" expanded="false" />
                 <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
@@ -535,7 +535,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -713,7 +713,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="427" column="13" selection-start="16716" selection-end="16716" vertical-scroll-proportion="0.36459908">
+        <state line="422" column="12" selection-start="16370" selection-end="16716" vertical-scroll-proportion="0.25113463">
           <folding>
             <element signature="docComment;class#mainForm#0" expanded="false" />
             <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
