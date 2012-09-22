@@ -1,11 +1,11 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_33" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_35" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
 	root: new FormRoot {
 		add( new FormWindow( "javax.swing.JFrame", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 			"$columnSpecs": "labelcompgap, 204dlu:grow, labelcompgap, labelcompgap"
-			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, labelcompgap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default"
+			"$rowSpecs": "default, linegap, default, linegap, default, linegap, default, labelcompgap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default, linegap, default"
 		} ) {
 			name: "this"
 			"defaultCloseOperation": 3
@@ -127,10 +127,18 @@ new FormModel {
 				"hAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
 				"vAlign": sfield com.jgoodies.forms.layout.CellConstraints FILL
 			} )
+			add( new FormComponent( "javax.swing.JCheckBox" ) {
+				name: "cbNotOdex"
+				"text": "Don't deodex firmware"
+				"enabled": false
+			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+				"gridX": 2
+				"gridY": 13
+			} )
 			add( new FormComponent( "javax.swing.JSeparator" ) {
 				name: "spSeparator2"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 13
+				"gridY": 15
 				"gridWidth": 4
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -139,7 +147,7 @@ new FormModel {
 				"font": new com.jformdesigner.model.SwingDerivedFont( null, 1, 1, false )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
-				"gridY": 15
+				"gridY": 17
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 				"$columnSpecs": "labelcompgap, default:grow, labelcompgap, labelcompgap"
@@ -164,12 +172,12 @@ new FormModel {
 				} )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
-				"gridY": 17
+				"gridY": 19
 			} )
 			add( new FormComponent( "javax.swing.JSeparator" ) {
 				name: "spSeparator3"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-				"gridY": 19
+				"gridY": 21
 				"gridWidth": 4
 			} )
 			add( new FormComponent( "javax.swing.JLabel" ) {
@@ -177,13 +185,13 @@ new FormModel {
 				"text": "Progress:"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
-				"gridY": 21
+				"gridY": 23
 			} )
 			add( new FormComponent( "javax.swing.JProgressBar" ) {
 				name: "pbProgress"
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
-				"gridY": 23
+				"gridY": 25
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
 				"$columnSpecs": "glue, labelcompgap, default, labelcompgap, glue, labelcompgap, default, labelcompgap, glue"
@@ -212,7 +220,7 @@ new FormModel {
 				} )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridX": 2
-				"gridY": 25
+				"gridY": 27
 			} )
 			menuBar: new FormContainer( "javax.swing.JMenuBar", new FormLayoutManager( class javax.swing.JMenuBar ) ) {
 				name: "mbMainBar"

@@ -57,7 +57,7 @@ public class mainForm extends JFrame {
         initComponents();
     }
 
-    /*private String getBootClassPathFromFolder(File fold) {
+    private String getBootClassPathFromFolder(File fold) {
         String extraBootClassPath = null;
         searchTools su = new searchTools();
         try {
@@ -86,7 +86,7 @@ public class mainForm extends JFrame {
 
         return extraBootClassPath;
 
-    }*/
+    }
 
     private void baksmali(File odexFile, File outDir, int apiLevel, File classPathDir) {
         List<String> cmd = new ArrayList<String>();
@@ -101,6 +101,8 @@ public class mainForm extends JFrame {
         cmd.add(classPathDir.getAbsolutePath());
         cmd.add("-o");
         cmd.add(outDir.getAbsolutePath());
+        cmd.add("-c");
+        cmd.add(getBootClassPathFromFolder(classPathDir));
         try {
             OS.exec(cmd.toArray(new String[0]));
         } catch (AndrolibException e) {
@@ -418,7 +420,12 @@ public class mainForm extends JFrame {
         //</editor-fold>
         Properties writeProp = new Properties();
         try {
-            writeProp.load(new FileInputStream(workDir + File.separatorChar + "jmfb.properties"));
+            if(new File(workDir + File.separatorChar + "jmfb.properties").exists()){
+                writeProp.load(new FileInputStream(workDir + File.separatorChar + "jmfb.properties"));
+            } else {
+                InputStream in = mainForm.class.getResourceAsStream("/properties/jmfb.properties");
+                writeProp.load(in);
+            }
             LOGGER.info("Properties loaded:");
             repo_Precompiled = writeProp.getProperty("repo_Precompiled", repo_Precompiled);
             LOGGER.info(" - repo_Precompiled = " + repo_Precompiled);
@@ -666,19 +673,20 @@ public class mainForm extends JFrame {
                     extractFolder(edtFirmwareFile.getText(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
                     extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                     String frmDir = new String(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar);
+                    if(!cbNotOdex.isSelected()) {
+                        if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
+                            try {
+                                lbProgressstate.setText("Deodexing firmware...");
+                                LOGGER.info("----- Starting BurgerZ deodex code -----");
+                                deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
+                                deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
+                                LOGGER.info("----- DONE! -----");
+                            } catch (Exception e) {
+                                LOGGER.info(e.getMessage());
+                                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+                            }
 
-                    if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
-                        try {
-                            lbProgressstate.setText("Deodexing firmware...");
-                            LOGGER.info("----- Starting BurgerZ deodex code -----");
-                            deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
-                            deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
-                            LOGGER.info("----- DONE! -----");
-                        } catch (Exception e) {
-                            LOGGER.info(e.getMessage());
-                            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
                         }
-
                     }
                 }
                 //</editor-fold>
@@ -735,16 +743,18 @@ public class mainForm extends JFrame {
                 }
 
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
-                if (!isJB || !cbDisableCS.isSelected()) {
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
-                    File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                    try {
-                        FileUtils.copyDirectory(source, desc);
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                if(!cbDisableCS.isSelected()) {
+                    if (!isJB) {
+                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
+                        File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                        File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                        try {
+                            FileUtils.copyDirectory(source, desc);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                        deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                     }
-                    deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                 }
                 getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
                 File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
@@ -1023,14 +1033,7 @@ public class mainForm extends JFrame {
                 String phoneModel = readBuildProp(buildPropPath, "ro.product.device");
                 lbProgressstate.setText("Signing firmware file...");
                 LOGGER.info("Signing firmware file...");
-                if (cmd) {
-                    new File(workDir + File.separatorChar + "build").mkdirs();
-                    new signApk().signBuildFile(false, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + "build" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
-                } else {
-                    new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
-                    //String[] cmdArr = new String[]{"java", "-Xms2048m", "-Xmx2048m", "-jar", workDir + File.separatorChar + "aApps" + File.separatorChar + "bin" + File.separatorChar + "signapk.jar", "-w", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip"};
-                    //OS.exec(cmdArr);
-                }
+                new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip").delete();
                 pbProgress.setIndeterminate(false);
                 pbProgress.setMaximum(100);
@@ -1138,6 +1141,7 @@ public class mainForm extends JFrame {
         edtFirmwareFile.setEnabled(State);
         btnBrowse.setEnabled(State);
         //cbHWRender.setEnabled(State);
+        cbNotOdex.setEnabled(State);
         cbTimeZone.setEnabled(State);
         decompAll.setEnabled(State);
         cbLang.setEnabled(State);
@@ -1226,6 +1230,7 @@ public class mainForm extends JFrame {
         cbLang = new JComboBox();
         decompAll = new JCheckBox();
         cbDisableCS = new JCheckBox();
+        cbNotOdex = new JCheckBox();
         spSeparator2 = new JSeparator();
         lbTranslRepo = new JLabel();
         pRepos = new JPanel();
@@ -1246,7 +1251,7 @@ public class mainForm extends JFrame {
         Container contentPane = getContentPane();
         contentPane.setLayout(new FormLayout(
             "$lcgap, 204dlu:grow, 2*($lcgap)",
-            "3*(default, $lgap), default, $lcgap, 8*(default, $lgap), default"));
+            "3*(default, $lgap), default, $lcgap, 9*(default, $lgap), default"));
 
         //======== mbMainBar ========
         {
@@ -1359,12 +1364,17 @@ public class mainForm extends JFrame {
             pAddons.add(cbDisableCS, CC.xywh(1, 7, 3, 1));
         }
         contentPane.add(pAddons, CC.xy(2, 11, CC.FILL, CC.FILL));
-        contentPane.add(spSeparator2, CC.xywh(1, 13, 4, 1));
+
+        //---- cbNotOdex ----
+        cbNotOdex.setText("Don't deodex firmware");
+        cbNotOdex.setEnabled(false);
+        contentPane.add(cbNotOdex, CC.xy(2, 13));
+        contentPane.add(spSeparator2, CC.xywh(1, 15, 4, 1));
 
         //---- lbTranslRepo ----
         lbTranslRepo.setText("Translation repositories:");
         lbTranslRepo.setFont(lbTranslRepo.getFont().deriveFont(lbTranslRepo.getFont().getStyle() | Font.BOLD, lbTranslRepo.getFont().getSize() + 1f));
-        contentPane.add(lbTranslRepo, CC.xy(2, 15));
+        contentPane.add(lbTranslRepo, CC.xy(2, 17));
 
         //======== pRepos ========
         {
@@ -1393,13 +1403,13 @@ public class mainForm extends JFrame {
             }
             pRepos.add(spRepos, CC.xy(2, 1));
         }
-        contentPane.add(pRepos, CC.xy(2, 17));
-        contentPane.add(spSeparator3, CC.xywh(1, 19, 4, 1));
+        contentPane.add(pRepos, CC.xy(2, 19));
+        contentPane.add(spSeparator3, CC.xywh(1, 21, 4, 1));
 
         //---- lbProgressstate ----
         lbProgressstate.setText("Progress:");
-        contentPane.add(lbProgressstate, CC.xy(2, 21));
-        contentPane.add(pbProgress, CC.xy(2, 23));
+        contentPane.add(lbProgressstate, CC.xy(2, 23));
+        contentPane.add(pbProgress, CC.xy(2, 25));
 
         //======== pCmdButtons ========
         {
@@ -1431,7 +1441,7 @@ public class mainForm extends JFrame {
             });
             pCmdButtons.add(btnBuild, CC.xy(7, 1));
         }
-        contentPane.add(pCmdButtons, CC.xy(2, 25));
+        contentPane.add(pCmdButtons, CC.xy(2, 27));
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -1525,6 +1535,7 @@ public class mainForm extends JFrame {
     private JComboBox cbLang;
     private JCheckBox decompAll;
     private JCheckBox cbDisableCS;
+    private JCheckBox cbNotOdex;
     private JSeparator spSeparator2;
     private JLabel lbTranslRepo;
     private JPanel pRepos;
