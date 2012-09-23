@@ -5,7 +5,7 @@
   </component>
   <component name="ArtifactsWorkspaceSettings">
     <artifacts-to-build>
-      <artifact name="BuildFull" />
+      <artifact name="BuildWOOptimization" />
     </artifacts-to-build>
   </component>
   <component name="ChangeListManager">
@@ -74,7 +74,7 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="422" column="12" selection-start="16370" selection-end="16716" vertical-scroll-proportion="0.25113463">
+            <state line="432" column="63" selection-start="17087" selection-end="17087" vertical-scroll-proportion="0.24962178">
               <folding>
                 <element signature="docComment;class#mainForm#0" expanded="false" />
                 <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
@@ -85,7 +85,6 @@
                 <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
-                <marker date="1348325474000" expanded="false" signature="7549:9150" placeholder="..." />
                 <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
                 <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
@@ -124,12 +123,12 @@
                 <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-                <marker date="1348325474000" expanded="false" signature="74880:83907" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <marker date="1348407671000" expanded="false" signature="74880:83907" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
                 <element signature="e#84257#84292#0" expanded="false" />
                 <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-                <marker date="1348325474000" expanded="false" signature="86793:87939" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+                <marker date="1348407671000" expanded="false" signature="86793:87939" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
             </state>
           </provider>
@@ -165,9 +164,9 @@
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/signApk.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/zipTools.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.jfd" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/ApktoolProperties.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java" />
       </list>
     </option>
   </component>
@@ -284,6 +283,72 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androlib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androlib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
       <pane id="Scope">
@@ -312,17 +377,17 @@
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.forceTargetJdk" value="true" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="MemberChooser.copyJavadoc" value="false" />
+    <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
-    <property name="MemberChooser.showClasses" value="true" />
     <property name="FullScreen" value="false" />
-    <property name="GenerateAntBuildDialog.backupFiles" value="false" />
+    <property name="MemberChooser.showClasses" value="true" />
     <property name="GoToClass.includeLibraries" value="false" />
-    <property name="dynamic.classpath" value="false" />
-    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="GenerateAntBuildDialog.backupFiles" value="false" />
     <property name="options.searchVisible" value="true" />
+    <property name="options.splitter.details.proportions" value="0.2" />
+    <property name="dynamic.classpath" value="false" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -375,6 +440,24 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -400,24 +483,6 @@
       <envs />
       <properties />
       <listeners />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -690,30 +755,26 @@
         <state />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="419" column="86" selection-start="14798" selection-end="14798" vertical-scroll-proportion="0.42284867">
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/brut/androlib/ApktoolProperties.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="25" selection-start="1946" selection-end="1946" vertical-scroll-proportion="0.6439169">
-          <folding />
-        </state>
+        <state line="60" column="25" selection-start="1946" selection-end="1946" vertical-scroll-proportion="0.6439169" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/properties/jmfb.properties">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="419" column="112" selection-start="14824" selection-end="14824" vertical-scroll-proportion="0.6008902">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="422" column="12" selection-start="16370" selection-end="16716" vertical-scroll-proportion="0.25113463">
+        <state line="432" column="63" selection-start="17087" selection-end="17087" vertical-scroll-proportion="0.24962178">
           <folding>
             <element signature="docComment;class#mainForm#0" expanded="false" />
             <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
@@ -724,7 +785,6 @@
             <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
             <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#readBuildProp#0;class#mainForm#0" expanded="false" />
-            <marker date="1348325474000" expanded="false" signature="7549:9150" placeholder="..." />
             <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
             <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
             <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
@@ -763,12 +823,12 @@
             <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <marker date="1348325474000" expanded="false" signature="74880:83907" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1348407671000" expanded="false" signature="74880:83907" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
             <element signature="e#84257#84292#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1348325474000" expanded="false" signature="86793:87939" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1348407671000" expanded="false" signature="86793:87939" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
