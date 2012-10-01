@@ -15,6 +15,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
+import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
@@ -24,6 +25,14 @@ import javax.swing.filechooser.FileFilter;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathFactory;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -39,9 +48,6 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
-import net.lingala.zip4j.model.*;
-import net.lingala.zip4j.progress.*;
-import net.lingala.zip4j.util.Zip4jConstants;
 
 
 /**
@@ -586,22 +592,6 @@ public class mainForm extends JFrame {
                     JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
                 }
             }
-            try {
-                new File(Apk + File.separatorChar + "build" + File.separatorChar + "apk").mkdirs();
-                kAndrolib.buildSourcesSmali(new File(Apk), false, false);
-                FileUtils.copyFile(new File(Apk + File.separatorChar + "build" + File.separatorChar + "apk" + File.separatorChar + "classes.dex"), new File(Apk + File.separatorChar + "classes.dex"));
-                deleteDirectory(new File(Apk + File.separatorChar + "build"));
-                deleteDirectory(new File(Apk + File.separatorChar + "smali"));
-            } catch (AndrolibException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (IOException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (BrutException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
         }
         if (ApkName.equals("miuicompass.apk")) {
             Map<String, Object> meta = new LinkedHashMap<String, Object>();
@@ -657,6 +647,12 @@ public class mainForm extends JFrame {
         writeBuildProp(buildPropPath, "ro.product.locale.region", regions[cbLang.getSelectedIndex()]);
     }
 
+    private boolean isSmaliPatch(String fileName, String translationDir) {
+        File patchFile = new File(translationDir + File.separatorChar + fileName + File.separatorChar + "smali");
+        if(patchFile.exists()) return true;
+        return false;
+    }
+
     private class kBigBlackBox_Decompiler extends SwingWorker<Integer, Object> {
 
         @Override
@@ -698,6 +694,8 @@ public class mainForm extends JFrame {
                     getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repo_Precompiled);
                     new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
                     new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
+                    //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/LatinIME.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "LatinIME.apk", "ics");
+                    //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/lib/libjni_latinime.so", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "lib" + File.separatorChar + "libjni_latinime.so", "ics");
                     new gitTools().downloadFileFromGit(repo_Bootanimation, "system/media/bootanimation.zip", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "bootanimation.zip");
                     lbProgressstate.setText("Updating files...");
                     File src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar);
@@ -809,7 +807,7 @@ public class mainForm extends JFrame {
                             if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
                                 pbProgress.setValue(i);
                                 LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("updater.apk"));
+                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk"));
                                 rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
                             } else {
                                 File dectFile = File.createTempFile("KDGDEV", ".kdg");
@@ -918,6 +916,44 @@ public class mainForm extends JFrame {
                 pbProgress.setMaximum(buildFiles.size());
                 pbProgress.setValue(0);
                 lbProgressstate.setText("Building apps...");
+                File default_xml = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize" + File.separatorChar + "CID" + File.separatorChar + "default.xml");
+                if(default_xml.exists()){
+                    String patchFile = FileUtils.readFileToString(default_xml);
+                    String sPattern = "<function name=\"IME_language_set\">(.*)</function>";
+                    Pattern p = Pattern.compile(sPattern, Pattern.CASE_INSENSITIVE | Pattern.DOTALL | Pattern.MULTILINE);
+                    Matcher matcher = p.matcher(patchFile);
+                    patchFile = matcher.replaceAll("<function name=\"IME_language_set\">\n" +
+                            "        <set name=\"single\">\n" +
+                            "          <item type=\"boolean\" name=\"English\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"German\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"France\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Italian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Spanish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Russian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Czech\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Danish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Swedish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Norwegian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Dutch\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Polish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Portugal\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Greek\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Turkish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Finnish\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Hungarian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Romanian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Slovak\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Croatian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Slovenian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Serbian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Bulgarian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Estonian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Latvian\">yes</item>\n" +
+                            "          <item type=\"boolean\" name=\"Lithuanian\">yes</item>\n" +
+                            "        </set>\n" +
+                            "      </function>");
+                    FileUtils.writeStringToFile(default_xml, patchFile);
+                }
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"));
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
                 kAndrolib.setFrameworksDir(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
@@ -1004,10 +1040,6 @@ public class mainForm extends JFrame {
                 LOGGER.info("Building firmware file...");
                 lbProgressstate.setText("Building firmware file...");
                 pbProgress.setIndeterminate(true);
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "tmps" + File.separatorChar + "1").mkdirs();
-                decompileFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar + "miui-framework.jar", workDir + File.separatorChar + projectName + File.separatorChar + "tmps" + File.separatorChar + "1", true);
-                FileUtils.copyFile(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "bin" + File.separatorChar + "androtech.bin"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "tmps" + File.separatorChar + "1" + File.separatorChar + "smali" + File.separatorChar + "miui" + File.separatorChar + "util" + File.separatorChar + "HanziToPinyin.smali"));
-                kAndrolib.build(new File(workDir + File.separatorChar + projectName + File.separatorChar + "tmps" + File.separatorChar + "1"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled" + File.separatorChar + "miui-framework.jar"), true, false, true);
                 FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework"));
                 FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app"));
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out").mkdirs();
@@ -1479,7 +1511,7 @@ public class mainForm extends JFrame {
         //</editor-fold>
     }
 
-    private static void setupLogging(Verbosity verbosity) {
+    private void setupLogging(Verbosity verbosity) {
         Logger logger = Logger.getLogger("");
         for (Handler handler : logger.getHandlers()) {
             logger.removeHandler(handler);
@@ -1500,9 +1532,12 @@ public class mainForm extends JFrame {
                 public String format(LogRecord logRecord) {
                     try {
                         Date now = new Date();
-                        FileWriter sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Logging.txt", true);
+                        FileWriter sw;
+                        if(!logRecord.getMessage().contains("warning")) {
+                        sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Logging.txt", true);
                         sw.write("[" + now.toString() + "] " + logRecord.getMessage() + System.getProperty("line.separator"));
                         sw.close();
+                      }
                     } catch (Exception e) {
                         System.out.print(e.getMessage());
                     }
@@ -1571,4 +1606,5 @@ public class mainForm extends JFrame {
     private Boolean writeBProp = true;
     private Boolean isJB = false;
     private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
+    //private Boolean fullLog=false;
 }

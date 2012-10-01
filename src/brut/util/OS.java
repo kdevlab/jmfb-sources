@@ -90,7 +90,8 @@ public class OS {
             BufferedReader brStdout = new BufferedReader(isrStdout);
             String line = null;
             while ((line = brStdout.readLine()) != null) {
-                if(!line.contains("warning")) LOGGER.info(line);
+                //if(!line.contains("warning")) LOGGER.info(line);
+                LOGGER.info(line);
             };
             if (ps.waitFor() != 0) {
                 throw new BrutException(
@@ -116,7 +117,8 @@ public class OS {
             BufferedReader brStdout = new BufferedReader(isrStdout);
             String line = null;
             while ((line = brStdout.readLine()) != null) {
-                if(!line.contains("warning")) LOGGER.info(line);
+                //if(!line.contains("warning")) LOGGER.info(line);
+                LOGGER.info(line);
             };
             if (ps.waitFor() != 0) {
                 throw new BrutException(
