@@ -32,7 +32,6 @@ import java.util.logging.Logger;
  */
 public class ResFileDecoder {
     private final ResStreamDecoderContainer mDecoders;
-    private boolean rename9patch = true;
 
     public ResFileDecoder(ResStreamDecoderContainer decoders) {
         this.mDecoders = decoders;
@@ -70,13 +69,14 @@ public class ResFileDecoder {
                                 inDir, inFileName, outDir, outFileName, "9patch");
                         return;
                     } catch (CantFind9PatchChunk ex) {
-                        if(rename9patch) {
-                            LOGGER.log(Level.WARNING, String.format("Cant find 9patch chunk in file: \"%s\". Renaming it to *.png.", inFileName), ex);
+                        LOGGER.log(Level.WARNING, String.format(
+                            "Cant find 9patch chunk in file: \"%s\". Renaming it to *.png.",
+                            inFileName
+                        ), ex);
                             outDir.removeFile(outFileName);
                             outFileName = outResName + ext;
                         }
                     }
-                }
                 if (!".xml".equals(ext)) {
                     decode(inDir, inFileName, outDir, outFileName, "raw");
                     return;
@@ -85,7 +85,9 @@ public class ResFileDecoder {
 
             decode(inDir, inFileName, outDir, outFileName, "xml");
         } catch (AndrolibException ex) {
-            LOGGER.log(Level.SEVERE, String.format("Could not decode file, replacing by FALSE value: %s", inFileName, outFileName), ex);
+            LOGGER.log(Level.SEVERE, String.format(
+                "Could not decode file, replacing by FALSE value: %s",
+                inFileName, outFileName), ex);
             res.replace(new ResBoolValue(false, null));
         }
     }

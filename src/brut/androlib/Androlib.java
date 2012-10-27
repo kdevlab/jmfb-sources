@@ -16,6 +16,7 @@
 
 package brut.androlib;
 
+import brut.androlib.err.InFileNotFoundException;
 import brut.androlib.java.AndrolibJava;
 import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.ResPackage;
@@ -28,6 +29,7 @@ import brut.directory.*;
 import brut.util.BrutIO;
 import brut.util.OS;
 import java.io.*;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -72,14 +74,14 @@ public class Androlib {
         }
     }
 
-    public void decodeSourcesSmali(File apkFile, File outDir, boolean debug)
+    public void decodeSourcesSmali(File apkFile, File outDir, boolean debug, boolean bakdeb)
             throws AndrolibException {
         try {
             File smaliDir = new File(outDir, SMALI_DIRNAME);
             OS.rmdir(smaliDir);
             smaliDir.mkdirs();
             LOGGER.info("Baksmaling...");
-            SmaliDecoder.decode(apkFile, smaliDir, debug);
+            SmaliDecoder.decode(apkFile, smaliDir, debug, bakdeb);
         } catch (BrutException ex) {
             throw new AndrolibException(ex);
         }
@@ -112,7 +114,7 @@ public class Androlib {
         try {
             Directory apk = apkFile.getDirectory();
             LOGGER.info("Copying raw resources...");
-            apk.copyToDir(outDir, APK_RESOURCES_FILENAMES);
+            apkFile.getDirectory().copyToDir(outDir, APK_RESOURCES_FILENAMES);
         } catch (DirectoryException ex) {
             throw new AndrolibException(ex);
         }
@@ -275,7 +277,14 @@ public class Androlib {
         if (forceBuildAll || isModified(smaliDir, dex)) {
             LOGGER.info("Smaling...");
             dex.delete();
-            SmaliBuilder.build(smaliDir, dex, debug);
+            HashMap<String, Boolean> flags = new HashMap<String, Boolean>();
+            flags.put("forceBuildAll", false);
+            flags.put("debug", false);
+            flags.put("verbose", false);
+            flags.put("injectOriginal", false);
+            flags.put("framework", false);
+            flags.put("update", false);
+            SmaliBuilder.build(smaliDir, dex, flags);
         }
         return true;
     }
@@ -548,7 +557,7 @@ public class Androlib {
     }
 
     public static String getVersion() {
-        String version = ApktoolProperties.get("version");
+        String version = ApktoolProperties.get("application.version");
         return version.endsWith("-SNAPSHOT") ?
                 version.substring(0, version.length() - 9) + '.' +
                         ApktoolProperties.get("git.commit.id.abbrev")
@@ -572,7 +581,6 @@ public class Androlib {
         for (int id : ids) {
             files[i++] = mAndRes.getFrameworkApk(id, tag);
         }
-
         return files;
     }
 

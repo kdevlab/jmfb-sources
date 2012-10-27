@@ -26,5 +26,5 @@ import org.xmlpull.v1.XmlSerializer;
  */
 public interface ResValuesXmlSerializable {
     public void serializeToResValuesXml(XmlSerializer serializer, ResResource res)
-            throws IOException, AndrolibException;
+        throws IOException, AndrolibException;
 }

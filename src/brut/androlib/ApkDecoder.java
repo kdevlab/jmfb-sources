@@ -82,7 +82,7 @@ public class ApkDecoder {
                     mAndrolib.decodeSourcesRaw(mApkFile, outDir, mDebug);
                     break;
                 case DECODE_SOURCES_SMALI:
-                    mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug);
+                    mAndrolib.decodeSourcesSmali(mApkFile, outDir, mDebug, false);
                     break;
                 case DECODE_SOURCES_JAVA:
                     mAndrolib.decodeSourcesJava(mApkFile, outDir, mDebug);
@@ -105,7 +105,6 @@ public class ApkDecoder {
             // attribute references
             if (hasManifest()) {
                 switch (mDecodeResources) {
-                  //case DECODE_RESOURCES_FULL:
                 case DECODE_RESOURCES_NONE:
                     mAndrolib.decodeManifestRaw(mApkFile, outDir);
                     break;
@@ -138,6 +137,10 @@ public class ApkDecoder {
 
     public void setDebugMode(boolean debug) {
         mDebug = debug;
+    }
+
+    public void setBaksmaliDebugMode(boolean bakdeb) {
+        mBakDeb = bakdeb;
     }
 
     public void setForceDelete(boolean forceDelete) {
@@ -229,6 +232,7 @@ public class ApkDecoder {
         if (pkgs.isEmpty()) {
             return;
         }
+
         Integer[] ids = new Integer[pkgs.size()];
         int i = 0;
         for (ResPackage pkg : pkgs) {
@@ -266,4 +270,5 @@ public class ApkDecoder {
     private boolean mForceDelete = false;
     private String mFrameTag;
     private boolean mKeepBrokenResources = false;
+    private boolean mBakDeb = true;
 }

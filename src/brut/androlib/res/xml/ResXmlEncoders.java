@@ -67,6 +67,45 @@ public final class ResXmlEncoders {
         return out.toString();
     }
 
+    public static boolean hasMNPS(String str) {
+        boolean nonpositional = false;
+        int argCount = 0;
+        int p = 0;
+        int end = str.length();
+
+        while (p < end) {
+            if (str.charAt(p) == '%' && p + 1 < end) {
+                p++;
+                if (str.charAt(p) == '%') {
+                    p++;
+                    continue;
+                }
+                argCount++;
+                if (str.charAt(p) >= '0' && str.charAt(p) <= '9') {
+                    do {
+                        p++;
+                    } while (str.charAt(p) >= '0' && str.charAt(p) <= '9');
+                    if (str.charAt(p) != '$') {
+                        nonpositional = true;
+                    }
+                } else if (str.charAt(p) == '<') {
+                    nonpositional = true;
+                    p++;
+                    if (p < end && str.charAt(p) == '$') {
+                        p++;
+                    }
+                } else {
+                    nonpositional = true;
+                }
+            }
+            p++;
+        }
+        if (argCount > 1 && nonpositional) {
+            return true;
+        }
+        return false;
+    }
+
     public static String encodeAsXmlValue(String str) {
         if (str.isEmpty()) {
             return str;
@@ -160,13 +199,13 @@ public final class ResXmlEncoders {
      * It searches for "%", but not "%%" nor "%(\d)+\$"
      */
     private static List<Integer> findNonPositionalSubstitutions(String str,
-                                                                int max) {
+            int max) {
         int pos = 0;
         int pos2 = 0;
         int count = 0;
         int length = str.length();
         List<Integer> ret = new ArrayList<Integer>();
-        while ((pos2 = (pos = str.indexOf('%', pos2)) + 1) != 0) {
+        while((pos2 = (pos = str.indexOf('%', pos2)) + 1) != 0) {
             if (pos2 == length) {
                 break;
             }

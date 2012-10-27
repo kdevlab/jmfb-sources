@@ -5,7 +5,6 @@ import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.Writer;
 
-import com.sun.org.apache.xerces.internal.impl.xpath.regex.RegularExpression;
 import org.xmlpull.v1.XmlSerializer;
 
 /**
@@ -700,7 +699,7 @@ public class MXSerializer implements XmlSerializer {
         }
     }
     
-    private void writeNamespaceDeclarations() throws IOException
+    protected void writeNamespaceDeclarations() throws IOException
     {
         //int start = elNamespaceCount[ depth - 1 ];
         for (int i = elNamespaceCount[ depth - 1 ]; i < namespaceEnd; i++)

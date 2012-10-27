@@ -21,6 +21,7 @@ import brut.androlib.AndrolibException;
 import brut.androlib.res.data.*;
 import brut.androlib.res.data.value.*;
 import brut.util.Duo;
+import brut.androlib.res.data.ResTable;
 import brut.util.ExtDataInput;
 import com.mindprod.ledatastream.LEDataInputStream;
 import java.io.*;
@@ -184,7 +185,8 @@ public class ARSCDecoder {
         if (mPkg.hasResSpec(resId)) {
             spec = mPkg.getResSpec(resId);
         } else {
-            spec = new ResResSpec(resId, mSpecNames.getString(specNamesId), mPkg, mType);
+            spec = new ResResSpec(
+                resId, mSpecNames.getString(specNamesId), mPkg, mType);
             mPkg.addResSpec(spec);
             mType.addResSpec(spec);
         }
@@ -244,13 +246,13 @@ public class ARSCDecoder {
         byte keyboard = mIn.readByte();
         byte navigation = mIn.readByte();
         byte inputFlags = mIn.readByte();
-        mIn.skipBytes(1);
+        /*inputPad0*/ mIn.skipBytes(1);
 
         short screenWidth = mIn.readShort();
         short screenHeight = mIn.readShort();
 
         short sdkVersion = mIn.readShort();
-        mIn.skipBytes(2);
+        /*minorVersion, now must always be 0*/ mIn.skipBytes(2);
 
         byte screenLayout = 0;
         byte uiMode = 0;
@@ -263,9 +265,14 @@ public class ARSCDecoder {
 
         short screenWidthDp = 0;
         short screenHeightDp = 0;
+        
         if (size >= 36) {
             screenWidthDp = mIn.readShort();
             screenHeightDp = mIn.readShort();
+        }
+
+        if (size >= 40) {
+           // mIn.skipBytes(2);
         }
 
         int exceedingSize = size - KNOWN_CONFIG_BYTES;

@@ -59,7 +59,8 @@ public class ResStringValue extends ResScalarValue {
     @Override
     protected void serializeExtraXmlAttrs(XmlSerializer serializer,
             ResResource res) throws IOException {
-        if (ResXmlEncoders.hasMultipleNonPositionalSubstitutions(mRawValue)) {
+        if (ResXmlEncoders.hasMNPS(mRawValue)) {
+        //if (ResXmlEncoders.hasMultipleNonPositionalSubstitutions(mRawValue)) {
             serializer.attribute(null, "formatted", "false");
         }
     }

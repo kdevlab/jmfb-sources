@@ -21,6 +21,7 @@ import java.io.File;
 import java.io.IOException;
 import org.jf.baksmali.baksmali;
 import org.jf.baksmali.main;
+import org.jf.dexlib.Code.Analysis.ClassPath;
 import org.jf.dexlib.DexFile;
 
 /**
@@ -28,23 +29,27 @@ import org.jf.dexlib.DexFile;
  */
 public class SmaliDecoder {
 
-    public static void decode(File apkFile, File outDir, boolean debug)
+    public static void decode(File apkFile, File outDir, boolean debug, boolean bakdeb)
             throws AndrolibException {
-        new SmaliDecoder(apkFile, outDir, debug).decode();
+        new SmaliDecoder(apkFile, outDir, debug, bakdeb).decode();
     }
 
-    private SmaliDecoder(File apkFile, File outDir, boolean debug) {
+    private SmaliDecoder(File apkFile, File outDir, boolean debug, boolean bakdeb) {
         mApkFile = apkFile;
         mOutDir = outDir;
         mDebug = debug;
+        mBakDeb = bakdeb;
     }
 
     private void decode() throws AndrolibException {
+        if (mDebug) {	
+            ClassPath.dontLoadClassPath = true;
+        }
         try {
             baksmali.disassembleDexFile(mApkFile.getAbsolutePath(),
                 new DexFile(mApkFile), false, mOutDir.getAbsolutePath(), null,
-                null, null, false, true, true, true, false, false, 
-                mDebug ? main.FULLMERGE : 0, false, false, null);
+                null, null, false, true, true, mBakDeb, false, false, 
+                mDebug ? main.DIFFPRE: 0, false, false, null);
         } catch (IOException ex) {
             throw new AndrolibException(ex);
         }
@@ -53,4 +58,5 @@ public class SmaliDecoder {
     private final File mApkFile;
     private final File mOutDir;
     private final boolean mDebug;
+    private final boolean mBakDeb;
 }

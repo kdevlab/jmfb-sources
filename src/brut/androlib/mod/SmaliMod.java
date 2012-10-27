@@ -29,8 +29,8 @@ import org.jf.smali.*;
 public class SmaliMod {
 
     public static boolean assembleSmaliFile(InputStream smaliStream,
-                                            String name, DexFile dexFile, boolean verboseErrors,
-                                            boolean oldLexer, boolean printTokens)
+            String name, DexFile dexFile, boolean verboseErrors,
+            boolean oldLexer, boolean printTokens)
             throws IOException, RecognitionException {
         CommonTokenStream tokens;
 
@@ -38,26 +38,17 @@ public class SmaliMod {
         boolean lexerErrors = false;
         LexerErrorInterface lexer;
 
-        if (oldLexer) {
-            ANTLRInputStream input = new ANTLRInputStream(smaliStream, "UTF-8");
-            input.name = name;
+        InputStreamReader reader = new InputStreamReader(smaliStream, "UTF-8");
 
-            lexer = new smaliLexer(input);
-            tokens = new CommonTokenStream((TokenSource) lexer);
-        } else {
-            InputStreamReader reader =
-                    new InputStreamReader(smaliStream, "UTF-8");
-
-            lexer = new smaliFlexLexer(reader);
-            tokens = new CommonTokenStream((TokenSource) lexer);
-        }
+        lexer = new smaliFlexLexer(reader);
+        tokens = new CommonTokenStream((TokenSource)lexer);
 
         if (printTokens) {
             tokens.getTokens();
 
-            for (int i = 0; i < tokens.size(); i++) {
+            for (int i=0; i<tokens.size(); i++) {
                 Token token = tokens.get(i);
-                if (token.getChannel() == smaliLexer.HIDDEN) {
+                if (token.getChannel() == smaliParser.HIDDEN) {
                     continue;
                 }
 
