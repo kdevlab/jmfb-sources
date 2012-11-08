@@ -574,8 +574,6 @@ public class mainForm extends JFrame {
                 try {
                     String patchFile = FileUtils.readFileToString(res);
                     patchFile = StringUtils.replace(patchFile, "\"market://details?id=com.miui.weather2\"", "\"market://details?id=com.kdgdev.weather2\"");
-                    patchFile = StringUtils.replace(patchFile, "\"com.miui.weather2\"", "\"com.kdgdev.weather2\"");
-                    patchFile = StringUtils.replace(patchFile, "\"com.miui.weather2.ActivityWeatherCycle\"", "\"com.kdgdev.weather2.ActivityWeatherCycle\"");
                     FileUtils.writeStringToFile(res, patchFile);
 
                 } catch (IOException e) {
@@ -707,6 +705,10 @@ public class mainForm extends JFrame {
         writeBuildProp(buildPropPath, "ro.build.tags", "release-keys");
         writeBuildProp(buildPropPath, "dalvik.vm.dexopt-flags", "m=y,o=v,u=y");
         writeBuildProp(buildPropPath, "dalvik.vm.verify-bytecode", "false");
+        writeBuildProp(buildPropPath, "persist.sys.purgeable_assets", "1");
+        writeBuildProp(buildPropPath, "persist.sys.use_dithering", "1");
+        writeBuildProp(buildPropPath, "ro.kernel.android.checkjni", "0");
+        writeBuildProp(buildPropPath, "ro.kernel.checkjni", "0");
         writeBuildProp(buildPropPath, "ro.build.date", now.getTime().toString());
         writeBuildProp(buildPropPath, "ro.repo.build", "kdgdev");
         long unixTime = System.currentTimeMillis() / 1000L;
@@ -855,14 +857,19 @@ public class mainForm extends JFrame {
                 installFrameworks(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework");
                 //<editor-fold desc="Building new workspace - decompiling app and frameworks">
 
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()||!new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()||new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists()||!new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
                     lbProgressstate.setText("Building new workspace - Decompiling data apps...");
                     File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
                     apkSrc.mkdirs();
                     pbProgress.setIndeterminate(false);
                     searchTools finder = new searchTools();
                     try {
-                        List apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps", ".*.apk");
+                        List apkFiles;
+                        if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) {
+                            apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps", ".*.apk");
+                        } else {
+                            apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps", ".*.apk");
+                        }
                         pbProgress.setMaximum(apkFiles.size());
                         pbProgress.setValue(0);
                         for (int i = 0; i < apkFiles.size(); i++) {
@@ -1121,7 +1128,10 @@ public class mainForm extends JFrame {
                 pbProgress.setIndeterminate(true);
                 FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework"));
                 FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app"));
-                FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps"));
+                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists())
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps"));
+                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists())
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps"));
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out").mkdirs();
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.RSA").delete();
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.SF").delete();
@@ -1682,7 +1692,7 @@ public class mainForm extends JFrame {
     private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid"));
     private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
-    private String repo_Precompiled = "miuirussia/jmfb-firmware-precompiled";
+    private String repo_Precompiled = "KDGDev/jmfb-firmware-precompiled";
     private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
     private String repo_Overlay = "KDGDev/jmfb-additional";
     private String repo_Patches = "KDGDev/jmfb-patches";

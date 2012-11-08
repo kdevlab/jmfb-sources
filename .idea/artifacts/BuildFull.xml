@@ -1,5 +1,5 @@
 <component name="ArtifactManager">
-  <artifact type="jar" name="BuildFull">
+  <artifact type="jar" build-on-make="true" name="BuildFull">
     <output-path>$PROJECT_DIR$/out/artifacts/jMFB_Release</output-path>
     <properties id="ant-postprocessing">
       <options enabled="true">
