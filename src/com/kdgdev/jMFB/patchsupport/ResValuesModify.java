@@ -32,7 +32,7 @@ public class ResValuesModify {
     }
 
     private boolean parseCommandLine(String[] args) {
-        if ((2 != args.length) && (3 != args.length)){
+        if ((2 != args.length) && (3 != args.length)) {
             usage();
             return false;
         }
@@ -42,8 +42,8 @@ public class ResValuesModify {
             usage();
             return false;
         }
-        
-        if((3 == args.length) && ("--app".equals(args[2]))){
+
+        if ((3 == args.length) && ("--app".equals(args[2]))) {
             mIsAppRes = true;
         }
         return true;

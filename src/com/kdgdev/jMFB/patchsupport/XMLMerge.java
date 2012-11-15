@@ -1,10 +1,12 @@
 package com.kdgdev.jMFB.patchsupport;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.Writer;
-import java.util.ArrayList;
+import brut.androlib.Androlib;
+import com.sun.org.apache.xml.internal.serialize.OutputFormat;
+import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+import org.w3c.dom.Node;
+import org.w3c.dom.NodeList;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -12,16 +14,11 @@ import javax.xml.xpath.XPath;
 import javax.xml.xpath.XPathConstants;
 import javax.xml.xpath.XPathExpression;
 import javax.xml.xpath.XPathFactory;
-
-import brut.androlib.Androlib;
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-
-import com.sun.org.apache.xml.internal.serialize.OutputFormat;
-import com.sun.org.apache.xml.internal.serialize.XMLSerializer;
-
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.Writer;
+import java.util.ArrayList;
 import java.util.logging.Logger;
 
 public class XMLMerge {
@@ -39,7 +36,7 @@ public class XMLMerge {
     public static final int MERGE_ADD_ELEMENT = 4;
     public static final int MERGE_MODIFY_ELEMENT = 5;
     public static final int MERGE_FAILED = 6;
-    
+
     public XMLMerge(ArrayList<File> srcFiles, ArrayList<File> destFiles, boolean isAppRes) {
         mSrcFiles = srcFiles;
         mDestFiles = destFiles;
@@ -146,10 +143,10 @@ public class XMLMerge {
             DocumentBuilder dBuilder = dbFactory.newDocumentBuilder();
             Document doc = dBuilder.parse(destFile);
             doc.getDocumentElement().normalize();
-            
-            String rootName = doc.getDocumentElement().getNodeName();  
+
+            String rootName = doc.getDocumentElement().getNodeName();
             //matching until trymatchStr back to root or tryMatchStr is null
-            while (null != tryMatchStr && false == tryMatchStr.equals("/" + rootName)) {    
+            while (null != tryMatchStr && false == tryMatchStr.equals("/" + rootName)) {
                 XPathFactory factory = XPathFactory.newInstance();
                 XPath xpath = factory.newXPath();
                 XPathExpression expr = xpath.compile(tryMatchStr);
@@ -162,10 +159,10 @@ public class XMLMerge {
                     if (true == xpathStr.equals(tryMatchStr)) {     //if absXpathStr is found in xml fine, write it into file directly
                         String subStr = tryMatchStr.substring(tryMatchStr.lastIndexOf('/') + 1);
                         if (true == subStr.contains("[@")) {    //if the element contain Attribute, just need to modify the element's textcontent
-                            if(nList.item(0).getTextContent().equals(textContent)){
+                            if (nList.item(0).getTextContent().equals(textContent)) {
                                 //System.out.println(getLineNumberString(new Exception()) + "ALL MATCH");
                                 return MERGE_MATCH_ALL;
-                            }else{
+                            } else {
                                 //System.out.println(getLineNumberString(new Exception()) + "MODIFY TEXTCONTENT: "
                                 //        + nList.item(0).getTextContent() + " -> " + textContent);
                                 nList.item(0).setTextContent(textContent);
@@ -196,9 +193,9 @@ public class XMLMerge {
                     // "LostMatch: " + lostMatchStr);
 
                     //match a part of absXpathStr 
-                    if (true == lostMatchStr.startsWith("/")) {     
+                    if (true == lostMatchStr.startsWith("/")) {
                         return addNode(doc, (Element) (nList.item(0)), destFile, lostMatchStr, textContent);
-                    } else if (true == lostMatchStr.startsWith("[@")){
+                    } else if (true == lostMatchStr.startsWith("[@")) {
                         String attrName = lostMatchStr.substring(lostMatchStr.indexOf('@') + 1, lostMatchStr.indexOf('='));
                         lostMatchStr = lostMatchStr.replaceFirst("\'", "");
                         String attrContent = lostMatchStr.substring(lostMatchStr.indexOf('=') + 1, lostMatchStr.indexOf('\''));
@@ -214,7 +211,7 @@ public class XMLMerge {
                         } else {
                             return addNode(doc, e, destFile, lostMatchStr.substring(lostMatchStr.indexOf('/')), textContent);
                         }
-                    }else{
+                    } else {
                         //System.out.println(getLineNumberString(new Exception()) + "INVAILD ELEMENT");
                     }
                 }
@@ -256,7 +253,7 @@ public class XMLMerge {
                     String nodeName = new String(subTmp.substring(0, subTmp.indexOf('[')));
                     String attrName = new String(subTmp.substring(subTmp.indexOf('@') + 1, subTmp.indexOf('=')));
                     String attrContent = new String(subTmp.substring(subTmp.indexOf('\'') + 1, subTmp.lastIndexOf('\'')));
-                    
+
                     Element subElement = doc.createElement(nodeName);
                     subElement.setAttribute(attrName, attrContent);
                     element.appendChild(subElement);
@@ -337,23 +334,23 @@ public class XMLMerge {
 
     public void traverseMergeXML(Node node, File file) {
         if (true == isElementLeaf(node)) {
-            switch(mergeNode(node)){
-            case MERGE_ADD_ELEMENT:
-            case MERGE_MODIFY_ELEMENT:
-            case MERGE_DONT_NEED_MERGE:
-                break;
-                
-            case MERGE_DONT_FIND_DEST_FILE:
-                System.out.println("  " + "{" + file.getName() + "}" + " DONT FIND DEST FILE: " + getXpathStr(node));
-                break;
-                
-            case MERGE_FAILED:                
-            case MERGE_EXCEPTION:
-                System.out.println("  " + "{" + file.getName() + "}" + " MERGE FAILED: " + getXpathStr(node));
-                break;
-                
-            default:
-                break;
+            switch (mergeNode(node)) {
+                case MERGE_ADD_ELEMENT:
+                case MERGE_MODIFY_ELEMENT:
+                case MERGE_DONT_NEED_MERGE:
+                    break;
+
+                case MERGE_DONT_FIND_DEST_FILE:
+                    System.out.println("  " + "{" + file.getName() + "}" + " DONT FIND DEST FILE: " + getXpathStr(node));
+                    break;
+
+                case MERGE_FAILED:
+                case MERGE_EXCEPTION:
+                    System.out.println("  " + "{" + file.getName() + "}" + " MERGE FAILED: " + getXpathStr(node));
+                    break;
+
+                default:
+                    break;
             }
         }
         // Now traverse the rest of the tree in depth-first order.
@@ -397,7 +394,7 @@ public class XMLMerge {
             serializer.serialize(doc);
             // System.out.println("Write Xml File");
 
-        }catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
@@ -406,7 +403,7 @@ public class XMLMerge {
         String xpathStr = "";
         while (null != node) {
             if (true == node.hasAttributes()) {
-                xpathStr = "/" + node.getNodeName() + "[@" + node.getAttributes().item(0).getNodeName() 
+                xpathStr = "/" + node.getNodeName() + "[@" + node.getAttributes().item(0).getNodeName()
                         + "='" + node.getAttributes().item(0).getNodeValue() + "']" + xpathStr;
 
             } else {
@@ -420,7 +417,7 @@ public class XMLMerge {
 
         ArrayList<String> subStrArray = new ArrayList<String>();
         subStrArray.add("//#document");
-        if(!mIsAppRes){
+        if (!mIsAppRes) {
             subStrArray.add("android:");
         }
         xpathStr = delSubString(xpathStr, subStrArray);

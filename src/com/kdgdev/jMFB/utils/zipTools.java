@@ -23,8 +23,8 @@ public class zipTools {
         ZipOutputStream zipOut = new ZipOutputStream(new FileOutputStream(zipFile));
 
         File srcFile = new File(fileToZip);
-        if(excludeContainingFolder && srcFile.isDirectory()) {
-            for(String fileName : srcFile.list()) {
+        if (excludeContainingFolder && srcFile.isDirectory()) {
+            for (String fileName : srcFile.list()) {
                 addToZip("", fileToZip + "/" + fileName, zipOut);
             }
         } else {

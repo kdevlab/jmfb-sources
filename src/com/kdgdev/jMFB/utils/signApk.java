@@ -23,52 +23,20 @@ import sun.security.pkcs.SignerInfo;
 import sun.security.x509.AlgorithmId;
 import sun.security.x509.X500Name;
 
-import java.io.BufferedReader;
-import java.io.RandomAccessFile;
-import java.io.ByteArrayOutputStream;
-import java.io.DataInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FilterOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.io.BufferedInputStream;
-import java.security.AlgorithmParameters;
-import java.security.DigestOutputStream;
-import java.security.GeneralSecurityException;
-import java.security.Key;
-import java.security.KeyFactory;
-import java.security.MessageDigest;
-import java.security.PrivateKey;
-import java.security.Signature;
-import java.security.SignatureException;
-import java.security.cert.Certificate;
+import javax.crypto.Cipher;
+import javax.crypto.EncryptedPrivateKeyInfo;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.PBEKeySpec;
+import java.io.*;
+import java.security.*;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.KeySpec;
 import java.security.spec.PKCS8EncodedKeySpec;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Date;
-import java.util.Enumeration;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
-import java.util.jar.Attributes;
-import java.util.jar.JarEntry;
-import java.util.jar.JarFile;
-import java.util.jar.JarOutputStream;
-import java.util.jar.Manifest;
+import java.util.*;
+import java.util.jar.*;
 import java.util.regex.Pattern;
-import javax.crypto.Cipher;
-import javax.crypto.EncryptedPrivateKeyInfo;
-import javax.crypto.SecretKeyFactory;
-import javax.crypto.spec.PBEKeySpec;
 
 /**
  * Command line tool to sign JAR files (including APKs and OTA updates) in
@@ -112,12 +80,12 @@ public class signApk {
 
     /**
      * Decrypt an encrypted PKCS 8 format private key.
-     *
+     * <p/>
      * Based on ghstark's post on Aug 6, 2006 at
      * http://forums.sun.com/thread.jspa?threadID=758133&messageID=4330949
      *
      * @param encryptedPrivateKey The raw data of the private key
-     * @param keyFile The file containing the private key
+     * @param keyFile             The file containing the private key
      */
     private static KeySpec decryptPrivateKey(byte[] encryptedPrivateKey, File keyFile)
             throws GeneralSecurityException {
@@ -145,7 +113,9 @@ public class signApk {
         }
     }
 
-    /** Read a PKCS 8 format private key. */
+    /**
+     * Read a PKCS 8 format private key.
+     */
     private static PrivateKey readPrivateKey(File file)
             throws IOException, GeneralSecurityException {
         DataInputStream input = new DataInputStream(new FileInputStream(file));
@@ -168,7 +138,9 @@ public class signApk {
         }
     }
 
-    /** Add the SHA1 of every file to the manifest, creating it if necessary. */
+    /**
+     * Add the SHA1 of every file to the manifest, creating it if necessary.
+     */
     private static Manifest addDigestsToManifest(JarFile jar)
             throws IOException, GeneralSecurityException {
         Manifest input = jar.getManifest();
@@ -197,12 +169,12 @@ public class signApk {
             byName.put(entry.getName(), entry);
         }
 
-        for (JarEntry entry: byName.values()) {
+        for (JarEntry entry : byName.values()) {
             String name = entry.getName();
             if (!entry.isDirectory() && !name.equals(JarFile.MANIFEST_NAME) &&
-                !name.equals(CERT_SF_NAME) && !name.equals(CERT_RSA_NAME) &&
-                (stripPattern == null ||
-                 !stripPattern.matcher(name).matches())) {
+                    !name.equals(CERT_SF_NAME) && !name.equals(CERT_RSA_NAME) &&
+                    (stripPattern == null ||
+                            !stripPattern.matcher(name).matches())) {
                 InputStream data = jar.getInputStream(entry);
                 while ((num = data.read(buffer)) > 0) {
                     md.update(buffer, 0, num);
@@ -219,7 +191,9 @@ public class signApk {
         return output;
     }
 
-    /** Write to another stream and also feed it to the Signature object. */
+    /**
+     * Write to another stream and also feed it to the Signature object.
+     */
     private static class SignatureOutputStream extends FilterOutputStream {
         private Signature mSignature;
         private int mCount;
@@ -257,7 +231,9 @@ public class signApk {
         }
     }
 
-    /** Write a .SF file with a digest of the specified manifest. */
+    /**
+     * Write a .SF file with a digest of the specified manifest.
+     */
     private static void writeSignatureFile(Manifest manifest, SignatureOutputStream out)
             throws IOException, GeneralSecurityException {
         Manifest sf = new Manifest();
@@ -303,7 +279,9 @@ public class signApk {
         }
     }
 
-    /** Write a .RSA file with a digital signature. */
+    /**
+     * Write a .RSA file with a digital signature.
+     */
     private static void writeSignatureBlock(
             Signature signature, X509Certificate publicKey, OutputStream out)
             throws IOException, GeneralSecurityException {
@@ -315,125 +293,126 @@ public class signApk {
                 signature.sign());
 
         PKCS7 pkcs7 = new PKCS7(
-                new AlgorithmId[] { AlgorithmId.get("SHA1") },
+                new AlgorithmId[]{AlgorithmId.get("SHA1")},
                 new ContentInfo(ContentInfo.DATA_OID, null),
-                new X509Certificate[] { publicKey },
-                new SignerInfo[] { signerInfo });
+                new X509Certificate[]{publicKey},
+                new SignerInfo[]{signerInfo});
 
         pkcs7.encodeSignedData(out);
     }
 
-     private static void signWholeOutputFile(String ZipFileName,
+    private static void signWholeOutputFile(String ZipFileName,
                                             X509Certificate publicKey,
                                             PrivateKey privateKey)
-        throws IOException, GeneralSecurityException {
-     File ZipFile = null;
-     FileInputStream ZipFileStreamIn = null;
-     BufferedInputStream bufin = null;
-     RandomAccessFile ZipFileOut = null;
-     try{
-        ZipFile = new File(ZipFileName);
-        long ZipFileSize = ZipFile.length();
-        ZipFileStreamIn = new FileInputStream(ZipFile);
-        //DataInputStream ZipFileStreamData = new DataInputStream(ZipFileStreamIn);
-        byte[] ZipFootData = new byte[22];
+            throws IOException, GeneralSecurityException {
+        File ZipFile = null;
+        FileInputStream ZipFileStreamIn = null;
+        BufferedInputStream bufin = null;
+        RandomAccessFile ZipFileOut = null;
+        try {
+            ZipFile = new File(ZipFileName);
+            long ZipFileSize = ZipFile.length();
+            ZipFileStreamIn = new FileInputStream(ZipFile);
+            //DataInputStream ZipFileStreamData = new DataInputStream(ZipFileStreamIn);
+            byte[] ZipFootData = new byte[22];
 // Will read 22bytes at end of file        
-        ZipFileStreamIn.skip(ZipFileSize - 22);
-        ZipFileStreamIn.read(ZipFootData, 0, 22);
+            ZipFileStreamIn.skip(ZipFileSize - 22);
+            ZipFileStreamIn.read(ZipFootData, 0, 22);
 //        DataInputStream.read(zipdata, ZipFileSize-22, 22);
-        // For a zip with no archive comment, the
-        // end-of-central-directory record will be 22 bytes long, so
-        // we expect to find the EOCD marker 22 bytes from the end.
-        if (ZipFootData[0] != 0x50 ||
-            ZipFootData[1] != 0x4b ||
-            ZipFootData[2] != 0x05 ||
-            ZipFootData[3] != 0x06) {
-            throw new IllegalArgumentException("zip data already has an archive comment");
-        }
-        ZipFileStreamIn.close();
-        
+            // For a zip with no archive comment, the
+            // end-of-central-directory record will be 22 bytes long, so
+            // we expect to find the EOCD marker 22 bytes from the end.
+            if (ZipFootData[0] != 0x50 ||
+                    ZipFootData[1] != 0x4b ||
+                    ZipFootData[2] != 0x05 ||
+                    ZipFootData[3] != 0x06) {
+                throw new IllegalArgumentException("zip data already has an archive comment");
+            }
+            ZipFileStreamIn.close();
 
-        Signature signature = Signature.getInstance("SHA1withRSA");
-        signature.initSign(privateKey);        
-        ZipFileStreamIn = new FileInputStream(ZipFileName);
-        bufin = new BufferedInputStream(ZipFileStreamIn);
-        byte[] buffer = new byte[65536];
-        int BlockLenght;
-        if (VerboseMode) System.err.println(" Signing Whole File");
-        long Percent = 0;
-        long NewPercent = 0;
-        long TotalRead = 0;
+
+            Signature signature = Signature.getInstance("SHA1withRSA");
+            signature.initSign(privateKey);
+            ZipFileStreamIn = new FileInputStream(ZipFileName);
+            bufin = new BufferedInputStream(ZipFileStreamIn);
+            byte[] buffer = new byte[65536];
+            int BlockLenght;
+            if (VerboseMode) System.err.println(" Signing Whole File");
+            long Percent = 0;
+            long NewPercent = 0;
+            long TotalRead = 0;
 //        Whole file is signed by blocks of 65536 bytes
-        while (bufin.available() >= 2) {
-          BlockLenght = bufin.read(buffer);
-          TotalRead += BlockLenght;
-          if (VerboseMode) {
-              NewPercent = (TotalRead * 100) / ZipFileSize;
-              if (NewPercent - Percent >= 5){
-                  Percent = NewPercent;
-                  System.err.print(Percent +"%\r");
-              }
-          }
-          if (bufin.available() < 2) // Dont use the last 2 bytes of stream             
-            BlockLenght = BlockLenght - 2 + bufin.available();
-          signature.update(buffer, 0, BlockLenght);
+            while (bufin.available() >= 2) {
+                BlockLenght = bufin.read(buffer);
+                TotalRead += BlockLenght;
+                if (VerboseMode) {
+                    NewPercent = (TotalRead * 100) / ZipFileSize;
+                    if (NewPercent - Percent >= 5) {
+                        Percent = NewPercent;
+                        System.err.print(Percent + "%\r");
+                    }
+                }
+                if (bufin.available() < 2) // Dont use the last 2 bytes of stream
+                    BlockLenght = BlockLenght - 2 + bufin.available();
+                signature.update(buffer, 0, BlockLenght);
 //          ZipFileStreamOut.write(buffer,0,BlockLenght);
-        };        
-        bufin.close();        
+            }
+            ;
+            bufin.close();
 //        signature.update(zipData, 0, zipData.length-2);
 
-        ByteArrayOutputStream temp = new ByteArrayOutputStream();
-        // put a readable message and a null char at the start of the
-        // archive comment, so that tools that display the comment
-        // (hopefully) show something sensible.
-        // TODO: anything more useful we can put in this message?
-        byte[] message = "signed by SignApk".getBytes("UTF-8");
-        temp.write(message);
-        temp.write(0);
-        writeSignatureBlock(signature, publicKey, temp);
-        int total_size = temp.size() + 6;
-        if (total_size > 0xffff) {
-            throw new IllegalArgumentException("signature is too big for ZIP file comment");
-        }
-        // signature starts this many bytes from the end of the file
-        int signature_start = total_size - message.length - 1;
-        temp.write(signature_start & 0xff);
-        temp.write((signature_start >> 8) & 0xff);
-        // Why the 0xff bytes?  In a zip file with no archive comment,
-        // bytes [-6:-2] of the file are the little-endian offset from
-        // the start of the file to the central directory.  So for the
-        // two high bytes to be 0xff 0xff, the archive would have to
-        // be nearly 4GB in side.  So it's unlikely that a real
-        // commentless archive would have 0xffs here, and lets us tell
-        // an old signed archive from a new one.
-        temp.write(0xff);
-        temp.write(0xff);
-        temp.write(total_size & 0xff);
-        temp.write((total_size >> 8) & 0xff);
-        temp.flush();
-
-        // Signature verification checks that the EOCD header is the
-        // last such sequence in the file (to avoid minzip finding a
-        // fake EOCD appended after the signature in its scan).  The
-        // odds of producing this sequence by chance are very low, but
-        // let's catch it here if it does.
-        byte[] b = temp.toByteArray();
-        for (int i = 0; i < b.length-3; ++i) {
-            if (b[i] == 0x50 && b[i+1] == 0x4b && b[i+2] == 0x05 && b[i+3] == 0x06) {
-                throw new IllegalArgumentException("found spurious EOCD header at " + i);
+            ByteArrayOutputStream temp = new ByteArrayOutputStream();
+            // put a readable message and a null char at the start of the
+            // archive comment, so that tools that display the comment
+            // (hopefully) show something sensible.
+            // TODO: anything more useful we can put in this message?
+            byte[] message = "signed by SignApk".getBytes("UTF-8");
+            temp.write(message);
+            temp.write(0);
+            writeSignatureBlock(signature, publicKey, temp);
+            int total_size = temp.size() + 6;
+            if (total_size > 0xffff) {
+                throw new IllegalArgumentException("signature is too big for ZIP file comment");
             }
-        }
+            // signature starts this many bytes from the end of the file
+            int signature_start = total_size - message.length - 1;
+            temp.write(signature_start & 0xff);
+            temp.write((signature_start >> 8) & 0xff);
+            // Why the 0xff bytes?  In a zip file with no archive comment,
+            // bytes [-6:-2] of the file are the little-endian offset from
+            // the start of the file to the central directory.  So for the
+            // two high bytes to be 0xff 0xff, the archive would have to
+            // be nearly 4GB in side.  So it's unlikely that a real
+            // commentless archive would have 0xffs here, and lets us tell
+            // an old signed archive from a new one.
+            temp.write(0xff);
+            temp.write(0xff);
+            temp.write(total_size & 0xff);
+            temp.write((total_size >> 8) & 0xff);
+            temp.flush();
+
+            // Signature verification checks that the EOCD header is the
+            // last such sequence in the file (to avoid minzip finding a
+            // fake EOCD appended after the signature in its scan).  The
+            // odds of producing this sequence by chance are very low, but
+            // let's catch it here if it does.
+            byte[] b = temp.toByteArray();
+            for (int i = 0; i < b.length - 3; ++i) {
+                if (b[i] == 0x50 && b[i + 1] == 0x4b && b[i + 2] == 0x05 && b[i + 3] == 0x06) {
+                    throw new IllegalArgumentException("found spurious EOCD header at " + i);
+                }
+            }
 
 //        outputStream.wr ZipFileStreamOutite(zipData, 0, zipData.length-2);
 //        FileOutputStream ZipFileStreamOut = new FileOutputStream(ZipFileName);
-        ZipFileOut = new RandomAccessFile(ZipFileName, "rw");
-        ZipFileOut.seek(ZipFileSize - 2);
-        ZipFileOut.write(total_size & 0xff);
-        ZipFileOut.write((total_size >> 8) & 0xff);
-        ZipFileOut.write(temp.toByteArray());
-        //temp.writeTo(ZipFileStreamOut);
-        ZipFileOut.close();
-     } catch (Exception e) {
+            ZipFileOut = new RandomAccessFile(ZipFileName, "rw");
+            ZipFileOut.seek(ZipFileSize - 2);
+            ZipFileOut.write(total_size & 0xff);
+            ZipFileOut.write((total_size >> 8) & 0xff);
+            ZipFileOut.write(temp.toByteArray());
+            //temp.writeTo(ZipFileStreamOut);
+            ZipFileOut.close();
+        } catch (Exception e) {
             e.printStackTrace();
         } finally {
             try {
@@ -443,8 +422,8 @@ public class signApk {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-        }        
-    }    
+        }
+    }
 
     /**
      * Copy all the files in a manifest from input to output.  We set
@@ -453,7 +432,7 @@ public class signApk {
      * more efficient.
      */
     private static void copyFiles(Manifest manifest,
-        JarFile in, JarOutputStream out, long timestamp) throws IOException {
+                                  JarFile in, JarOutputStream out, long timestamp) throws IOException {
         byte[] buffer = new byte[4096];
         int num;
 
@@ -478,7 +457,7 @@ public class signApk {
                 out.write(buffer, 0, num);
             }
             out.flush();
-        }        
+        }
     }
 
     public void signBuildFile(Boolean signWholeFile, String pk509, String pk8, String InputFl, String OutputFl) {
