@@ -16,7 +16,6 @@
 
 package brut.androlib;
 
-import brut.androlib.err.InFileNotFoundException;
 import brut.androlib.java.AndrolibJava;
 import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.ResPackage;
@@ -25,18 +24,19 @@ import brut.androlib.res.util.ExtFile;
 import brut.androlib.src.SmaliBuilder;
 import brut.androlib.src.SmaliDecoder;
 import brut.common.BrutException;
-import brut.directory.*;
+import brut.directory.Directory;
+import brut.directory.DirectoryException;
 import brut.util.BrutIO;
 import brut.util.OS;
+import org.apache.commons.io.FileUtils;
+import org.yaml.snakeyaml.DumperOptions;
+import org.yaml.snakeyaml.Yaml;
+
 import java.io.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
-
-import org.apache.commons.io.FileUtils;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -357,7 +357,7 @@ public class Androlib {
                     newFiles(APP_RESOURCES_FILENAMES, appDir),
                     newFiles(APK_RESOURCES_FILENAMES, apkDir))) {
                 LOGGER.info("Building resources...");
-                File apkFile = File.createTempFile("KDGDEV", null);
+                File apkFile = File.createTempFile("KDGDEV", "apk");
                 apkFile.delete();
 
                 File ninePatch = new File(appDir, "9patch");
@@ -376,6 +376,8 @@ public class Androlib {
                 tmpDir.copyToDir(apkDir,
                         tmpDir.containsDir("res") ? APK_RESOURCES_FILENAMES :
                                 APK_RESOURCES_WITHOUT_RES_FILENAMES);
+                tmpDir = null;
+                apkFile.delete();
             }
             return true;
         } catch (IOException ex) {

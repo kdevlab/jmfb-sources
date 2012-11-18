@@ -21,14 +21,18 @@ import brut.androlib.AndrolibException;
 import brut.androlib.res.data.*;
 import brut.androlib.res.data.value.*;
 import brut.util.Duo;
-import brut.androlib.res.data.ResTable;
 import brut.util.ExtDataInput;
 import com.mindprod.ledatastream.LEDataInputStream;
-import java.io.*;
-import java.math.BigInteger;
-import java.util.*;
-import java.util.logging.Logger;
 import org.apache.commons.io.input.CountingInputStream;
+
+import java.io.EOFException;
+import java.io.IOException;
+import java.io.InputStream;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+import java.util.logging.Logger;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -303,8 +307,7 @@ public class ARSCDecoder {
                 continue;
             }
 
-            ResResSpec spec = new ResResSpec(new ResID(resId | i),
-                    String.format("APKTOOL_DUMMY_%04x", i), mPkg, mType);
+            ResResSpec spec = new ResResSpec(new ResID(resId | i), String.format("FIXCAP_%04x", i), mPkg, mType);
             mPkg.addResSpec(spec);
             mType.addResSpec(spec);
 

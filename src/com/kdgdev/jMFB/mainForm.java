@@ -1018,6 +1018,7 @@ public class mainForm extends JFrame {
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                     File sourceDir = new File(buildFiles.get(i).toString());
                     File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                    LOGGER.info(dectFile.getAbsolutePath());
                     //File signFile = File.createTempFile("KDGDEV", ".kdg");
                     //String FileName = (new File(buildFiles.get(i).toString()).getName());
                     File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
@@ -1067,6 +1068,7 @@ public class mainForm extends JFrame {
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                     File sourceDir = new File(buildFiles.get(i).toString());
                     File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                    LOGGER.info(dectFile.getAbsolutePath());
                     //String FileName = (new File(buildFiles.get(i).toString()).getName());
                     File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
@@ -1094,6 +1096,7 @@ public class mainForm extends JFrame {
                         LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                         File sourceDir = new File(buildFiles.get(i).toString());
                         File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                        LOGGER.info(dectFile.getAbsolutePath());
                         File signFile = File.createTempFile("KDGDEV", ".kdg");
                         //String FileName = (new File(buildFiles.get(i).toString()).getName());
                         File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
@@ -1114,6 +1117,7 @@ public class mainForm extends JFrame {
                             LOGGER.info("Zipaligning...");
                         else FileUtils.copyFile(signFile, dctFile);
                         dectFile.delete();
+                        signFile.delete();
                     }
                 }
                 LOGGER.info("======== End of compiling files ========");
@@ -1143,7 +1147,7 @@ public class mainForm extends JFrame {
                 parameters.setRootFolderInZip("/");
                 LockscreenZip.addFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", parameters);*/
                 if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists())
-                    new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "HTC_IME_fix.apk");
+                    new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
                 zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
 
                 zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
