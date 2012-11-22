@@ -115,7 +115,7 @@ public class ARSCDecoder {
 
     private ResType readType() throws AndrolibException, IOException {
         checkChunkType(Header.TYPE_TYPE);
-        byte id = mIn.readByte();
+        byte id =  mIn.readByte();
         mIn.skipBytes(3);
         int entryCount = mIn.readInt();
 
@@ -152,13 +152,15 @@ public class ARSCDecoder {
         if (flags.isInvalid) {
             String resName = mType.getName() + flags.getQualifiers();
             if (mKeepBroken) {
-                //LOGGER.warning("Invalid config flags detected: " + resName);
+                LOGGER.warning(
+                        "Invalid config flags detected: " + resName);
             } else {
-                //LOGGER.warning("Invalid config flags detected. Dropping resources: " + resName);
+                LOGGER.warning(
+                        "Invalid config flags detected. Dropping resources: " + resName);
             }
         }
 
-        mConfig = flags.isInvalid && !mKeepBroken ?
+        mConfig = flags.isInvalid && ! mKeepBroken ?
                 null : mPkg.getOrCreateConfig(flags);
 
         for (int i = 0; i < entryOffsets.length; i++) {
@@ -190,7 +192,7 @@ public class ARSCDecoder {
             spec = mPkg.getResSpec(resId);
         } else {
             spec = new ResResSpec(
-                resId, mSpecNames.getString(specNamesId), mPkg, mType);
+                    resId, mSpecNames.getString(specNamesId), mPkg, mType);
             mPkg.addResSpec(spec);
             mType.addResSpec(spec);
         }
@@ -269,14 +271,15 @@ public class ARSCDecoder {
 
         short screenWidthDp = 0;
         short screenHeightDp = 0;
-        
+
         if (size >= 36) {
             screenWidthDp = mIn.readShort();
             screenHeightDp = mIn.readShort();
         }
 
-        if (size >= 40) {
-           // mIn.skipBytes(2);
+        short layoutDirection = 0;
+        if (size >= 38 && sdkVersion >= 17 && !this.mPkg.getName().equalsIgnoreCase("com.htc")) {
+            layoutDirection = mIn.readShort();
         }
 
         int exceedingSize = size - KNOWN_CONFIG_BYTES;
@@ -286,14 +289,18 @@ public class ARSCDecoder {
             BigInteger exceedingBI = new BigInteger(1, buf);
 
             if (exceedingBI.equals(BigInteger.ZERO)) {
-                //LOGGER.fine(String.format("Config flags size > %d, but exceeding bytes are all zero, so it should be ok.", KNOWN_CONFIG_BYTES));
+                LOGGER.fine(String.format(
+                        "Config flags size > %d, but exceeding bytes are all zero, so it should be ok.",
+                        KNOWN_CONFIG_BYTES));
             } else {
-                //LOGGER.warning(String.format("Config flags size > %d. Exceeding bytes: 0x%X.", KNOWN_CONFIG_BYTES, exceedingBI));
+                LOGGER.warning(String.format(
+                        "Config flags size > %d. Exceeding bytes: 0x%X.",
+                        KNOWN_CONFIG_BYTES, exceedingBI));
                 isInvalid = true;
             }
         }
 
-        return new ResConfigFlags(mcc, mnc, language, country, orientation,
+        return new ResConfigFlags(mcc, mnc, language, country, layoutDirection, orientation,
                 touchscreen, density, keyboard, navigation, inputFlags,
                 screenWidth, screenHeight, sdkVersion, screenLayout, uiMode,
                 smallestScreenWidthDp, screenWidthDp, screenHeightDp, isInvalid);
@@ -303,11 +310,12 @@ public class ARSCDecoder {
         int resId = mResId & 0xffff0000;
 
         for (int i = 0; i < mMissingResSpecs.length; i++) {
-            if (!mMissingResSpecs[i]) {
+            if (! mMissingResSpecs[i]) {
                 continue;
             }
 
-            ResResSpec spec = new ResResSpec(new ResID(resId | i), String.format("FIXCAP_%04x", i), mPkg, mType);
+            ResResSpec spec = new ResResSpec(new ResID(resId | i),
+                    String.format("FIXCAP_%04x_dontlook", i), mPkg, mType);
             mPkg.addResSpec(spec);
             mType.addResSpec(spec);
 

@@ -19,18 +19,24 @@ package brut.androlib.res.decoder;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResTable;
 import brut.androlib.res.util.ExtXmlSerializer;
-import java.io.*;
-import java.util.logging.Logger;
-import org.xmlpull.v1.*;
-import org.xmlpull.v1.wrapper.*;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
+import org.xmlpull.v1.wrapper.XmlPullParserWrapper;
+import org.xmlpull.v1.wrapper.XmlPullWrapperFactory;
+import org.xmlpull.v1.wrapper.XmlSerializerWrapper;
 import org.xmlpull.v1.wrapper.classic.StaticXmlSerializerWrapper;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.logging.Logger;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class XmlPullStreamDecoder implements ResStreamDecoder {
     public XmlPullStreamDecoder(XmlPullParser parser,
-            ExtXmlSerializer serializer) {
+                                ExtXmlSerializer serializer) {
         this.mParser = parser;
         this.mSerial = serializer;
     }
@@ -41,29 +47,34 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
             XmlPullWrapperFactory factory = XmlPullWrapperFactory.newInstance();
             XmlPullParserWrapper par = factory.newPullParserWrapper(mParser);
             final ResTable resTable = ((AXmlResourceParser)mParser).getAttrDecoder().getCurrentPackage().getResTable();
-            
+
             XmlSerializerWrapper ser = new StaticXmlSerializerWrapper(mSerial, factory){
                 boolean hideSdkInfo = false;
                 @Override
                 public void event(XmlPullParser pp) throws XmlPullParserException, IOException {
                     int type = pp.getEventType();
-                    
-                        if (type == XmlPullParser.START_TAG) {
-                            if ("uses-sdk".equalsIgnoreCase(pp.getName())) {
-                                try {
-                                    hideSdkInfo = parseAttr(pp);
-                                    if(hideSdkInfo) {
-                                        return;
-                                    }
-                                } catch (AndrolibException e) {}
-                            }
-                        } else if (hideSdkInfo && type == XmlPullParser.END_TAG && 
-                                "uses-sdk".equalsIgnoreCase(pp.getName())) {
-                            return;
+
+                    if (type == XmlPullParser.START_TAG) {
+                        if ("packages".equalsIgnoreCase(pp.getName())) {
+                            try {
+                                boolean test = parseAttr(pp);
+                            } catch (AndrolibException e) {}
                         }
-                        super.event(pp);
+                        if ("uses-sdk".equalsIgnoreCase(pp.getName())) {
+                            try {
+                                hideSdkInfo = parseAttr(pp);
+                                if(hideSdkInfo) {
+                                    return;
+                                }
+                            } catch (AndrolibException e) {}
+                        }
+                    } else if (hideSdkInfo && type == XmlPullParser.END_TAG &&
+                            "uses-sdk".equalsIgnoreCase(pp.getName())) {
+                        return;
                     }
-                
+                    super.event(pp);
+                }
+
                 private boolean parseAttr(XmlPullParser pp) throws AndrolibException {
                     ResTable restable = resTable;
                     for (int i = 0; i < pp.getAttributeCount(); i++) {
@@ -73,8 +84,8 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                             String name = pp.getAttributeName (i);
                             String value = pp.getAttributeValue (i);
                             if (name != null && value != null) {
-                                if (name.equalsIgnoreCase("minSdkVersion") || 
-                                        name.equalsIgnoreCase("targetSdkVersion") || 
+                                if (name.equalsIgnoreCase("minSdkVersion") ||
+                                        name.equalsIgnoreCase("targetSdkVersion") ||
                                         name.equalsIgnoreCase("maxSdkVersion")) {
                                     restable.addSdkInfo(name, value);
                                 } else {
@@ -121,5 +132,5 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
     private boolean mOptimizeForManifest = false;
 
     private final static Logger LOGGER =
-        Logger.getLogger(XmlPullStreamDecoder.class.getName());
+            Logger.getLogger(XmlPullStreamDecoder.class.getName());
 }

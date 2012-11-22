@@ -81,10 +81,10 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
+      <file leaf-file-name="mainForm.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="1640" column="39" selection-start="99218" selection-end="99218" vertical-scroll-proportion="0.29198185">
+            <state line="721" column="48" selection-start="33593" selection-end="33593" vertical-scroll-proportion="0.0">
               <folding>
                 <element signature="docComment;class#mainForm#0" expanded="false" />
                 <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
@@ -126,6 +126,7 @@
                 <element signature="e#45091#45169#0" expanded="false" />
                 <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
                 <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
+                <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
                 <element signature="e#59907#59963#0" expanded="false" />
                 <element signature="e#63682#63803#0" expanded="false" />
                 <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
@@ -148,9 +149,19 @@
                 <element signature="method#getElementAt#0;class#94181:94686" expanded="false" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
                 <element signature="e#96919#96954#0" expanded="false" />
+                <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
                 <marker date="1353234147000" expanded="false" signature="99589:100735" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="ARSCDecoder.java" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="316" column="55" selection-start="10780" selection-end="10780" vertical-scroll-proportion="0.7">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -172,22 +183,22 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/zipTools.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.jfd" />
         <option value="$PROJECT_DIR$/src/brut/androlib/ApktoolProperties.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java" />
         <option value="$PROJECT_DIR$/src/brut/util/OS.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStringValue.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResScalarValue.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/xml/ResXmlEncoders.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/ApkDecoder.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/src/SmaliBuilder.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResArrayValue.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStyleValue.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/Androlib.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java" />
       </list>
     </option>
   </component>
@@ -240,30 +251,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -334,6 +321,116 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="androlib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androlib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androlib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="decoder" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="brut" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="androlib" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="res" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="data" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -588,7 +685,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.49756494" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3195435" sideWeight="0.4935065" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3195435" sideWeight="0.4935065" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24918832" sideWeight="0.21825963" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.6766382" order="3" side_tool="false" content_ui="tabs" />
@@ -673,11 +770,6 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/org/xmlpull/mxp1_serializer/MXSerializer.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="953" column="36" selection-start="36368" selection-end="36368" vertical-scroll-proportion="0.45537066" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStringValue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="49" column="20" selection-start="1506" selection-end="1506" vertical-scroll-proportion="0.5563798" />
@@ -708,11 +800,6 @@
         <state line="43" column="34" selection-start="1365" selection-end="1365" vertical-scroll-proportion="0.51186943" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="212" column="22" selection-start="6991" selection-end="6991" vertical-scroll-proportion="2.8195267" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResScalarValue.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="24" column="21" selection-start="954" selection-end="954" vertical-scroll-proportion="0.22189349" />
@@ -738,23 +825,30 @@
         <state line="20" column="13" selection-start="379" selection-end="379" vertical-scroll-proportion="-3.47181" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java">
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/Androlib.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="312" column="65" selection-start="10632" selection-end="10632" vertical-scroll-proportion="0.48283753">
-          <folding />
+        <state line="377" column="54" selection-start="14340" selection-end="14340" vertical-scroll-proportion="0.4027778" />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="460" column="1" selection-start="15753" selection-end="15753" vertical-scroll-proportion="10.237389">
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/Androlib.java">
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="377" column="54" selection-start="14340" selection-end="14340" vertical-scroll-proportion="0.4027778">
+        <state line="54" column="49" selection-start="2237" selection-end="2237" vertical-scroll-proportion="0.6008902">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="1640" column="39" selection-start="99218" selection-end="99218" vertical-scroll-proportion="0.29198185">
+        <state line="721" column="48" selection-start="33593" selection-end="33593" vertical-scroll-proportion="0.0">
           <folding>
             <element signature="docComment;class#mainForm#0" expanded="false" />
             <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
@@ -796,6 +890,7 @@
             <element signature="e#45091#45169#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
             <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
+            <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
             <element signature="e#59907#59963#0" expanded="false" />
             <element signature="e#63682#63803#0" expanded="false" />
             <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
@@ -818,9 +913,17 @@
             <element signature="method#getElementAt#0;class#94181:94686" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
             <element signature="e#96919#96954#0" expanded="false" />
+            <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
             <marker date="1353234147000" expanded="false" signature="99589:100735" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="316" column="55" selection-start="10780" selection-end="10780" vertical-scroll-proportion="0.7">
+          <folding />
         </state>
       </provider>
     </entry>
