@@ -19,20 +19,30 @@ package brut.androlib.res;
 import brut.androlib.AndrolibException;
 import brut.androlib.err.CantFindFrameworkResException;
 import brut.androlib.res.data.*;
-import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.androlib.res.decoder.*;
 import brut.androlib.res.decoder.ARSCDecoder.ARSCData;
 import brut.androlib.res.decoder.ARSCDecoder.FlagsOffset;
-import brut.androlib.res.util.*;
+import brut.androlib.res.util.ExtFile;
+import brut.androlib.res.util.ExtMXSerializer;
+import brut.androlib.res.util.ExtXmlSerializer;
+import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.common.BrutException;
-import brut.directory.*;
-import brut.util.*;
-import java.io.*;
-import java.util.*;
-import java.util.logging.Logger;
-import java.util.zip.*;
+import brut.directory.Directory;
+import brut.directory.DirectoryException;
+import brut.directory.FileDirectory;
+import brut.util.Duo;
+import brut.util.Jar;
+import brut.util.OS;
 import org.apache.commons.io.IOUtils;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.*;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+import java.util.zip.*;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -45,7 +55,7 @@ final public class AndrolibResources {
     public ResTable getResTable(ExtFile apkFile, boolean loadMainPkg) throws AndrolibException {
         ResTable resTable = new ResTable(this);
         if (loadMainPkg) {
-           loadMainPkg(resTable, apkFile);
+            loadMainPkg(resTable, apkFile);
         }
         return resTable;
     }
@@ -126,7 +136,7 @@ final public class AndrolibResources {
 
             LOGGER.info("Decoding AndroidManifest.xml with only framework resources...");
             fileDecoder.decodeManifest(
-                inApk, "AndroidManifest.xml", out, "AndroidManifest.xml");
+                    inApk, "AndroidManifest.xml", out, "AndroidManifest.xml");
 
         } catch (DirectoryException ex) {
             throw new AndrolibException(ex);
@@ -184,12 +194,12 @@ final public class AndrolibResources {
         }
     }
 
-    public void setAapTool(String aapt){
-               aapTool=aapt;
+    public void setAapTool(String aapt) {
+        aapTool = aapt;
     }
-    
+
     public void setSdkInfo(Map<String, String> map) {
-        if(map != null) {
+        if (map != null) {
             mMinSdkVersion = map.get("minSdkVersion");
             mTargetSdkVersion = map.get("targetSdkVersion");
             mMaxSdkVersion = map.get("maxSdkVersion");
@@ -302,15 +312,15 @@ final public class AndrolibResources {
 
     public Duo<ResFileDecoder, AXmlResourceParser> getManifestFileDecoder() {
         ResStreamDecoderContainer decoders =
-            new ResStreamDecoderContainer();
+                new ResStreamDecoderContainer();
 
         AXmlResourceParser axmlParser = new AXmlResourceParser();
 
         decoders.setDecoder("xml",
-            new XmlPullStreamDecoder(axmlParser, getResXmlSerializer()));
+                new XmlPullStreamDecoder(axmlParser, getResXmlSerializer()));
 
         return new Duo<ResFileDecoder, AXmlResourceParser>(
-            new ResFileDecoder(decoders), axmlParser);
+                new ResFileDecoder(decoders), axmlParser);
     }
 
     public ExtMXSerializer getResXmlSerializer() {
@@ -427,12 +437,14 @@ final public class AndrolibResources {
                 if (in != null) {
                     try {
                         in.close();
-                    } catch (IOException ex) {}
+                    } catch (IOException ex) {
+                    }
                 }
                 if (out != null) {
                     try {
                         out.close();
-                    } catch (IOException ex) {}
+                    } catch (IOException ex) {
+                    }
                 }
             }
         }
@@ -482,12 +494,14 @@ final public class AndrolibResources {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
         }
     }
@@ -511,12 +525,14 @@ final public class AndrolibResources {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
             if (out != null) {
                 try {
                     out.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
         }
     }

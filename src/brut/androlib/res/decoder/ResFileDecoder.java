@@ -23,7 +23,10 @@ import brut.androlib.res.data.value.ResBoolValue;
 import brut.androlib.res.data.value.ResFileValue;
 import brut.directory.Directory;
 import brut.directory.DirectoryException;
-import java.io.*;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -70,13 +73,13 @@ public class ResFileDecoder {
                         return;
                     } catch (CantFind9PatchChunk ex) {
                         LOGGER.log(Level.WARNING, String.format(
-                            "Cant find 9patch chunk in file: \"%s\". Renaming it to *.png.",
-                            inFileName
+                                "Cant find 9patch chunk in file: \"%s\". Renaming it to *.png.",
+                                inFileName
                         ), ex);
-                            outDir.removeFile(outFileName);
-                            outFileName = outResName + ext;
-                        }
+                        outDir.removeFile(outFileName);
+                        outFileName = outResName + ext;
                     }
+                }
                 if (!".xml".equals(ext)) {
                     decode(inDir, inFileName, outDir, outFileName, "raw");
                     return;
@@ -86,8 +89,8 @@ public class ResFileDecoder {
             decode(inDir, inFileName, outDir, outFileName, "xml");
         } catch (AndrolibException ex) {
             LOGGER.log(Level.SEVERE, String.format(
-                "Could not decode file, replacing by FALSE value: %s",
-                inFileName, outFileName), ex);
+                    "Could not decode file, replacing by FALSE value: %s",
+                    inFileName, outFileName), ex);
             res.replace(new ResBoolValue(false, null));
         }
     }
@@ -103,31 +106,31 @@ public class ResFileDecoder {
         } catch (DirectoryException ex) {
             throw new AndrolibException(ex);
         } finally {
-            try{
+            try {
                 if (in != null) {
-            in.close();
+                    in.close();
                 }
                 if (out != null) {
-            out.close();
+                    out.close();
                 }
-        } catch (IOException ex) {
-            throw new AndrolibException(ex);
+            } catch (IOException ex) {
+                throw new AndrolibException(ex);
             }
         }
     }
 
     public void decodeManifest(Directory inDir, String inFileName, Directory outDir,
-            String outFileName) throws AndrolibException {
+                               String outFileName) throws AndrolibException {
         InputStream in = null;
         OutputStream out = null;
         try {
             in = inDir.getFileInput(inFileName);
             out = outDir.getFileOutput(outFileName);
-            ((XmlPullStreamDecoder)mDecoders.getDecoder("xml")).decodeManifest(in, out);
+            ((XmlPullStreamDecoder) mDecoders.getDecoder("xml")).decodeManifest(in, out);
         } catch (DirectoryException ex) {
             throw new AndrolibException(ex);
         } finally {
-            try{
+            try {
                 if (in != null) {
                     in.close();
                 }

@@ -47,7 +47,7 @@ public class Androlib {
     public ResTable getResTable(ExtFile apkFile) throws AndrolibException {
         return mAndRes.getResTable(apkFile, true);
     }
-    
+
     public ResTable getResTable(ExtFile apkFile, boolean loadMainPkg) throws AndrolibException {
         return mAndRes.getResTable(apkFile, loadMainPkg);
     }
@@ -56,7 +56,7 @@ public class Androlib {
         mAndRes.setFrameworksDir(dir);
     }
 
-    public void setAapTool(String aapt){
+    public void setAapTool(String aapt) {
         mAndRes.setAapTool(aapt);
     }
 
@@ -105,7 +105,7 @@ public class Androlib {
     }
 
     public void decodeManifestFull(ExtFile apkFile, File outDir,
-            ResTable resTable) throws AndrolibException {
+                                   ResTable resTable) throws AndrolibException {
         mAndRes.decodeManifest(resTable, apkFile, outDir);
     }
 
@@ -130,7 +130,7 @@ public class Androlib {
         LOGGER.info("Copying assets and libs...");
         try {
             Directory in = apkFile.getDirectory();
-            File kOutDir = new File(outDir.getAbsolutePath()+File.separatorChar+"metainfo");
+            File kOutDir = new File(outDir.getAbsolutePath() + File.separatorChar + "metainfo");
             kOutDir.mkdirs();
             if (in.containsDir("assets")) {
                 in.copyToDir(outDir, "assets");
@@ -169,7 +169,8 @@ public class Androlib {
             if (writer != null) {
                 try {
                     writer.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
         }
     }
@@ -187,7 +188,8 @@ public class Androlib {
             if (in != null) {
                 try {
                     in.close();
-                } catch (IOException ex) {}
+                } catch (IOException ex) {
+                }
             }
         }
     }
@@ -224,9 +226,9 @@ public class Androlib {
         buildSources(appDir, forceBuildAll, debug);
         buildResources(appDir, forceBuildAll, framework,
                 (Map<String, Object>) meta.get("usesFramework"));
-        if(copySign){
-         buildManifest(appDir, forceBuildAll);
-         buildINF(appDir, forceBuildAll);
+        if (copySign) {
+            buildManifest(appDir, forceBuildAll);
+            buildINF(appDir, forceBuildAll);
         }
         buildLib(appDir, forceBuildAll);
         buildApk(appDir, outFile, framework);
@@ -312,8 +314,8 @@ public class Androlib {
             throws AndrolibException {
         if (!buildResourcesRaw(appDir, forceBuildAll)
                 && !buildResourcesFull(appDir, forceBuildAll, framework,
-                    usesFramework) 
-                && ! buildManifest(appDir, forceBuildAll, framework,
+                usesFramework)
+                && !buildManifest(appDir, forceBuildAll, framework,
                 usesFramework)) {
             LOGGER.warning("Could not find resources");
         }
@@ -386,28 +388,28 @@ public class Androlib {
             throw new AndrolibException(ex);
         }
     }
-    
+
     public boolean buildManifestRaw(ExtFile appDir, boolean forceBuildAll)
             throws AndrolibException {
         try {
             File apkDir = new File(appDir, APK_DIRNAME);
             LOGGER.info("Copying raw AndroidManifest.xml...");
             appDir.getDirectory()
-                .copyToDir(apkDir, APK_MANIFEST_FILENAMES);
+                    .copyToDir(apkDir, APK_MANIFEST_FILENAMES);
             return true;
         } catch (DirectoryException ex) {
             throw new AndrolibException(ex);
         }
     }
-    
-        public boolean buildManifest(ExtFile appDir, boolean forceBuildAll,
-            boolean framework, Map<String, Object> usesFramework)
+
+    public boolean buildManifest(ExtFile appDir, boolean forceBuildAll,
+                                 boolean framework, Map<String, Object> usesFramework)
             throws AndrolibException {
         try {
-            if (! new File(appDir, "AndroidManifest.xml").exists()) {
+            if (!new File(appDir, "AndroidManifest.xml").exists()) {
                 return false;
             }
-            if (! forceBuildAll) {
+            if (!forceBuildAll) {
                 LOGGER.info("Checking whether resources has changed...");
             }
             File apkDir = new File(appDir, APK_DIRNAME);
@@ -420,16 +422,16 @@ public class Androlib {
                 apkFile.delete();
 
                 File ninePatch = new File(appDir, "9patch");
-                if (! ninePatch.exists()) {
+                if (!ninePatch.exists()) {
                     ninePatch = null;
                 }
 
                 mAndRes.aaptPackage(
-                    apkFile,
-                    new File(appDir, "AndroidManifest.xml"),
-                    null,
-                    ninePatch, null, parseUsesFramework(usesFramework),
-                    false, framework
+                        apkFile,
+                        new File(appDir, "AndroidManifest.xml"),
+                        null,
+                        ninePatch, null, parseUsesFramework(usesFramework),
+                        false, framework
                 );
 
                 Directory tmpDir = new ExtFile(apkFile).getDirectory();
@@ -466,7 +468,7 @@ public class Androlib {
 
     public void buildINF(File appDir, boolean forceBuildAll)
             throws AndrolibException {
-        File metaDir = new File(appDir.getAbsolutePath()+File.separatorChar+"metainfo");
+        File metaDir = new File(appDir.getAbsolutePath() + File.separatorChar + "metainfo");
         File working = new File(metaDir, "META-INF");
         if (!working.exists()) {
             return;
@@ -485,7 +487,7 @@ public class Androlib {
 
     public void buildManifest(File appDir, boolean forceBuildAll)
             throws AndrolibException {
-        File metaDir = new File(appDir.getAbsolutePath()+File.separatorChar+"metainfo");
+        File metaDir = new File(appDir.getAbsolutePath() + File.separatorChar + "metainfo");
         File working = new File(metaDir, "AndroidManifest.xml");
         if (!working.exists()) {
             return;
@@ -498,11 +500,11 @@ public class Androlib {
                 //OS.rmdir(stored);
                 FileUtils.copyFile(working, stored);
                 //OS.cpdir(working, stored);
-            }  catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
-        metaDir = new File(appDir.getAbsolutePath()+File.separatorChar+"metainfo");
+        metaDir = new File(appDir.getAbsolutePath() + File.separatorChar + "metainfo");
         working = new File(metaDir, "p");
         if (!working.exists()) {
             return;
@@ -515,7 +517,7 @@ public class Androlib {
                 //OS.rmdir(stored);
                 FileUtils.copyFile(working, stored);
                 //OS.cpdir(working, stored);
-            }  catch (IOException e) {
+            } catch (IOException e) {
                 System.out.println(e.getMessage());
             }
         }
@@ -624,5 +626,5 @@ public class Androlib {
     private final static String[] APP_RESOURCES_FILENAMES =
             new String[]{"AndroidManifest.xml", "res"};
     private final static String[] APK_MANIFEST_FILENAMES =
-        new String[]{"AndroidManifest.xml"};
+            new String[]{"AndroidManifest.xml"};
 }

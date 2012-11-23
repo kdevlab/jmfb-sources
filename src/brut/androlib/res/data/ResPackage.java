@@ -16,12 +16,13 @@
 
 package brut.androlib.res.data;
 
-import brut.androlib.err.UndefinedResObject;
 import brut.androlib.AndrolibException;
+import brut.androlib.err.UndefinedResObject;
 import brut.androlib.res.data.value.ResFileValue;
 import brut.androlib.res.data.value.ResValueFactory;
 import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
+
 import java.util.*;
 
 /**
@@ -32,11 +33,11 @@ public class ResPackage {
     private final int mId;
     private final String mName;
     private final Map<ResID, ResResSpec> mResSpecs =
-        new LinkedHashMap<ResID, ResResSpec>();
+            new LinkedHashMap<ResID, ResResSpec>();
     private final Map<ResConfigFlags, ResConfig> mConfigs =
-        new LinkedHashMap<ResConfigFlags, ResConfig>();
+            new LinkedHashMap<ResConfigFlags, ResConfig>();
     private final Map<String, ResType> mTypes =
-        new LinkedHashMap<String, ResType>();
+            new LinkedHashMap<String, ResType>();
     private final Set<ResID> mSynthesizedRes = new HashSet<ResID>();
 
     private ResValueFactory mValueFactory;
@@ -119,14 +120,14 @@ public class ResPackage {
 
     public Collection<ResValuesFile> listValuesFiles() {
         Map<Duo<ResType, ResConfig>, ResValuesFile> ret =
-            new HashMap<Duo<ResType, ResConfig>, ResValuesFile>();
+                new HashMap<Duo<ResType, ResConfig>, ResValuesFile>();
         for (ResResSpec spec : mResSpecs.values()) {
             for (ResResource res : spec.listResources()) {
                 if (res.getValue() instanceof ResValuesXmlSerializable) {
                     ResType type = res.getResSpec().getType();
                     ResConfig config = res.getConfig();
                     Duo<ResType, ResConfig> key =
-                        new Duo<ResType, ResConfig>(type, config);
+                            new Duo<ResType, ResConfig>(type, config);
                     ResValuesFile values = ret.get(key);
                     if (values == null) {
                         values = new ResValuesFile(this, type, config);

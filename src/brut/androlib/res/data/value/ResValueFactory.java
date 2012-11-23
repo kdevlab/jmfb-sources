@@ -59,7 +59,7 @@ public class ResValueFactory {
             return new ResIntValue(value, rawValue, type);
         }
 
-        throw new AndrolibException("Invalid value type: "+ type);
+        throw new AndrolibException("Invalid value type: " + type);
     }
 
     public ResValue factory(String value) {
@@ -70,7 +70,7 @@ public class ResValueFactory {
     }
 
     public ResBagValue bagFactory(int parent,
-            Duo<Integer, ResScalarValue>[] items) throws AndrolibException {
+                                  Duo<Integer, ResScalarValue>[] items) throws AndrolibException {
         ResReferenceValue parentVal = newReference(parent, null);
 
         if (items.length == 0) {
@@ -95,7 +95,7 @@ public class ResValueFactory {
     }
 
     public ResReferenceValue newReference(int resID, String rawValue,
-            boolean theme) {
+                                          boolean theme) {
         return new ResReferenceValue(mPackage, resID, rawValue, theme);
     }
 }

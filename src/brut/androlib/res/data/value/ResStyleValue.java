@@ -16,26 +16,27 @@
 
 package brut.androlib.res.data.value;
 
-import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResResSpec;
 import brut.androlib.res.data.ResResource;
+import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class ResStyleValue extends ResBagValue implements ResValuesXmlSerializable {
     ResStyleValue(ResReferenceValue parent,
-            Duo<Integer, ResScalarValue>[] items, ResValueFactory factory) {
+                  Duo<Integer, ResScalarValue>[] items, ResValueFactory factory) {
         super(parent);
 
         mItems = new Duo[items.length];
         for (int i = 0; i < items.length; i++) {
             mItems[i] = new Duo<ResReferenceValue, ResScalarValue>(
-                factory.newReference(items[i].m1, null), items[i].m2);
+                    factory.newReference(items[i].m1, null), items[i].m2);
         }
     }
 
@@ -44,7 +45,7 @@ public class ResStyleValue extends ResBagValue implements ResValuesXmlSerializab
             throws IOException, AndrolibException {
         serializer.startTag(null, "style");
         serializer.attribute(null, "name", res.getResSpec().getName());
-        if (! mParent.isNull()) {
+        if (!mParent.isNull()) {
             serializer.attribute(null, "parent", mParent.encodeAsResXmlAttr());
         }
         for (int i = 0; i < mItems.length; i++) {
@@ -66,7 +67,7 @@ public class ResStyleValue extends ResBagValue implements ResValuesXmlSerializab
 
             serializer.startTag(null, "item");
             serializer.attribute(null, "name",
-                spec.getFullName(res.getResSpec().getPackage(), true));
+                    spec.getFullName(res.getResSpec().getPackage(), true));
             serializer.text(value);
             serializer.endTag(null, "item");
         }

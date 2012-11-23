@@ -30,9 +30,9 @@ public class ResReferenceValue extends ResIntValue {
     public ResReferenceValue(ResPackage package_, int value, String rawValue) {
         this(package_, value, rawValue, false);
     }
-    
+
     public ResReferenceValue(ResPackage package_, int value, String rawValue,
-            boolean theme) {
+                             boolean theme) {
         super(value, rawValue, "reference");
         mPackage = package_;
         mTheme = theme;
@@ -45,8 +45,8 @@ public class ResReferenceValue extends ResIntValue {
 
         ResResSpec spec = getReferent();
         boolean newId =
-            spec.hasDefaultResource() &&
-            spec.getDefaultResource().getValue() instanceof ResIdValue;
+                spec.hasDefaultResource() &&
+                        spec.getDefaultResource().getValue() instanceof ResIdValue;
 
         String mStart = (mTheme ? '?' : '@') + (newId ? "+" : "");
 

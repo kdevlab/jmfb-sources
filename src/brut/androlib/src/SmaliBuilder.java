@@ -19,20 +19,24 @@ package brut.androlib.src;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.util.ExtFile;
 import brut.directory.DirectoryException;
-import java.io.*;
+import org.apache.commons.io.IOUtils;
+
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.HashMap;
 import java.util.List;
 import java.util.ListIterator;
 import java.util.logging.Logger;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class SmaliBuilder {
 
-    public static void build(ExtFile smaliDir, File dexFile, 
-            HashMap<String, Boolean> flags)
+    public static void build(ExtFile smaliDir, File dexFile,
+                             HashMap<String, Boolean> flags)
             throws AndrolibException {
         new SmaliBuilder(smaliDir, dexFile, flags).build();
     }
@@ -66,7 +70,7 @@ public class SmaliBuilder {
             mDexBuilder.addSmaliFile(inFile);
             return;
         }
-        if (! fileName.endsWith(".java")) {
+        if (!fileName.endsWith(".java")) {
             LOGGER.warning("Unknown file type, ignoring: " + inFile);
             return;
         }
@@ -101,16 +105,16 @@ public class SmaliBuilder {
             }
         }
         mDexBuilder.addSmaliFile(
-            IOUtils.toInputStream(out.toString()), fileName);
+                IOUtils.toInputStream(out.toString()), fileName);
     }
 
     private final ExtFile mSmaliDir;
     private final File mDexFile;
-    private final HashMap<String, Boolean>  mFlags;
+    private final HashMap<String, Boolean> mFlags;
 
     private DexFileBuilder mDexBuilder;
 
 
     private final static Logger LOGGER =
-        Logger.getLogger(SmaliBuilder.class.getName());
+            Logger.getLogger(SmaliBuilder.class.getName());
 }

@@ -25,8 +25,12 @@ import brut.androlib.res.util.ExtFile;
 import brut.common.BrutException;
 import brut.directory.DirectoryException;
 import brut.util.OS;
+
 import java.io.File;
-import java.util.*;
+import java.util.Arrays;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -105,13 +109,13 @@ public class ApkDecoder {
             // attribute references
             if (hasManifest()) {
                 switch (mDecodeResources) {
-                case DECODE_RESOURCES_NONE:
-                    mAndrolib.decodeManifestRaw(mApkFile, outDir);
-                    break;
-                case DECODE_RESOURCES_FULL:
-                    mAndrolib.decodeManifestFull(mApkFile, outDir,
-                            getResTable());
-                    break;
+                    case DECODE_RESOURCES_NONE:
+                        mAndrolib.decodeManifestRaw(mApkFile, outDir);
+                        break;
+                    case DECODE_RESOURCES_FULL:
+                        mAndrolib.decodeManifestFull(mApkFile, outDir,
+                                getResTable());
+                        break;
                 }
             }
         }
@@ -162,9 +166,9 @@ public class ApkDecoder {
         if (mResTable == null) {
             boolean hasResources = hasResources();
             boolean hasManifest = hasManifest();
-            if (! (hasManifest || hasResources)) {
+            if (!(hasManifest || hasResources)) {
                 throw new AndrolibException(
-                    "Apk doesn't contain either AndroidManifest.xml file or resources.arsc file");
+                        "Apk doesn't contain either AndroidManifest.xml file or resources.arsc file");
             }
             AndrolibResources.sKeepBroken = mKeepBrokenResources;
             mResTable = mAndrolib.getResTable(mApkFile, hasResources);
@@ -256,7 +260,7 @@ public class ApkDecoder {
         if (info.size() > 0) {
             meta.put("sdkInfo", info);
         }
-        
+
     }
 
     private final Androlib mAndrolib;

@@ -16,8 +16,11 @@
 
 package brut.androlib.res.util;
 
-import java.io.*;
 import org.xmlpull.mxp1_serializer.MXSerializer;
+
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -27,7 +30,7 @@ public class ExtMXSerializer extends MXSerializer implements ExtXmlSerializer {
     public void startDocument(String encoding, Boolean standalone) throws
             IOException, IllegalArgumentException, IllegalStateException {
         super.startDocument(encoding != null ? encoding : mDefaultEncoding,
-            standalone);
+                standalone);
         this.newLine();
     }
 
@@ -75,5 +78,5 @@ public class ExtMXSerializer extends MXSerializer implements ExtXmlSerializer {
 
     private String mDefaultEncoding;
     private boolean mIsDisabledAttrEscape = false;
-    
+
 }

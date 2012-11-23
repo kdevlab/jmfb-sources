@@ -33,9 +33,9 @@ public class ResFileValue extends ResValue {
     }
 
     public String getStrippedPath() throws AndrolibException {
-        if (! mPath.startsWith("res/")) {
+        if (!mPath.startsWith("res/")) {
             throw new AndrolibException(
-                "File path does not start with \"res/\": " + mPath);
+                    "File path does not start with \"res/\": " + mPath);
         }
         return mPath.substring(4);
     }

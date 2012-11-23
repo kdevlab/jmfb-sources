@@ -20,17 +20,18 @@ import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResResource;
 import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
-import org.apache.commons.lang3.StringUtils;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class ResArrayValue extends ResBagValue implements ResValuesXmlSerializable {
     private String mRawItems;
+
     ResArrayValue(ResReferenceValue parent,
-            Duo<Integer, ResScalarValue>[] items) {
+                  Duo<Integer, ResScalarValue>[] items) {
         super(parent);
 
         mItems = new ResScalarValue[items.length];
@@ -56,7 +57,7 @@ public class ResArrayValue extends ResBagValue implements ResValuesXmlSerializab
         serializer.attribute(null, "name", res.getResSpec().getName());
         for (int i = 0; i < mItems.length; i++) {
             serializer.startTag(null, "item");
-            serializer.text(mItems[i].encodeAsResXmlItemValue().replace("&amp;","&"));
+            serializer.text(mItems[i].encodeAsResXmlItemValue().replace("&amp;", "&"));
             serializer.endTag(null, "item");
         }
         serializer.endTag(null, type);
@@ -68,7 +69,7 @@ public class ResArrayValue extends ResBagValue implements ResValuesXmlSerializab
         }
         String type = mItems[0].getType();
         for (int i = 1; i < mItems.length; i++) {
-            
+
             if (mItems[i].encodeAsResXmlItemValue().startsWith("@string")) {
                 return "string";
             } else if (mItems[i].encodeAsResXmlItemValue().startsWith("@drawable")) {

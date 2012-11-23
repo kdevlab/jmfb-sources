@@ -18,21 +18,23 @@ package brut.androlib.res.decoder;
 
 import brut.androlib.res.xml.ResXmlEncoders;
 import brut.util.ExtDataInput;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
-import java.nio.charset.*;
+import java.nio.charset.CharacterCodingException;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  * @author Dmitry Skiba
- * 
+ *         <p/>
  *         Block of strings, used in binary xml and arsc.
- * 
+ *         <p/>
  *         TODO:
  *         - implement get()
- *
  */
 public class StringBlock {
 
@@ -53,7 +55,7 @@ public class StringBlock {
         block.m_isUTF8 = (flags & UTF8_FLAG) != 0;
         block.m_stringOffsets = reader.readIntArray(stringCount);
         block.m_stringOwns = new int[stringCount];
-        for (int i=0;i<stringCount;i++) {
+        for (int i = 0; i < stringCount; i++) {
             block.m_stringOwns[i] = -1;
         }
         if (styleOffsetCount != 0) {
@@ -113,7 +115,7 @@ public class StringBlock {
 
     /**
      * Not yet implemented.
-     *
+     * <p/>
      * Returns string with style information (if any).
      */
     public CharSequence get(int index) {
@@ -320,7 +322,7 @@ public class StringBlock {
                 || index >= m_stringOwns.length) {
             return false;
         }
-        if(m_stringOwns[index] == -1) {
+        if (m_stringOwns[index] == -1) {
             m_stringOwns[index] = own;
             return true;
         } else if (m_stringOwns[index] == own) {

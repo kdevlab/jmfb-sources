@@ -46,10 +46,11 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
         try {
             XmlPullWrapperFactory factory = XmlPullWrapperFactory.newInstance();
             XmlPullParserWrapper par = factory.newPullParserWrapper(mParser);
-            final ResTable resTable = ((AXmlResourceParser)mParser).getAttrDecoder().getCurrentPackage().getResTable();
+            final ResTable resTable = ((AXmlResourceParser) mParser).getAttrDecoder().getCurrentPackage().getResTable();
 
-            XmlSerializerWrapper ser = new StaticXmlSerializerWrapper(mSerial, factory){
+            XmlSerializerWrapper ser = new StaticXmlSerializerWrapper(mSerial, factory) {
                 boolean hideSdkInfo = false;
+
                 @Override
                 public void event(XmlPullParser pp) throws XmlPullParserException, IOException {
                     int type = pp.getEventType();
@@ -58,15 +59,17 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                         if ("packages".equalsIgnoreCase(pp.getName())) {
                             try {
                                 boolean test = parseAttr(pp);
-                            } catch (AndrolibException e) {}
+                            } catch (AndrolibException e) {
+                            }
                         }
                         if ("uses-sdk".equalsIgnoreCase(pp.getName())) {
                             try {
                                 hideSdkInfo = parseAttr(pp);
-                                if(hideSdkInfo) {
+                                if (hideSdkInfo) {
                                     return;
                                 }
-                            } catch (AndrolibException e) {}
+                            } catch (AndrolibException e) {
+                            }
                         }
                     } else if (hideSdkInfo && type == XmlPullParser.END_TAG &&
                             "uses-sdk".equalsIgnoreCase(pp.getName())) {
@@ -79,10 +82,10 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                     ResTable restable = resTable;
                     for (int i = 0; i < pp.getAttributeCount(); i++) {
                         final String a_ns = "http://schemas.android.com/apk/res/android";
-                        String ns = pp.getAttributeNamespace (i);
+                        String ns = pp.getAttributeNamespace(i);
                         if (a_ns.equalsIgnoreCase(ns)) {
-                            String name = pp.getAttributeName (i);
-                            String value = pp.getAttributeValue (i);
+                            String name = pp.getAttributeName(i);
+                            String value = pp.getAttributeValue(i);
                             if (name != null && value != null) {
                                 if (name.equalsIgnoreCase("minSdkVersion") ||
                                         name.equalsIgnoreCase("targetSdkVersion") ||

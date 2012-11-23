@@ -94,10 +94,14 @@ public class ARSCDecoder {
         checkChunkType(Header.TYPE_PACKAGE);
         int id = (byte) mIn.readInt();
         String name = mIn.readNulEndedString(128, true);
-        /*typeNameStrings*/ mIn.skipInt();
-        /*typeNameCount*/ mIn.skipInt();
-        /*specNameStrings*/ mIn.skipInt();
-        /*specNameCount*/ mIn.skipInt();
+        /*typeNameStrings*/
+        mIn.skipInt();
+        /*typeNameCount*/
+        mIn.skipInt();
+        /*specNameStrings*/
+        mIn.skipInt();
+        /*specNameCount*/
+        mIn.skipInt();
 
         mTypeNames = StringBlock.read(mIn);
         mSpecNames = StringBlock.read(mIn);
@@ -115,7 +119,7 @@ public class ARSCDecoder {
 
     private ResType readType() throws AndrolibException, IOException {
         checkChunkType(Header.TYPE_TYPE);
-        byte id =  mIn.readByte();
+        byte id = mIn.readByte();
         mIn.skipBytes(3);
         int entryCount = mIn.readInt();
 
@@ -125,7 +129,8 @@ public class ARSCDecoder {
         if (mFlagsOffsets != null) {
             mFlagsOffsets.add(new FlagsOffset(mCountIn.getCount(), entryCount));
         }
-        /*flags*/ mIn.skipBytes(entryCount * 4);
+        /*flags*/
+        mIn.skipBytes(entryCount * 4);
 
         mResId = (0xff000000 & mResId) | id << 16;
         mType = new ResType(mTypeNames.getString(id - 1), mResTable, mPkg);
@@ -142,9 +147,11 @@ public class ARSCDecoder {
 
     private ResConfig readConfig() throws IOException, AndrolibException {
         checkChunkType(Header.TYPE_CONFIG);
-        /*typeId*/ mIn.skipInt();
+        /*typeId*/
+        mIn.skipInt();
         int entryCount = mIn.readInt();
-        /*entriesStart*/ mIn.skipInt();
+        /*entriesStart*/
+        mIn.skipInt();
 
         ResConfigFlags flags = readConfigFlags();
         int[] entryOffsets = mIn.readIntArray(entryCount);
@@ -160,7 +167,7 @@ public class ARSCDecoder {
             }
         }
 
-        mConfig = flags.isInvalid && ! mKeepBroken ?
+        mConfig = flags.isInvalid && !mKeepBroken ?
                 null : mPkg.getOrCreateConfig(flags);
 
         for (int i = 0; i < entryOffsets.length; i++) {
@@ -175,7 +182,8 @@ public class ARSCDecoder {
     }
 
     private void readEntry() throws IOException, AndrolibException {
-        /*size*/ mIn.skipBytes(2);
+        /*size*/
+        mIn.skipBytes(2);
         short flags = mIn.readShort();
         int specNamesId = mIn.readInt();
 
@@ -219,8 +227,10 @@ public class ARSCDecoder {
     }
 
     private ResValue readValue() throws IOException, AndrolibException {
-        /*size*/ mIn.skipCheckShort((short) 8);
-        /*zero*/ mIn.skipCheckByte((byte) 0);
+        /*size*/
+        mIn.skipCheckShort((short) 8);
+        /*zero*/
+        mIn.skipCheckByte((byte) 0);
         byte type = mIn.readByte();
         int data = mIn.readInt();
 
@@ -252,13 +262,15 @@ public class ARSCDecoder {
         byte keyboard = mIn.readByte();
         byte navigation = mIn.readByte();
         byte inputFlags = mIn.readByte();
-        /*inputPad0*/ mIn.skipBytes(1);
+        /*inputPad0*/
+        mIn.skipBytes(1);
 
         short screenWidth = mIn.readShort();
         short screenHeight = mIn.readShort();
 
         short sdkVersion = mIn.readShort();
-        /*minorVersion, now must always be 0*/ mIn.skipBytes(2);
+        /*minorVersion, now must always be 0*/
+        mIn.skipBytes(2);
 
         byte screenLayout = 0;
         byte uiMode = 0;
@@ -310,7 +322,7 @@ public class ARSCDecoder {
         int resId = mResId & 0xffff0000;
 
         for (int i = 0; i < mMissingResSpecs.length; i++) {
-            if (! mMissingResSpecs[i]) {
+            if (!mMissingResSpecs[i]) {
                 continue;
             }
 

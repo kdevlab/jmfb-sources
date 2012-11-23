@@ -16,13 +16,14 @@
 
 package brut.androlib.res.data.value;
 
-import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResPackage;
 import brut.androlib.res.data.ResResource;
+import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.util.Duo;
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -67,8 +68,8 @@ public class ResAttr extends ResBagValue implements ResValuesXmlSerializable {
 
 
     public static ResAttr factory(ResReferenceValue parent,
-            Duo<Integer, ResScalarValue>[] items, ResValueFactory factory,
-            ResPackage pkg) throws AndrolibException {
+                                  Duo<Integer, ResScalarValue>[] items, ResValueFactory factory,
+                                  ResPackage pkg) throws AndrolibException {
 
         int type = ((ResIntValue) items[0].m2).getValue();
         int scalarType = type & 0xffff;
@@ -94,28 +95,29 @@ public class ResAttr extends ResBagValue implements ResValuesXmlSerializable {
             return new ResAttr(parent, scalarType, min, max, l10n);
         }
         Duo<ResReferenceValue, ResIntValue>[] attrItems =
-            new Duo[items.length - i];
+                new Duo[items.length - i];
         int j = 0;
         for (; i < items.length; i++) {
             int resId = items[i].m1;
             pkg.addSynthesizedRes(resId);
             attrItems[j++] = new Duo<ResReferenceValue, ResIntValue>(
-                factory.newReference(resId, null), (ResIntValue) items[i].m2);
+                    factory.newReference(resId, null), (ResIntValue) items[i].m2);
         }
         switch (type & 0xff0000) {
             case TYPE_ENUM:
                 return new ResEnumAttr(
-                    parent, scalarType, min, max, l10n, attrItems);
+                        parent, scalarType, min, max, l10n, attrItems);
             case TYPE_FLAGS:
                 return new ResFlagsAttr(
-                    parent, scalarType, min, max, l10n, attrItems);
+                        parent, scalarType, min, max, l10n, attrItems);
         }
 
         throw new AndrolibException("Could not decode attr value");
     }
 
     protected void serializeBody(XmlSerializer serializer, ResResource res)
-            throws AndrolibException, IOException {}
+            throws AndrolibException, IOException {
+    }
 
     protected String getTypeAsString() {
         String s = "";

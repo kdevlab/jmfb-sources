@@ -19,7 +19,10 @@ package brut.directory;
 import brut.common.BrutException;
 import brut.util.BrutIO;
 import brut.util.OS;
-import java.io.*;
+
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -33,7 +36,7 @@ public class DirUtil {
     }
 
     public static void copyToDir(Directory in, Directory out,
-            String[] fileNames) throws DirectoryException {
+                                 String[] fileNames) throws DirectoryException {
         for (int i = 0; i < fileNames.length; i++) {
             copyToDir(in, out, fileNames[i]);
         }
@@ -47,11 +50,11 @@ public class DirUtil {
                 in.getDir(fileName).copyToDir(out.createDir(fileName));
             } else {
                 BrutIO.copyAndClose(in.getFileInput(fileName),
-                    out.getFileOutput(fileName));
+                        out.getFileOutput(fileName));
             }
         } catch (IOException ex) {
             throw new DirectoryException(
-                "Error copying file: " + fileName, ex);
+                    "Error copying file: " + fileName, ex);
         }
     }
 
@@ -79,14 +82,14 @@ public class DirUtil {
                 File outFile = new File(out, fileName);
                 outFile.getParentFile().mkdirs();
                 BrutIO.copyAndClose(in.getFileInput(fileName),
-                    new FileOutputStream(outFile));
+                        new FileOutputStream(outFile));
             }
         } catch (IOException ex) {
             throw new DirectoryException(
-                "Error copying file: " + fileName, ex);
+                    "Error copying file: " + fileName, ex);
         } catch (BrutException ex) {
             throw new DirectoryException(
-                "Error copying file: " + fileName, ex);
+                    "Error copying file: " + fileName, ex);
         }
     }
 }

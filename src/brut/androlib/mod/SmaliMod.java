@@ -16,12 +16,21 @@
 
 package brut.androlib.mod;
 
-import java.io.*;
-import org.antlr.runtime.*;
+import org.antlr.runtime.CommonTokenStream;
+import org.antlr.runtime.RecognitionException;
+import org.antlr.runtime.Token;
+import org.antlr.runtime.TokenSource;
 import org.antlr.runtime.tree.CommonTree;
 import org.antlr.runtime.tree.CommonTreeNodeStream;
 import org.jf.dexlib.DexFile;
-import org.jf.smali.*;
+import org.jf.smali.LexerErrorInterface;
+import org.jf.smali.smaliFlexLexer;
+import org.jf.smali.smaliParser;
+import org.jf.smali.smaliTreeWalker;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -29,8 +38,8 @@ import org.jf.smali.*;
 public class SmaliMod {
 
     public static boolean assembleSmaliFile(InputStream smaliStream,
-            String name, DexFile dexFile, boolean verboseErrors,
-            boolean oldLexer, boolean printTokens)
+                                            String name, DexFile dexFile, boolean verboseErrors,
+                                            boolean oldLexer, boolean printTokens)
             throws IOException, RecognitionException {
         CommonTokenStream tokens;
 
@@ -41,12 +50,12 @@ public class SmaliMod {
         InputStreamReader reader = new InputStreamReader(smaliStream, "UTF-8");
 
         lexer = new smaliFlexLexer(reader);
-        tokens = new CommonTokenStream((TokenSource)lexer);
+        tokens = new CommonTokenStream((TokenSource) lexer);
 
         if (printTokens) {
             tokens.getTokens();
 
-            for (int i=0; i<tokens.size(); i++) {
+            for (int i = 0; i < tokens.size(); i++) {
                 Token token = tokens.get(i);
                 if (token.getChannel() == smaliParser.HIDDEN) {
                     continue;

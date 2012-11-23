@@ -16,11 +16,12 @@
 
 package brut.androlib.res.data.value;
 
-import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResResource;
-import java.io.IOException;
+import brut.androlib.res.xml.ResValuesXmlSerializable;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>

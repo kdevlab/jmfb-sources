@@ -20,7 +20,10 @@ import brut.androlib.AndrolibException;
 import brut.androlib.err.UndefinedResObject;
 import org.apache.commons.lang3.StringUtils;
 
-import java.util.*;
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -31,7 +34,7 @@ public class ResResSpec {
     private final ResPackage mPackage;
     private final ResType mType;
     private final Map<ResConfigFlags, ResResource> mResources =
-        new LinkedHashMap<ResConfigFlags, ResResource>();
+            new LinkedHashMap<ResConfigFlags, ResResource>();
 
     public ResResSpec(ResID id, String name, ResPackage pkg, ResType type) {
         this.mId = id;
@@ -47,13 +50,13 @@ public class ResResSpec {
     public ResResource getResource(ResConfig config) throws AndrolibException {
         return getResource(config.getFlags());
     }
-    
+
     public ResResource getResource(ResConfigFlags config)
             throws AndrolibException {
         ResResource res = mResources.get(config);
         if (res == null) {
             throw new UndefinedResObject(String.format(
-                "resource: spec=%s, config=%s", this, config));
+                    "resource: spec=%s, config=%s", this, config));
         }
         return res;
     }
@@ -79,15 +82,15 @@ public class ResResSpec {
     }
 
     public String getFullName(ResPackage relativeToPackage,
-            boolean excludeType) {
+                              boolean excludeType) {
         return getFullName(
-            getPackage().equals(relativeToPackage), excludeType);
+                getPackage().equals(relativeToPackage), excludeType);
     }
 
     public String getFullName(boolean excludePackage, boolean excludeType) {
         return
-            (excludePackage ? "" : getPackage().getName() + ":") +
-            (excludeType ? "" : getType().getName() + "/") + getName();
+                (excludePackage ? "" : getPackage().getName() + ":") +
+                        (excludeType ? "" : getType().getName() + "/") + getName();
     }
 
     public ResID getId() {
@@ -114,7 +117,7 @@ public class ResResSpec {
     public void addResource(ResResource res, boolean overwrite)
             throws AndrolibException {
         ResConfigFlags flags = res.getConfig().getFlags();
-        if (mResources.put(flags, res) != null && ! overwrite) {
+        if (mResources.put(flags, res) != null && !overwrite) {
             throw new AndrolibException(String.format("Multiple resources: spec=%s, config=%s", this, flags));
         }
     }

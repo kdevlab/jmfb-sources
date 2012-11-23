@@ -18,6 +18,7 @@ package brut.androlib.src;
 
 import brut.androlib.AndrolibException;
 import brut.util.Duo;
+
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,9 +53,9 @@ public class TypeName {
 
     public String getName(boolean excludePackage, boolean separateInner) {
         String name =
-            (package_ == null || excludePackage ? "" : package_ + '.') +
-            type +
-            (innerType != null ? (separateInner ? '$' : '.') + innerType : "");
+                (package_ == null || excludePackage ? "" : package_ + '.') +
+                        type +
+                        (innerType != null ? (separateInner ? '$' : '.') + innerType : "");
         for (int i = 0; i < array; i++) {
             name += "[]";
         }
@@ -71,7 +72,7 @@ public class TypeName {
 
     public String getFilePath(boolean separateInner) {
         return package_.replace('.', File.separatorChar) + File.separatorChar
-            + type + (separateInner && isInner() ? "$" + innerType : "");
+                + type + (separateInner && isInner() ? "$" + innerType : "");
     }
 
     public boolean isInner() {
@@ -105,7 +106,7 @@ public class TypeName {
         Duo<TypeName, Integer> duo = fetchFromInternalName(internal);
         if (duo.m2 != internal.length()) {
             throw new AndrolibException(
-                "Invalid internal name: " + internal);
+                    "Invalid internal name: " + internal);
         }
         return duo.m1;
     }
@@ -113,7 +114,7 @@ public class TypeName {
     public static List<TypeName> listFromInternalName(String internal)
             throws AndrolibException {
         List<TypeName> types = new ArrayList<TypeName>();
-        while (! internal.isEmpty()) {
+        while (!internal.isEmpty()) {
             Duo<TypeName, Integer> duo = fetchFromInternalName(internal);
             types.add(duo.m1);
             internal = internal.substring(duo.m2);
@@ -130,7 +131,7 @@ public class TypeName {
         do {
             if (internal.isEmpty()) {
                 throw new AndrolibException(
-                    "Invalid internal name: " + origInternal);
+                        "Invalid internal name: " + origInternal);
             }
             isArray = internal.charAt(0) == '[';
             if (isArray) {
@@ -175,7 +176,7 @@ public class TypeName {
                 int pos = internal.indexOf(';');
                 if (pos == -1) {
                     throw new AndrolibException(
-                        "Invalid internal name: " + origInternal);
+                            "Invalid internal name: " + origInternal);
                 }
                 length += pos;
                 internal = internal.substring(1, pos);
@@ -197,11 +198,11 @@ public class TypeName {
                 break;
             default:
                 throw new AndrolibException(
-                    "Invalid internal name: " + origInternal);
+                        "Invalid internal name: " + origInternal);
         }
 
         return new Duo<TypeName, Integer>(
-            new TypeName(package_, type, innerType, array), length);
+                new TypeName(package_, type, innerType, array), length);
     }
 
 

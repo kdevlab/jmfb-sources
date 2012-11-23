@@ -18,7 +18,11 @@ package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
 import brut.androlib.err.UndefinedResObject;
-import java.util.*;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -26,7 +30,7 @@ import java.util.*;
 public class ResConfig {
     private final ResConfigFlags mFlags;
     private final Map<ResResSpec, ResResource> mResources =
-        new LinkedHashMap<ResResSpec, ResResource>();
+            new LinkedHashMap<ResResSpec, ResResource>();
 
     public ResConfig(ResConfigFlags flags) {
         this.mFlags = flags;
@@ -40,7 +44,7 @@ public class ResConfig {
         ResResource res = mResources.get(spec);
         if (res == null) {
             throw new UndefinedResObject(String.format(
-                "resource: spec=%s, config=%s", spec, this));
+                    "resource: spec=%s, config=%s", spec, this));
         }
         return res;
     }
@@ -61,9 +65,9 @@ public class ResConfig {
     public void addResource(ResResource res, boolean overwrite)
             throws AndrolibException {
         ResResSpec spec = res.getResSpec();
-        if (mResources.put(spec, res) != null && ! overwrite) {
+        if (mResources.put(spec, res) != null && !overwrite) {
             throw new AndrolibException(String.format(
-                "Multiple resources: spec=%s, config=%s", spec, this));
+                    "Multiple resources: spec=%s, config=%s", spec, this));
         }
     }
 

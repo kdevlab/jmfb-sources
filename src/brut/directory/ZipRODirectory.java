@@ -103,32 +103,32 @@ public class ZipRODirectory extends AbstractDirectory {
     private void loadAll() {
         mFiles = new LinkedHashSet<String>();
         mDirs = new LinkedHashMap<String, AbstractDirectory>();
-        
+
         int prefixLen = getPath().length();
         Enumeration<? extends ZipEntry> entries = getZipFile().entries();
         while (entries.hasMoreElements()) {
             ZipEntry entry = entries.nextElement();
             String name = entry.getName();
-            
-            if (name.equals(getPath()) || ! name.startsWith(getPath())) {
+
+            if (name.equals(getPath()) || !name.startsWith(getPath())) {
                 continue;
             }
-            
+
             String subname = name.substring(prefixLen);
-            
+
             int pos = subname.indexOf(separator);
             if (pos == -1) {
-                if (! entry.isDirectory()) {
+                if (!entry.isDirectory()) {
                     mFiles.add(subname);
                     continue;
                 }
             } else {
                 subname = subname.substring(0, pos);
             }
-            
-            if (! mDirs.containsKey(subname)) {
+
+            if (!mDirs.containsKey(subname)) {
                 AbstractDirectory dir = new ZipRODirectory(getZipFile(), getPath() + subname + separator);
-                mDirs.put(subname, dir);                
+                mDirs.put(subname, dir);
             }
         }
     }

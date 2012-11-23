@@ -19,12 +19,13 @@ package brut.androlib.res.decoder;
 import brut.androlib.AndrolibException;
 import brut.androlib.err.CantFind9PatchChunk;
 import brut.util.ExtDataInput;
+import org.apache.commons.io.IOUtils;
+
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.awt.image.WritableRaster;
 import java.io.*;
-import javax.imageio.ImageIO;
-import org.apache.commons.io.IOUtils;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -40,23 +41,26 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             int w = im.getWidth(), h = im.getHeight();
 
             BufferedImage im2 = new BufferedImage(
-                w + 2, h + 2, BufferedImage.TYPE_4BYTE_ABGR);
+                    w + 2, h + 2, BufferedImage.TYPE_4BYTE_ABGR);
             Raster src = im.getRaster();
             WritableRaster dst = im2.getRaster();
             int nbands = im.getSampleModel().getNumBands();
             int[] bands = new int[4];
             if (nbands == 2) {
-            	bands[0] = bands[1] = bands[2] = 0;
-            	bands[3] = 1;
+                bands[0] = bands[1] = bands[2] = 0;
+                bands[3] = 1;
             } else {
-            	bands[0] = 0; bands[1] = 1; bands[2] = 2; bands[3] = 3;
+                bands[0] = 0;
+                bands[1] = 1;
+                bands[2] = 2;
+                bands[3] = 3;
             }
             int[] band = null;
             for (int y = 0; y < h; y++) {
-            	for (int bi = 0; bi < 4; bi++) {
-            		band = src.getSamples(0, y, w, 1, bands[bi], band);
-            		dst.setSamples(1, y + 1, w, 1, bi, band);
-            	}
+                for (int bi = 0; bi < 4; bi++) {
+                    band = src.getSamples(0, y, w, 1, bands[bi], band);
+                    dst.setSamples(1, y + 1, w, 1, bi, band);
+                }
             }
 
             drawHLine(im2, h + 1, np.padLeft + 1, w - np.padRight);
@@ -123,7 +127,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
         public final int[] xDivs, yDivs;
 
         public NinePatch(int padLeft, int padRight, int padTop, int padBottom,
-                int[] xDivs, int[] yDivs) {
+                         int[] xDivs, int[] yDivs) {
             this.padLeft = padLeft;
             this.padRight = padRight;
             this.padTop = padTop;
@@ -147,7 +151,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             int[] yDivs = di.readIntArray(numYDivs);
 
             return new NinePatch(padLeft, padRight, padTop, padBottom,
-                xDivs, yDivs);
+                    xDivs, yDivs);
         }
     }
 }

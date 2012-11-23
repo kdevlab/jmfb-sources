@@ -18,11 +18,12 @@ package brut.androlib.src;
 
 import brut.androlib.AndrolibException;
 import brut.androlib.mod.SmaliMod;
-import java.io.*;
 import org.antlr.runtime.RecognitionException;
 import org.jf.dexlib.CodeItem;
 import org.jf.dexlib.DexFile;
 import org.jf.dexlib.Util.ByteArrayAnnotatedOutput;
+
+import java.io.*;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -31,7 +32,7 @@ public class DexFileBuilder {
     public void addSmaliFile(File smaliFile) throws AndrolibException {
         try {
             addSmaliFile(new FileInputStream(smaliFile),
-                smaliFile.getAbsolutePath());
+                    smaliFile.getAbsolutePath());
         } catch (FileNotFoundException ex) {
             throw new AndrolibException(ex);
         }
@@ -40,10 +41,10 @@ public class DexFileBuilder {
     public void addSmaliFile(InputStream smaliStream, String name)
             throws AndrolibException {
         try {
-            if (! SmaliMod.assembleSmaliFile(
+            if (!SmaliMod.assembleSmaliFile(
                     smaliStream, name, mDexFile, false, false, false)) {
                 throw new AndrolibException(
-                    "Could not smali file: " + smaliStream);
+                        "Could not smali file: " + smaliStream);
             }
         } catch (IOException ex) {
             throw new AndrolibException(ex);
@@ -59,13 +60,13 @@ public class DexFileBuilder {
             out.close();
         } catch (IOException ex) {
             throw new AndrolibException(
-                "Could not write dex to file: " + dexFile, ex);
+                    "Could not write dex to file: " + dexFile, ex);
         }
     }
 
     public byte[] getAsByteArray() {
         mDexFile.place();
-        for (CodeItem codeItem: mDexFile.CodeItemsSection.getItems()) {
+        for (CodeItem codeItem : mDexFile.CodeItemsSection.getItems()) {
             codeItem.fixInstructions(true, true);
         }
 

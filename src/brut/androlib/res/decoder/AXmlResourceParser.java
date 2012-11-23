@@ -21,29 +21,27 @@ import brut.androlib.AndrolibException;
 import brut.androlib.res.xml.ResXmlEncoders;
 import brut.util.ExtDataInput;
 import com.mindprod.ledatastream.LEDataInputStream;
-import java.io.BufferedWriter;
-import java.io.FileWriter;
+import org.xmlpull.v1.XmlPullParserException;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.Reader;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  * @author Dmitry Skiba
- *
- * Binary xml files parser.
- *
- * Parser has only two states: (1) Operational state, which parser obtains after
- * first successful call to next() and retains until open(), close(), or failed
- * call to next(). (2) Closed state, which parser obtains after open(), close(),
- * or failed call to next(). In this state methods return invalid values or
- * throw exceptions.
- *
- * TODO: * check all methods in closed state
- *
+ *         <p/>
+ *         Binary xml files parser.
+ *         <p/>
+ *         Parser has only two states: (1) Operational state, which parser obtains after
+ *         first successful call to next() and retains until open(), close(), or failed
+ *         call to next(). (2) Closed state, which parser obtains after open(), close(),
+ *         or failed call to next(). In this state methods return invalid values or
+ *         throw exceptions.
+ *         <p/>
+ *         TODO: * check all methods in closed state
  */
 public class AXmlResourceParser implements XmlResourceParser {
 
@@ -314,13 +312,13 @@ public class AXmlResourceParser implements XmlResourceParser {
             try {
                 return mAttrDecoder.decode(valueType, valueData,
                         valueRaw == -1 ? null : ResXmlEncoders.escapeXmlChars(
-                        m_strings.getString(valueRaw)),
+                                m_strings.getString(valueRaw)),
                         getAttributeNameResource(index));
             } catch (AndrolibException ex) {
                 setFirstError(ex);
                 LOGGER.log(Level.WARNING, String.format(
                         "Could not decode attr value, using undecoded value "
-                        + "instead: ns=%s, name=%s, value=0x%08x",
+                                + "instead: ns=%s, name=%s, value=0x%08x",
                         getAttributePrefix(index), getAttributeName(index),
                         valueData), ex);
             }
@@ -486,6 +484,7 @@ public class AXmlResourceParser implements XmlResourceParser {
     }
 
     ///////////////////////////////////////////// implementation
+
     /**
      * Namespace stack, holds prefix+uri pairs, as well as depth information.
      * All information is stored in one int[] array. Array consists of depth
@@ -497,9 +496,8 @@ public class AXmlResourceParser implements XmlResourceParser {
      * methods search all depth frames starting from the last namespace pair of
      * current depth frame. All functions that operate with int, use -1 as
      * 'invalid value'.
-     *
+     * <p/>
      * !! functions expect 'prefix'+'uri' pairs, not 'uri'+'prefix' !!
-     *
      */
     private static final class NamespaceStack {
 
@@ -705,6 +703,7 @@ public class AXmlResourceParser implements XmlResourceParser {
             }
             return -1;
         }
+
         private int[] m_data;
         private int m_dataLength;
         private int m_count;
@@ -798,7 +797,8 @@ public class AXmlResourceParser implements XmlResourceParser {
             m_reader.skipCheckInt(CHUNK_AXML_FILE);
             /*
              * chunkSize
-             */ m_reader.skipInt();
+             */
+            m_reader.skipInt();
             m_strings = StringBlock.read(m_reader);
             m_namespaces.increaseDepth();
             m_operational = true;
@@ -853,9 +853,11 @@ public class AXmlResourceParser implements XmlResourceParser {
             }
 
             // Common header.
-			/*chunkSize*/ m_reader.skipInt();
+            /*chunkSize*/
+            m_reader.skipInt();
             int lineNumber = m_reader.readInt();
-            /*0xFFFFFFFF*/ m_reader.skipInt();
+            /*0xFFFFFFFF*/
+            m_reader.skipInt();
 
             if (chunkType == CHUNK_XML_START_NAMESPACE
                     || chunkType == CHUNK_XML_END_NAMESPACE) {
@@ -864,8 +866,10 @@ public class AXmlResourceParser implements XmlResourceParser {
                     int uri = m_reader.readInt();
                     m_namespaces.push(prefix, uri);
                 } else {
-                    /*prefix*/ m_reader.skipInt();
-                    /*uri*/ m_reader.skipInt();
+                    /*prefix*/
+                    m_reader.skipInt();
+                    /*uri*/
+                    m_reader.skipInt();
                     m_namespaces.pop();
                 }
                 continue;
@@ -876,7 +880,8 @@ public class AXmlResourceParser implements XmlResourceParser {
             if (chunkType == CHUNK_XML_START_TAG) {
                 m_namespaceUri = m_reader.readInt();
                 m_name = m_reader.readInt();
-                /*flags?*/ m_reader.skipInt();
+                /*flags?*/
+                m_reader.skipInt();
                 int attributeCount = m_reader.readInt();
                 m_idAttribute = (attributeCount >>> 16) - 1;
                 attributeCount &= 0xFFFF;
@@ -884,7 +889,7 @@ public class AXmlResourceParser implements XmlResourceParser {
                 m_styleAttribute = (m_classAttribute >>> 16) - 1;
                 m_classAttribute = (m_classAttribute & 0xFFFF) - 1;
                 m_attributes = m_reader.readIntArray(attributeCount * ATTRIBUTE_LENGHT);
-                for (int i = ATTRIBUTE_IX_VALUE_TYPE; i < m_attributes.length;) {
+                for (int i = ATTRIBUTE_IX_VALUE_TYPE; i < m_attributes.length; ) {
                     m_attributes[i] = (m_attributes[i] >>> 24);
                     i += ATTRIBUTE_LENGHT;
                 }
@@ -903,8 +908,10 @@ public class AXmlResourceParser implements XmlResourceParser {
 
             if (chunkType == CHUNK_XML_TEXT) {
                 m_name = m_reader.readInt();
-                /*?*/ m_reader.skipInt();
-                /*?*/ m_reader.skipInt();
+                /*?*/
+                m_reader.skipInt();
+                /*?*/
+                m_reader.skipInt();
                 m_event = TEXT;
                 break;
             }
@@ -935,12 +942,12 @@ public class AXmlResourceParser implements XmlResourceParser {
 
     private boolean compareAttr(int[] attr1, int[] attr2) {
         //TODO:  sort Attrs
-		/*
-         * ATTRIBUTE_IX_VALUE_TYPE == TYPE_STRING	: ATTRIBUTE_IX_VALUE_STRING :
-         * ATTRIBUTE_IX_NAMESPACE_URI ATTRIBUTE_IX_NAMESPACE_URI	:
-         * ATTRIBUTE_IX_NAME id
-         *
-         */
+        /*
+        * ATTRIBUTE_IX_VALUE_TYPE == TYPE_STRING	: ATTRIBUTE_IX_VALUE_STRING :
+        * ATTRIBUTE_IX_NAMESPACE_URI ATTRIBUTE_IX_NAMESPACE_URI	:
+        * ATTRIBUTE_IX_NAME id
+        *
+        */
         if (attr1[ATTRIBUTE_IX_VALUE_TYPE] == TypedValue.TYPE_STRING
                 && attr1[ATTRIBUTE_IX_VALUE_TYPE] == attr2[ATTRIBUTE_IX_VALUE_TYPE]
                 && //(m_strings.touch(attr1[ATTRIBUTE_IX_VALUE_STRING], m_name) || 
@@ -992,24 +999,24 @@ public class AXmlResourceParser implements XmlResourceParser {
     private int m_styleAttribute;
 
     private final static Logger LOGGER =
-        Logger.getLogger(AXmlResourceParser.class.getName());
+            Logger.getLogger(AXmlResourceParser.class.getName());
     private static final String E_NOT_SUPPORTED = "Method is not supported.";
     private static final int
-            ATTRIBUTE_IX_NAMESPACE_URI =    0,
-            ATTRIBUTE_IX_NAME =             1,
-            ATTRIBUTE_IX_VALUE_STRING =     2,
-            ATTRIBUTE_IX_VALUE_TYPE =       3,
-            ATTRIBUTE_IX_VALUE_DATA =       4,
-            ATTRIBUTE_LENGHT =              5;
+            ATTRIBUTE_IX_NAMESPACE_URI = 0,
+            ATTRIBUTE_IX_NAME = 1,
+            ATTRIBUTE_IX_VALUE_STRING = 2,
+            ATTRIBUTE_IX_VALUE_TYPE = 3,
+            ATTRIBUTE_IX_VALUE_DATA = 4,
+            ATTRIBUTE_LENGHT = 5;
 
     private static final int
-            CHUNK_AXML_FILE =           0x00080003,
-            CHUNK_RESOURCEIDS =         0x00080180,
-            CHUNK_XML_FIRST =           0x00100100,
+            CHUNK_AXML_FILE = 0x00080003,
+            CHUNK_RESOURCEIDS = 0x00080180,
+            CHUNK_XML_FIRST = 0x00100100,
             CHUNK_XML_START_NAMESPACE = 0x00100100,
-            CHUNK_XML_END_NAMESPACE =   0x00100101,
-            CHUNK_XML_START_TAG =       0x00100102,
-            CHUNK_XML_END_TAG =         0x00100103,
-            CHUNK_XML_TEXT =            0x00100104,
-            CHUNK_XML_LAST =            0x00100104;
+            CHUNK_XML_END_NAMESPACE = 0x00100101,
+            CHUNK_XML_START_TAG = 0x00100102,
+            CHUNK_XML_END_TAG = 0x00100103,
+            CHUNK_XML_TEXT = 0x00100104,
+            CHUNK_XML_LAST = 0x00100104;
 }

@@ -18,7 +18,11 @@ package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
 import brut.androlib.err.UndefinedResObject;
-import java.util.*;
+
+import java.util.LinkedHashMap;
+import java.util.LinkedHashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -26,13 +30,13 @@ import java.util.*;
 public final class ResType {
     private final String mName;
     private final Map<String, ResResSpec> mResSpecs =
-        new LinkedHashMap<String, ResResSpec>();
+            new LinkedHashMap<String, ResResSpec>();
 
     private final ResTable mResTable;
     private final ResPackage mPackage;
 
     public ResType(String name, ResTable resTable,
-            ResPackage package_) {
+                   ResPackage package_) {
         this.mName = name;
         this.mResTable = resTable;
         this.mPackage = package_;
@@ -50,15 +54,15 @@ public final class ResType {
         ResResSpec spec = mResSpecs.get(name);
         if (spec == null) {
             throw new UndefinedResObject(String.format(
-                "resource spec: %s/%s", getName(), name));
+                    "resource spec: %s/%s", getName(), name));
         }
         return spec;
     }
 
     public void addResSpec(ResResSpec spec) throws AndrolibException {
         if (mResSpecs.put(spec.getName(), spec) != null) {
-                    throw new AndrolibException(String.format("Multiple res specs: %s/%s", getName(), spec.getName()));
-            }
+            throw new AndrolibException(String.format("Multiple res specs: %s/%s", getName(), spec.getName()));
+        }
     }
 
     @Override

@@ -17,11 +17,13 @@
 package brut.androlib.src;
 
 import brut.androlib.AndrolibException;
-import java.util.*;
+import org.jf.dexlib.Code.Analysis.RegisterType;
+
+import java.util.HashSet;
+import java.util.ListIterator;
+import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import org.jf.dexlib.Code.Analysis.RegisterType;
-import org.jf.dexlib.Code.Opcode;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -41,9 +43,9 @@ public class DebugInjector {
     private void inject() throws AndrolibException {
         String definition = nextAndAppend();
         if (
-            definition.contains(" abstract ") ||
-            definition.contains(" native ")
-        ) {
+                definition.contains(" abstract ") ||
+                        definition.contains(" native ")
+                ) {
             nextAndAppend();
             return;
         }
@@ -68,7 +70,7 @@ public class DebugInjector {
 
         int i = definition.contains(" static ") ? 0 : 1;
         int argc = TypeName.listFromInternalName(params).size() + i;
-        while(i < argc) {
+        while (i < argc) {
             mOut.append(".parameter \"p").append(i).append("\"\n");
             i++;
         }
@@ -122,7 +124,7 @@ public class DebugInjector {
                 case Conflicted:
                     if (mInitializedRegisters.remove(localName)) {
                         mOut.append(".end local ").append(localName)
-                            .append('\n');
+                                .append('\n');
                     }
                     continue;
                 case Short:
@@ -153,7 +155,7 @@ public class DebugInjector {
 
             mInitializedRegisters.add(localName);
             mOut.append(".local ").append(localName).append(", ")
-                .append(localName).append(':').append(localType).append('\n');
+                    .append(localName).append(':').append(localType).append('\n');
         }
 
         return false;
@@ -162,12 +164,12 @@ public class DebugInjector {
     private boolean processDirective(String line) {
         String line2 = line.substring(1);
         if (
-            line2.startsWith("line ") ||
-            line2.equals("prologue") ||
-            line2.startsWith("parameter") ||
-            line2.startsWith("local ") ||
-            line2.startsWith("end local ")
-        ) {
+                line2.startsWith("line ") ||
+                        line2.equals("prologue") ||
+                        line2.startsWith("parameter") ||
+                        line2.startsWith("local ") ||
+                        line2.startsWith("end local ")
+                ) {
             return false;
         }
 
@@ -176,12 +178,12 @@ public class DebugInjector {
             return true;
         }
         if (
-            line2.startsWith("annotation ") ||
-            line2.equals("sparse-switch") ||
-            line2.startsWith("packed-switch ") ||
-            line2.startsWith("array-data ")
-        ) {
-            while(true) {
+                line2.startsWith("annotation ") ||
+                        line2.equals("sparse-switch") ||
+                        line2.startsWith("packed-switch ") ||
+                        line2.startsWith("array-data ")
+                ) {
+            while (true) {
                 line2 = nextAndAppend();
                 if (line2.startsWith(".end ")) {
                     break;
@@ -197,7 +199,7 @@ public class DebugInjector {
             mFirstInstruction = false;
         }
         mOut.append(".line ").append(mIt.nextIndex()).append('\n')
-            .append(line).append('\n');
+                .append(line).append('\n');
 
         return false;
     }
@@ -223,5 +225,5 @@ public class DebugInjector {
     private final Set<String> mInitializedRegisters = new HashSet<String>();
 
     private static final Pattern REGISTER_INFO_PATTERN =
-        Pattern.compile("((?:p|v)\\d+)=\\(([^)]+)\\);");
+            Pattern.compile("((?:p|v)\\d+)=\\(([^)]+)\\);");
 }

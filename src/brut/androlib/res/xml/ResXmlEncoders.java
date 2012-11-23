@@ -199,13 +199,13 @@ public final class ResXmlEncoders {
      * It searches for "%", but not "%%" nor "%(\d)+\$"
      */
     private static List<Integer> findNonPositionalSubstitutions(String str,
-            int max) {
+                                                                int max) {
         int pos = 0;
         int pos2 = 0;
         int count = 0;
         int length = str.length();
         List<Integer> ret = new ArrayList<Integer>();
-        while((pos2 = (pos = str.indexOf('%', pos2)) + 1) != 0) {
+        while ((pos2 = (pos = str.indexOf('%', pos2)) + 1) != 0) {
             if (pos2 == length) {
                 break;
             }

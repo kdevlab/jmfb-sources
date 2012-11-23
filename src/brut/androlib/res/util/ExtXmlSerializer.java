@@ -16,8 +16,9 @@
 
 package brut.androlib.res.util;
 
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -25,6 +26,7 @@ import org.xmlpull.v1.XmlSerializer;
 public interface ExtXmlSerializer extends XmlSerializer {
 
     public ExtXmlSerializer newLine() throws IOException;
+
     public void setDisabledAttrEscape(boolean disabled);
 
     public static final String PROPERTY_SERIALIZER_INDENTATION =

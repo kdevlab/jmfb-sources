@@ -20,6 +20,7 @@ import brut.androlib.AndrolibException;
 import brut.androlib.err.UndefinedResObject;
 import brut.androlib.res.AndrolibResources;
 import brut.androlib.res.data.value.ResValue;
+
 import java.util.*;
 
 /**
@@ -29,13 +30,13 @@ public class ResTable {
     private final AndrolibResources mAndRes;
 
     private final Map<Integer, ResPackage> mPackagesById =
-        new HashMap<Integer, ResPackage>();
+            new HashMap<Integer, ResPackage>();
     private final Map<String, ResPackage> mPackagesByName =
-        new HashMap<String, ResPackage>();
+            new HashMap<String, ResPackage>();
     private final Set<ResPackage> mMainPackages =
-        new LinkedHashSet<ResPackage>();
+            new LinkedHashSet<ResPackage>();
     private final Set<ResPackage> mFramePackages =
-        new LinkedHashSet<ResPackage>();
+            new LinkedHashSet<ResPackage>();
 
     private String mFrameTag;
 
@@ -52,7 +53,7 @@ public class ResTable {
     public ResResSpec getResSpec(int resID) throws AndrolibException {
         return getResSpec(new ResID(resID));
     }
-    
+
     public ResResSpec getResSpec(ResID resID) throws AndrolibException {
         return getPackage(resID.package_).getResSpec(resID);
     }
@@ -95,7 +96,7 @@ public class ResTable {
     public ResValue getValue(String package_, String type, String name)
             throws AndrolibException {
         return getPackage(package_).getType(type).getResSpec(name)
-            .getDefaultResource().getValue();
+                .getDefaultResource().getValue();
     }
 
     public void addPackage(ResPackage pkg, boolean main)
@@ -103,7 +104,7 @@ public class ResTable {
         Integer id = pkg.getId();
         if (mPackagesById.containsKey(id)) {
             throw new AndrolibException(
-                "Multiple packages: id=" + id.toString());
+                    "Multiple packages: id=" + id.toString());
         }
         String name = pkg.getName();
         if (mPackagesByName.containsKey(name)) {

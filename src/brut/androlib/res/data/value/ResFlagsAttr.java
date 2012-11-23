@@ -19,10 +19,11 @@ package brut.androlib.res.data.value;
 import brut.androlib.AndrolibException;
 import brut.androlib.res.data.ResResource;
 import brut.util.Duo;
+import org.xmlpull.v1.XmlSerializer;
+
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Comparator;
-import org.xmlpull.v1.XmlSerializer;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -40,7 +41,7 @@ public class ResFlagsAttr extends ResAttr {
     @Override
     public String convertToResXmlFormat(ResScalarValue value)
             throws AndrolibException {
-        if (! (value instanceof ResIntValue)) {
+        if (!(value instanceof ResIntValue)) {
             return super.convertToResXmlFormat(value);
         }
         loadFlags();
@@ -61,7 +62,7 @@ public class ResFlagsAttr extends ResAttr {
                 continue;
             }
 
-            if (! isSubpartOf(flag, flags)) {
+            if (!isSubpartOf(flag, flags)) {
                 flags[flagsCount] = flag;
                 flagItems[flagsCount++] = flagItem;
             }
@@ -78,7 +79,7 @@ public class ResFlagsAttr extends ResAttr {
             serializer.startTag(null, "flag");
             serializer.attribute(null, "name", item.getValue());
             serializer.attribute(null, "value",
-                String.format("0x%08x", item.flag));
+                    String.format("0x%08x", item.flag));
             serializer.endTag(null, "flag");
         }
     }
@@ -128,7 +129,7 @@ public class ResFlagsAttr extends ResAttr {
         Arrays.sort(mFlags, new Comparator<FlagItem>() {
             public int compare(FlagItem o1, FlagItem o2) {
                 return Integer.valueOf(Integer.bitCount(o2.flag))
-                    .compareTo(Integer.bitCount(o1.flag));
+                        .compareTo(Integer.bitCount(o1.flag));
             }
         });
     }

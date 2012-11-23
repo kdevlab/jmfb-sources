@@ -351,7 +351,7 @@ public class ResConfigFlags {
 
     @Override
     public String toString() {
-        return ! getQualifiers().equals("") ? getQualifiers() : "[DEFAULT]";
+        return !getQualifiers().equals("") ? getQualifiers() : "[DEFAULT]";
     }
 
     @Override
@@ -379,15 +379,15 @@ public class ResConfigFlags {
     private static int sErrCounter = 0;
 
 
-    public final static byte ORIENTATION_ANY  = 0;
+    public final static byte ORIENTATION_ANY = 0;
     public final static byte ORIENTATION_PORT = 1;
     public final static byte ORIENTATION_LAND = 2;
     public final static byte ORIENTATION_SQUARE = 3;
 
-    public final static byte TOUCHSCREEN_ANY  = 0;
-    public final static byte TOUCHSCREEN_NOTOUCH  = 1;
-    public final static byte TOUCHSCREEN_STYLUS  = 2;
-    public final static byte TOUCHSCREEN_FINGER  = 3;
+    public final static byte TOUCHSCREEN_ANY = 0;
+    public final static byte TOUCHSCREEN_NOTOUCH = 1;
+    public final static byte TOUCHSCREEN_STYLUS = 2;
+    public final static byte TOUCHSCREEN_FINGER = 3;
 
     public final static short DENSITY_DEFAULT = 0;
     public final static short DENSITY_LOW = 120;
@@ -404,16 +404,16 @@ public class ResConfigFlags {
     public final static short SCREENLAYOUT_LAYOUTDIR_RTL = 0x80;
     public final static short SCREENLAYOUT_LAYOUTDIR_SHIFT = 0x06;
 
-    public final static byte KEYBOARD_ANY  = 0;
-    public final static byte KEYBOARD_NOKEYS  = 1;
-    public final static byte KEYBOARD_QWERTY  = 2;
-    public final static byte KEYBOARD_12KEY  = 3;
+    public final static byte KEYBOARD_ANY = 0;
+    public final static byte KEYBOARD_NOKEYS = 1;
+    public final static byte KEYBOARD_QWERTY = 2;
+    public final static byte KEYBOARD_12KEY = 3;
 
-    public final static byte NAVIGATION_ANY  = 0;
-    public final static byte NAVIGATION_NONAV  = 1;
-    public final static byte NAVIGATION_DPAD  = 2;
-    public final static byte NAVIGATION_TRACKBALL  = 3;
-    public final static byte NAVIGATION_WHEEL  = 4;
+    public final static byte NAVIGATION_ANY = 0;
+    public final static byte NAVIGATION_NONAV = 1;
+    public final static byte NAVIGATION_DPAD = 2;
+    public final static byte NAVIGATION_TRACKBALL = 3;
+    public final static byte NAVIGATION_WHEEL = 4;
 
     public final static byte MASK_KEYSHIDDEN = 0x3;
     public final static byte KEYSHIDDEN_ANY = 0x0;
@@ -427,7 +427,7 @@ public class ResConfigFlags {
     public final static byte NAVHIDDEN_YES = 0x8;
 
     public final static byte MASK_SCREENSIZE = 0x0f;
-    public final static byte SCREENSIZE_ANY  = 0x00;
+    public final static byte SCREENSIZE_ANY = 0x00;
     public final static byte SCREENSIZE_SMALL = 0x01;
     public final static byte SCREENSIZE_NORMAL = 0x02;
     public final static byte SCREENSIZE_LARGE = 0x03;

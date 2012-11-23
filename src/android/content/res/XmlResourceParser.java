@@ -16,9 +16,8 @@
 
 package android.content.res;
 
-import org.xmlpull.v1.XmlPullParser;
-
 import android.util.AttributeSet;
+import org.xmlpull.v1.XmlPullParser;
 
 /**
  * The XML parsing interface returned for an XML resource.  This is a standard

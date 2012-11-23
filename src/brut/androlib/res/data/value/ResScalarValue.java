@@ -16,13 +16,14 @@
 
 package brut.androlib.res.data.value;
 
+import brut.androlib.AndrolibException;
+import brut.androlib.res.data.ResResource;
 import brut.androlib.res.xml.ResValuesXmlSerializable;
 import brut.androlib.res.xml.ResXmlEncodable;
 import brut.androlib.res.xml.ResXmlEncoders;
-import brut.androlib.AndrolibException;
-import brut.androlib.res.data.ResResource;
-import java.io.IOException;
 import org.xmlpull.v1.XmlSerializer;
+
+import java.io.IOException;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -52,31 +53,31 @@ public abstract class ResScalarValue extends ResValue
         if (mRawValue != null) {
             return mRawValue;
         }
-         return encodeAsResXmlValueExt().replace("@android:", "@*android:");
+        return encodeAsResXmlValueExt().replace("@android:", "@*android:");
     }
 
     public String encodeAsResXmlValueExt() throws AndrolibException {
         String rawValue = mRawValue;
         if (rawValue != null) {
             if (ResXmlEncoders.hasMNPS(rawValue)) {
-            //if (ResXmlEncoders.hasMultipleNonPositionalSubstitutions(rawValue)) {
+                //if (ResXmlEncoders.hasMultipleNonPositionalSubstitutions(rawValue)) {
                 int count = 1;
                 StringBuilder result = new StringBuilder();
                 String tmp1[] = rawValue.split("%%", -1);
                 int tmp1_sz = tmp1.length;
-                for(int i=0;i<tmp1_sz;i++) {
+                for (int i = 0; i < tmp1_sz; i++) {
                     String cur1 = tmp1[i];
                     String tmp2[] = cur1.split("%", -1);
                     int tmp2_sz = tmp2.length;
-                    for(int j=0;j<tmp2_sz;j++) {
+                    for (int j = 0; j < tmp2_sz; j++) {
                         String cur2 = tmp2[j];
                         result.append(cur2);
-                        if(j != (tmp2_sz-1)) {
+                        if (j != (tmp2_sz - 1)) {
                             result.append('%').append(count).append('$');
                             count++;
                         }
                     }
-                    if(i != (tmp1_sz-1)) {
+                    if (i != (tmp1_sz - 1)) {
                         result.append("%%");
                     }
                 }
@@ -92,20 +93,20 @@ public abstract class ResScalarValue extends ResValue
             throws IOException, AndrolibException {
         String type = res.getResSpec().getType().getName();
         boolean item = !"reference".equals(mType) && !type.equals(mType);
-        
+
         String body = encodeAsResXmlValue();
-        
-        
+
+
         /* check for resource reference */
-        if (body.contains("@")){
-           //
-           //
-           if(!res.getFilePath().contains("string")) item = true;
-           // messes up strings with @, need to check if strings.xml ignore
+        if (body.contains("@")) {
+            //
+            //
+            if (!res.getFilePath().contains("string")) item = true;
+            // messes up strings with @, need to check if strings.xml ignore
         }
         /* check for using attrib as node or item */
         String tagName = item ? "item" : type;
-        
+
         serializer.startTag(null, tagName);
         if (item) {
             serializer.attribute(null, "type", type);
@@ -114,7 +115,7 @@ public abstract class ResScalarValue extends ResValue
 
         serializeExtraXmlAttrs(serializer, res);
 
-        if (! body.isEmpty()) {
+        if (!body.isEmpty()) {
             serializer.ignorableWhitespace(body);
         }
 
@@ -126,7 +127,7 @@ public abstract class ResScalarValue extends ResValue
     }
 
     protected void serializeExtraXmlAttrs(XmlSerializer serializer,
-            ResResource res) throws IOException {
+                                          ResResource res) throws IOException {
     }
 
     protected abstract String encodeAsResXml() throws AndrolibException;

@@ -28,7 +28,7 @@ public class ResResource {
     private final ResValue mValue;
 
     public ResResource(ResConfig config, ResResSpec spec,
-            ResValue value) {
+                       ResValue value) {
         this.mConfig = config;
         this.mResSpec = spec;
         this.mValue = value;
@@ -36,7 +36,7 @@ public class ResResource {
 
     public String getFilePath() {
         return mResSpec.getType().getName() +
-            mConfig.getFlags().getQualifiers() + "/" + mResSpec.getName();
+                mConfig.getFlags().getQualifiers() + "/" + mResSpec.getName();
     }
 
     public ResConfig getConfig() {

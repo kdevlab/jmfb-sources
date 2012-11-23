@@ -92,7 +92,8 @@ public class OS {
             while ((line = brStdout.readLine()) != null) {
                 //if(!line.contains("warning")) LOGGER.info(line);
                 LOGGER.info(line);
-            };
+            }
+            ;
             if (ps.waitFor() != 0) {
                 throw new BrutException(
                         "could not exec command: " + Arrays.toString(cmd));
@@ -119,7 +120,8 @@ public class OS {
             while ((line = brStdout.readLine()) != null) {
                 //if(!line.contains("warning")) LOGGER.info(line);
                 LOGGER.info(line);
-            };
+            }
+            ;
             if (ps.waitFor() != 0) {
                 throw new BrutException(
                         "could not exec command: " + Arrays.toString(cmd));

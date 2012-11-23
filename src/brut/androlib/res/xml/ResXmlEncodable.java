@@ -23,5 +23,6 @@ import brut.androlib.AndrolibException;
  */
 public interface ResXmlEncodable {
     public String encodeAsResXmlAttr() throws AndrolibException;
+
     public String encodeAsResXmlValue() throws AndrolibException;
 }
