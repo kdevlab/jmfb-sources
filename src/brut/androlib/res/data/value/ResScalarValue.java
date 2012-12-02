@@ -42,18 +42,18 @@ public abstract class ResScalarValue extends ResValue
         if (mRawValue != null) {
             return mRawValue;
         }
-        return encodeAsResXml().replace("@android:", "@*android:");
+        return encodeAsResXml()/*.replace("@android:", "@*android:")*/;
     }
 
     public String encodeAsResXmlItemValue() throws AndrolibException {
-        return encodeAsResXmlValue().replace("@android:", "@*android:");
+        return encodeAsResXmlValue()/*.replace("@android:", "@*android:")*/;
     }
 
     public String encodeAsResXmlValue() throws AndrolibException {
         if (mRawValue != null) {
             return mRawValue;
         }
-        return encodeAsResXmlValueExt().replace("@android:", "@*android:");
+        return encodeAsResXmlValueExt()/*.replace("@android:", "@*android:")*/;
     }
 
     public String encodeAsResXmlValueExt() throws AndrolibException {

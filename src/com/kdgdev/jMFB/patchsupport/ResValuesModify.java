@@ -8,7 +8,7 @@ public class ResValuesModify {
     private ArrayList<File> mDestFileArray;
     private boolean mIsAppRes = false;
 
-    public void Modify(String[] args) {
+    public static void mergeXML(String[] args) {
         ResValuesModify resVM = new ResValuesModify();
         boolean bRet = resVM.parseCommandLine(args);
         if (false == bRet) {
@@ -32,7 +32,7 @@ public class ResValuesModify {
     }
 
     private boolean parseCommandLine(String[] args) {
-        if ((2 != args.length) && (3 != args.length)) {
+        if ((2 != args.length) && (3 != args.length)){
             usage();
             return false;
         }
@@ -42,8 +42,8 @@ public class ResValuesModify {
             usage();
             return false;
         }
-
-        if ((3 == args.length) && ("--app".equals(args[2]))) {
+        
+        if((3 == args.length) && ("--app".equals(args[2]))){
             mIsAppRes = true;
         }
         return true;
@@ -60,19 +60,6 @@ public class ResValuesModify {
             usage();
             return false;
         }
-        /*
-        System.out.println("###################################################");
-        System.out.println("*** Source Files: ***********");
-        for (int i = 0; i < mSrcFileArray.size(); i++) {
-            System.out.println("\t" + mSrcFileArray.get(i).getName());
-        }
-        System.out.println("------------------------------------------------");
-        System.out.println("*** Destination Files: ******");
-        for (int i = 0; i < mDestFileArray.size(); i++) {
-            System.out.println("\t" + mDestFileArray.get(i).getName());
-        }
-        System.out.println("###################################################");
-        */
 
         return true;
     }
@@ -83,6 +70,7 @@ public class ResValuesModify {
     }
 
     private void usage() {
+        System.out.println("usage: ResValuesModify $1 $2 [--app]");
         System.out.println("\t$1: Miui values dir");
         System.out.println("\t$2: ThirdParty values dir");
         System.out.println("\t$3: Merge application's resource, default merge framework-res's resource");

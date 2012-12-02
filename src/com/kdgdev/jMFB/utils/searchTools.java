@@ -48,6 +48,24 @@ public class searchTools {
         return find(startPath, "", ALL);
     }
 
+    public List findDirectories_InFolder(String startPath, String mask) throws Exception {
+
+        List<File> findedFolders = new ArrayList<File>();
+        File topDirectory = new File(startPath);
+        File[] list = topDirectory.listFiles();
+        p = Pattern.compile(mask,
+                Pattern.CASE_INSENSITIVE | Pattern.UNICODE_CASE);
+        for (int i=0; i<list.length; i++){
+            if (list[i].isDirectory()) {
+                if (accept(list[i].getName())) {
+                    findedFolders.add(list[i]);
+                }
+            }
+        }
+        p = null;
+        return findedFolders;
+    }
+
     /**
      * Этот метод выполняет поиск объектов (файлов и директорий),
      * которые соответствуют заданному регулярному выражению (mask),

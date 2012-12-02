@@ -48,8 +48,9 @@ import java.util.regex.Pattern;
  */
 public class mainForm extends JFrame {
 
-    private final Androlib kAndrolib = new Androlib();
+    private final static Androlib kAndrolib = new Androlib();
 
+    private final static ApkDecoder decoder = new ApkDecoder(kAndrolib);
 
     private final static Logger LOGGER = Logger.getLogger(Androlib.class.getName());
 
@@ -183,23 +184,6 @@ public class mainForm extends JFrame {
         pbProgress.setIndeterminate(true);
     }
 
-    private String readBuildProp(String filename, String section) {
-        String sPattern = section + "=(.*)";
-        Pattern p = Pattern.compile(sPattern);
-        File file = new File(filename);
-        try {
-            List<String> contents = FileUtils.readLines(file);
-            for (String line : contents) {
-                Matcher m = p.matcher(line);
-                if (m.matches()) return m.group(1);
-            }
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-        }
-        return "none";
-    }
-
     private class ApkFileSign {
 
         private File reader;
@@ -248,24 +232,40 @@ public class mainForm extends JFrame {
             repos_lang.clear();
             repos_count = 0;
         }
-        String sPattern = "(.*)=(.*)=(.*)";
-        Pattern p = Pattern.compile(sPattern);
+        //String sPattern = "(.*)=(.*)=(.*)";
+        //Pattern p = Pattern.compile(sPattern);
         File file = new File(fileName);
         try {
             List<String> contents = FileUtils.readLines(file);
             for (String line : contents) {
-                Matcher m = p.matcher(line);
-                if (m.matches()) {
-                    repos_names.add(m.group(1));
-                    repos_git.add(m.group(2));
-                    repos_lang.add(m.group(3));
-                    repos_count++;
-                    LOGGER.info("Added language: " + m.group(1));
-                }
+                //Matcher m = p.matcher(line);
+                String[] all = line.split("=");
+                repos_names.add(all[0]);
+                repos_git.add(all[1]);
+                repos_lang.add(all[2]);
+                repos_count++;
+                LOGGER.info("Added language: " + all[0]);
             }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    private String readBuildProp(String filename, String section) {
+        String sPattern = section + "=(.*)";
+        Pattern p = Pattern.compile(sPattern);
+        File file = new File(filename);
+        try {
+            List<String> contents = FileUtils.readLines(file);
+            for (String line : contents) {
+                Matcher m = p.matcher(line);
+                if (m.matches()) return m.group(1);
+            }
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        }
+        return "none";
     }
 
     private void writeBuildProp(String filename, String section, String value) {
@@ -528,7 +528,6 @@ public class mainForm extends JFrame {
     }
 
     private void decompileFile(String Apk, String Folder, boolean Sources, boolean Resources) {
-        ApkDecoder decoder = new ApkDecoder(kAndrolib);
         try {
             decoder.setDecodeSources((Sources) ? ApkDecoder.DECODE_SOURCES_SMALI : ApkDecoder.DECODE_SOURCES_NONE);
             decoder.setDecodeResources((Resources) ? ApkDecoder.DECODE_RESOURCES_FULL : ApkDecoder.DECODE_RESOURCES_NONE);
@@ -703,6 +702,24 @@ public class mainForm extends JFrame {
         writeBuildProp(buildPropPath, "dalvik.vm.verify-bytecode", "false");
         writeBuildProp(buildPropPath, "persist.sys.purgeable_assets", "1");
         writeBuildProp(buildPropPath, "persist.sys.use_dithering", "1");
+
+        //Энергосбережение
+        writeBuildProp(buildPropPath, "ro.ril.disable.power.collapse", "1");
+        writeBuildProp(buildPropPath, "pm.sleep_mode", "1");
+        writeBuildProp(buildPropPath, "windowsmgr.max_events_per_sec", "60");
+        writeBuildProp(buildPropPath, "wifi.supplicant_scan_interval", "180");
+
+        //Ускорение скорости передачи данных
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.default", "4096,87380,256960,4096,16384,256960");
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.wifi", "4096,87380,256960,4096,16384,256960");
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.umts", "4096,87380,256960,4096,16384,256960");
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.gprs", "4096,87380,256960,4096,16384,256960");
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.edge", "4096,87380,256960,4096,16384,256960");
+        writeBuildProp(buildPropPath, "net.tcp.buffersize.evdo_b", "4096,87380,256960,4096,16384,256960");
+
+        //Отключение пересылки информации о использовании
+        writeBuildProp(buildPropPath, "ro.config.nocheckin", "1");
+
         writeBuildProp(buildPropPath, "ro.kernel.android.checkjni", "0");
         writeBuildProp(buildPropPath, "ro.kernel.checkjni", "0");
         writeBuildProp(buildPropPath, "ro.build.date", now.getTime().toString());
@@ -724,6 +741,10 @@ public class mainForm extends JFrame {
         @Override
         protected Integer doInBackground() {
             try {
+                btnBuild.setEnabled(false);
+                Properties sets = new Properties();
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop").exists())
+                    sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
                 btnDeCompile.setEnabled(false);
                 pbProgress.setIndeterminate(true);
                 new File(workDir + File.separatorChar + projectName).mkdirs();
@@ -807,8 +828,8 @@ public class mainForm extends JFrame {
                 }
 
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
-                if (!cbDisableCS.isSelected()) {
-                    if (!isJB) {
+                if (!false) {
+                    if (!false) {
                         getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
                         File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
                         File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
@@ -820,18 +841,21 @@ public class mainForm extends JFrame {
                         deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                     }
                 }
-                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
-                File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                try {
-                    FileUtils.copyDirectory(source, desc);
-                } catch (IOException e) {
-                    e.printStackTrace();
+                if (!sets.getProperty("Patches","no").contains("downloaded")) {
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
+                    File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                    try {
+                        FileUtils.copyDirectory(source, desc);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
+                    sets.setProperty("Patches", "downloaded");
                 }
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                 if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
-                    source = new File(workDir + File.separatorChar + "Language_Overlay");
-                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                    File source = new File(workDir + File.separatorChar + "Language_Overlay");
+                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     try {
                         FileUtils.copyDirectory(source, desc);
                     } catch (IOException e) {
@@ -839,8 +863,8 @@ public class mainForm extends JFrame {
                     }
                 }
                 //</editor-fold>
-                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
-                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
+                File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                 try {
                     FileUtils.copyDirectory(source, desc);
                 } catch (IOException e) {
@@ -953,7 +977,6 @@ public class mainForm extends JFrame {
                 pbProgress.setValue(100);
                 pbProgress.setIndeterminate(false);
                 lbProgressstate.setText("Done!");
-                Properties sets = new Properties();
                 sets.setProperty("FirmwareFile", edtFirmwareFile.getText());
                 for (int i = 0; i < repos_count; i++) {
                     if (lstRepos.isSelectedIndex(i))
@@ -981,7 +1004,7 @@ public class mainForm extends JFrame {
     }
 
     private void patchXMLs(String path) throws Exception {
-        FileFinder finder = new FileFinder();
+        searchTools finder = new searchTools();
         LOGGER.info("Preparing for updating workspace with auth system...");
         List searchRes = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main", ".*.part");
         for (int j = 0; j < searchRes.size(); j++) {
@@ -990,7 +1013,8 @@ public class mainForm extends JFrame {
             cmd.add(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + filePath);
             cmd.add(path + File.separatorChar + filePath);
             if (new File(path + File.separatorChar + filePath).exists()) {
-                new ResValuesModify().Modify(cmd.toArray(new String[0]));
+                //new ResValuesModify().Modify();
+                ResValuesModify.mergeXML(cmd.toArray(new String[0]));
                 new File(searchRes.get(j).toString()).delete();
             }
         }
@@ -1004,7 +1028,7 @@ public class mainForm extends JFrame {
             btnBuild.setEnabled(false);
             try {
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "build"));
-                List buildFiles = finder.findDirectories(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", ".*.apk");
+                List buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", ".*.apk");
                 pbProgress.setMaximum(buildFiles.size());
                 pbProgress.setValue(0);
                 lbProgressstate.setText("Building apps...");
@@ -1056,7 +1080,7 @@ public class mainForm extends JFrame {
                     else FileUtils.copyFile(dectFile, dctFile);
                     dectFile.delete();
                 }
-                buildFiles = finder.findDirectories(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", ".*.apk");
+                buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", ".*.apk");
                 pbProgress.setMaximum(buildFiles.size());
                 pbProgress.setValue(0);
                 lbProgressstate.setText("Building framework...");
@@ -1084,7 +1108,7 @@ public class mainForm extends JFrame {
                     dectFile.delete();
                 }
                 if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
-                    buildFiles = finder.findDirectories(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", ".*.apk");
+                    buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", ".*.apk");
                     pbProgress.setMaximum(buildFiles.size());
                     pbProgress.setValue(0);
                     lbProgressstate.setText("Building data...");
@@ -1268,12 +1292,47 @@ public class mainForm extends JFrame {
         decompAll.setEnabled(State);
         cbLang.setEnabled(State);
         lstRepos.setEnabled(State);
-        cbDisableCS.setEnabled(State);
+        //cbDisableCS.setEnabled(State);
         //btnDeCompile.setEnabled(State);
     }
 
+    public static String removeExtension(String s) {
+
+        String separator = System.getProperty("file.separator");
+        String filename;
+
+        // Remove the path upto the filename.
+        int lastSeparatorIndex = s.lastIndexOf(separator);
+        if (lastSeparatorIndex == -1) {
+            filename = s;
+        } else {
+            filename = s.substring(lastSeparatorIndex + 1);
+        }
+
+        // Remove the extension.
+        int extensionIndex = filename.lastIndexOf(".");
+        if (extensionIndex == -1)
+            return filename;
+
+        return filename.substring(0, extensionIndex);
+    }
+
     private void miOpenProjectActionPerformed(ActionEvent e) {
-        projectName = JOptionPane.showInputDialog(null, "Project name:", "Opening MFB project", JOptionPane.QUESTION_MESSAGE);
+        searchTools finder = new searchTools();
+        try {
+        List<String> projects = new ArrayList<String>();
+        List<File> buildFiles = finder.findDirectories_InFolder(workDir, ".*.mfbproj");
+        for(int i=0; i<buildFiles.size(); i++) {
+            projects.add(removeExtension(buildFiles.get(i).getAbsolutePath()));
+        }
+        projectName = (String) JOptionPane.showInputDialog(this,
+                "Which project you want to load?",
+                "Selecting project",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                projects.toArray(),
+                projects.get(0));
+        //projectName = JOptionPane.showInputDialog(null, "Project name:", "Opening MFB project", JOptionPane.QUESTION_MESSAGE);
         titleProjName = projectName;
         projectName = projectName + ".mfbproj";
         if (!projectName.isEmpty() && new File(workDir + File.separatorChar + projectName).exists()) {
@@ -1300,7 +1359,10 @@ public class mainForm extends JFrame {
             }
             btnCompileActionPerformed(null);
         } else {
-            JOptionPane.showMessageDialog(null, "Project \"" + projectName + "\" does not exist!\nPlease open exist project or create new.");
+            JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
+        }
+        } catch (Exception e1) {
+            System.out.println(e1.getMessage());
         }
 
     }
@@ -1357,7 +1419,6 @@ public class mainForm extends JFrame {
         lbLang = new JLabel();
         cbLang = new JComboBox();
         decompAll = new JCheckBox();
-        cbDisableCS = new JCheckBox();
         cbNotOdex = new JCheckBox();
         spSeparator2 = new JSeparator();
         lbTranslRepo = new JLabel();
@@ -1378,8 +1439,8 @@ public class mainForm extends JFrame {
         setResizable(false);
         Container contentPane = getContentPane();
         contentPane.setLayout(new FormLayout(
-                "$lcgap, 204dlu:grow, 2*($lcgap)",
-                "3*(default, $lgap), default, $lcgap, 9*(default, $lgap), default"));
+            "$lcgap, 204dlu:grow, 2*($lcgap)",
+            "3*(default, $lgap), default, $lcgap, 8*(default, $lgap), default"));
 
         //======== mbMainBar ========
         {
@@ -1425,8 +1486,8 @@ public class mainForm extends JFrame {
         //======== pOpenFirmware ========
         {
             pOpenFirmware.setLayout(new FormLayout(
-                    "default, $lcgap, default:grow, $lcgap, default",
-                    "default"));
+                "default, $lcgap, default:grow, $lcgap, default",
+                "default"));
 
             //---- edtFirmwareFile ----
             edtFirmwareFile.setEnabled(false);
@@ -1455,8 +1516,8 @@ public class mainForm extends JFrame {
         //======== pAddons ========
         {
             pAddons.setLayout(new FormLayout(
-                    "default, $lcgap, default:grow",
-                    "3*(default, $lgap), default"));
+                "default, $lcgap, default:grow",
+                "3*(default, $lgap), default"));
 
             //---- lbTimezone ----
             lbTimezone.setText("Timezone:");
@@ -1472,10 +1533,10 @@ public class mainForm extends JFrame {
             pAddons.add(lbLang, CC.xy(1, 3));
 
             //---- cbLang ----
-            cbLang.setModel(new DefaultComboBoxModel(new String[]{
-                    "Russian",
-                    "Ukrainian",
-                    "English (US)"
+            cbLang.setModel(new DefaultComboBoxModel(new String[] {
+                "Russian",
+                "Ukrainian",
+                "English (US)"
             }));
             cbLang.setFocusable(false);
             cbLang.setEnabled(false);
@@ -1486,29 +1547,24 @@ public class mainForm extends JFrame {
             decompAll.setEnabled(false);
             pAddons.add(decompAll, CC.xywh(1, 5, 3, 1));
 
-            //---- cbDisableCS ----
-            cbDisableCS.setText("Disable centered clock");
-            cbDisableCS.setEnabled(false);
-            pAddons.add(cbDisableCS, CC.xywh(1, 7, 3, 1));
+            //---- cbNotOdex ----
+            cbNotOdex.setText("Don't deodex firmware");
+            cbNotOdex.setEnabled(false);
+            pAddons.add(cbNotOdex, CC.xywh(1, 7, 3, 1));
         }
         contentPane.add(pAddons, CC.xy(2, 11, CC.FILL, CC.FILL));
-
-        //---- cbNotOdex ----
-        cbNotOdex.setText("Don't deodex firmware");
-        cbNotOdex.setEnabled(false);
-        contentPane.add(cbNotOdex, CC.xy(2, 13));
-        contentPane.add(spSeparator2, CC.xywh(1, 15, 4, 1));
+        contentPane.add(spSeparator2, CC.xywh(1, 13, 4, 1));
 
         //---- lbTranslRepo ----
         lbTranslRepo.setText("Translation repositories:");
         lbTranslRepo.setFont(lbTranslRepo.getFont().deriveFont(lbTranslRepo.getFont().getStyle() | Font.BOLD, lbTranslRepo.getFont().getSize() + 1f));
-        contentPane.add(lbTranslRepo, CC.xy(2, 17));
+        contentPane.add(lbTranslRepo, CC.xy(2, 15));
 
         //======== pRepos ========
         {
             pRepos.setLayout(new FormLayout(
-                    "$lcgap, default:grow, 2*($lcgap)",
-                    "default"));
+                "$lcgap, default:grow, 2*($lcgap)",
+                "default"));
 
             //======== spRepos ========
             {
@@ -1516,20 +1572,14 @@ public class mainForm extends JFrame {
                 //---- lstRepos ----
                 lstRepos.setModel(new AbstractListModel() {
                     String[] values = {
-                            "Repo1",
-                            "Repo2",
-                            "Repo3"
+                        "Repo1",
+                        "Repo2",
+                        "Repo3"
                     };
-
                     @Override
-                    public int getSize() {
-                        return values.length;
-                    }
-
+                    public int getSize() { return values.length; }
                     @Override
-                    public Object getElementAt(int i) {
-                        return values[i];
-                    }
+                    public Object getElementAt(int i) { return values[i]; }
                 });
                 lstRepos.setFocusable(false);
                 lstRepos.setEnabled(false);
@@ -1537,19 +1587,19 @@ public class mainForm extends JFrame {
             }
             pRepos.add(spRepos, CC.xy(2, 1));
         }
-        contentPane.add(pRepos, CC.xy(2, 19));
-        contentPane.add(spSeparator3, CC.xywh(1, 21, 4, 1));
+        contentPane.add(pRepos, CC.xy(2, 17));
+        contentPane.add(spSeparator3, CC.xywh(1, 19, 4, 1));
 
         //---- lbProgressstate ----
         lbProgressstate.setText("Progress:");
-        contentPane.add(lbProgressstate, CC.xy(2, 23));
-        contentPane.add(pbProgress, CC.xy(2, 25));
+        contentPane.add(lbProgressstate, CC.xy(2, 21));
+        contentPane.add(pbProgress, CC.xy(2, 23));
 
         //======== pCmdButtons ========
         {
             pCmdButtons.setLayout(new FormLayout(
-                    "$glue, $lcgap, default, $lcgap, $glue, $lcgap, default, $lcgap, $glue",
-                    "default, $lgap, $lcgap"));
+                "$glue, $lcgap, default, $lcgap, $glue, $lcgap, default, $lcgap, $glue",
+                "default, $lgap, $lcgap"));
 
             //---- btnDeCompile ----
             btnDeCompile.setText("Decompile Firmware");
@@ -1575,7 +1625,7 @@ public class mainForm extends JFrame {
             });
             pCmdButtons.add(btnBuild, CC.xy(7, 1));
         }
-        contentPane.add(pCmdButtons, CC.xy(2, 27));
+        contentPane.add(pCmdButtons, CC.xy(2, 25));
         pack();
         setLocationRelativeTo(getOwner());
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
@@ -1671,7 +1721,6 @@ public class mainForm extends JFrame {
     private JLabel lbLang;
     private JComboBox cbLang;
     private JCheckBox decompAll;
-    private JCheckBox cbDisableCS;
     private JCheckBox cbNotOdex;
     private JSeparator spSeparator2;
     private JLabel lbTranslRepo;
