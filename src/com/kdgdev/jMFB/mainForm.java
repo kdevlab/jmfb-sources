@@ -773,6 +773,9 @@ public class mainForm extends JFrame {
                     }
                 }
                 //</editor-fold>
+
+                buildpropWork bldprop = new buildpropWork(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
+
                 installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
                 //<editor-fold desc="Downloading precompiled files from git">
                 if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {

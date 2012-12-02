@@ -6,6 +6,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 /**
  * Created with IntelliJ IDEA.
@@ -19,17 +21,20 @@ public class buildpropWork {
     private List<String[]> values = new ArrayList<String[]>();
     File workFile;
 
-    public buildpropWork(File file) throws IOException {
-        workFile = file;
+    public buildpropWork(String file) throws IOException {
+        workFile = new File(file);
         List<String> contents = FileUtils.readLines(workFile);
+        String sPattern = "(.*)=(.*)";
+        Pattern p = Pattern.compile(sPattern);
         for (String line : contents) {
-            if (!line.contains("#")) values.add(line.split("=", 1));
+            Matcher m = p.matcher(line);
+            if (m.matches() && !line.contains("#")) values.add(line.split("=", 2));
         }
     }
 
-    public void listSectionNames() {
+    public void listNames() {
         for (String[] val : values) {
-            System.out.println(val[0]);
+            System.out.println(val[0].trim() + "|" + val[1].trim());
         }
     }
 
@@ -41,13 +46,19 @@ public class buildpropWork {
     }
 
     public void writeProp(String section, String value) {
-        for (int i = 0; values.size() < i; i++) {
+        Boolean exists = false;
+        int val = -1;
+        for (int i = 0; i < values.size(); i++) {
             if (values.get(i)[0].equals(section)) {
-                values.set(i, new String[]{section, value});
-            } else {
-                values.add(new String[]{section, value});
+                exists = true;
+                val = i;
+                break;
             }
         }
+        if (exists)
+            values.set(val, (section + "=" + value).split("=", 2));
+        else
+            values.add((section + "=" + value).split("=", 2));
     }
 
     public void write() throws IOException {

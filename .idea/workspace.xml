@@ -12,12 +12,12 @@
     <list default="true" id="5273302d-c4be-4b52-935c-c78201c3f4f4" name="Default" comment="" />
     <ignored path="jMFB.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="/mainForm.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1352649499117" ignored="false" />
-    <file path="/ApkDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350130841417" ignored="false" />
-    <file path="/Androlib.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350131491347" ignored="false" />
-    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtFile.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
-    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtMXSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
     <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtXmlSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
+    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtMXSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
+    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtFile.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
+    <file path="/Androlib.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350131491347" ignored="false" />
+    <file path="/ApkDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350130841417" ignored="false" />
+    <file path="/mainForm.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1352649499117" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,7 +84,7 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="253" column="4" selection-start="9837" selection-end="11383" vertical-scroll-proportion="0.113464445">
+            <state line="776" column="204" selection-start="37933" selection-end="37933" vertical-scroll-proportion="0.96974283">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;class#mainForm#0" expanded="false" />
@@ -100,6 +100,7 @@
                 <element signature="method#getCertificate#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
                 <element signature="method#getPrivateKey#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
                 <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
+                <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
@@ -116,37 +117,37 @@
                 <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
                 <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isSmaliPatch#0;class#mainForm#0" expanded="false" />
-                <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
-                <element signature="e#37850#37911#0" expanded="false" />
-                <element signature="e#38979#39259#0" expanded="false" />
+                <element signature="e#35489#35548#0" expanded="false" />
+                <element signature="e#38057#38118#0" expanded="false" />
+                <element signature="e#39186#39466#0" expanded="false" />
                 <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
                 <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-                <element signature="e#59214#59222#0" expanded="true" />
+                <element signature="e#59421#59429#0" expanded="true" />
                 <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
-                <element signature="e#61576#61632#0" expanded="false" />
-                <element signature="e#65351#65472#0" expanded="false" />
+                <element signature="e#61783#61839#0" expanded="false" />
+                <element signature="e#65558#65679#0" expanded="false" />
                 <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-                <element signature="e#82553#82590#0" expanded="false" />
+                <element signature="e#82760#82797#0" expanded="false" />
                 <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="class#84888:85354" expanded="false" />
-                <element signature="method#accept#0;class#84888:85354" expanded="false" />
-                <element signature="method#getDescription#0;class#84888:85354" expanded="false" />
+                <element signature="class#85095:85561" expanded="false" />
+                <element signature="method#accept#0;class#85095:85561" expanded="false" />
+                <element signature="method#getDescription#0;class#85095:85561" expanded="false" />
                 <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
                 <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
                 <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="e#86808#86816#0" expanded="true" />
+                <element signature="e#87015#87023#0" expanded="true" />
                 <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-                <marker date="1354461561000" expanded="false" signature="90403:99212" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <marker date="1354464886000" expanded="false" signature="90610:99419" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
-                <element signature="e#99562#99597#0" expanded="false" />
+                <element signature="e#99769#99804#0" expanded="false" />
                 <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-                <marker date="1354461561000" expanded="false" signature="102232:103343" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+                <marker date="1354464886000" expanded="false" signature="102439:103550" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
             </state>
           </provider>
@@ -155,11 +156,9 @@
       <file leaf-file-name="buildpropWork.java" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildpropWork.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="7" column="5" selection-start="155" selection-end="155" vertical-scroll-proportion="0.0">
+            <state line="60" column="12" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
               <folding>
-                <element signature="docComment;class#buildpropWork#0" expanded="false" />
-                <element signature="e#406#416#0" expanded="true" />
-                <element signature="e#1439#1447#0" expanded="true" />
+                <element signature="imports" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -250,6 +249,16 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -378,29 +387,19 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="OverrideImplement.combined" value="true" />
     <property name="project.structure.proportion" value="0.15" />
+    <property name="OverrideImplement.combined" value="true" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
-    <property name="recentsLimit" value="5" />
     <property name="MemberChooser.sorted" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/kdglib.jar!/" />
+    <property name="recentsLimit" value="5" />
+    <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
     <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/kdglib.jar!/" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -468,6 +467,24 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -493,24 +510,6 @@
       <envs />
       <properties />
       <listeners />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -797,18 +796,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildpropWork.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="7" column="5" selection-start="155" selection-end="155" vertical-scroll-proportion="0.0">
+        <state line="60" column="12" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
           <folding>
-            <element signature="docComment;class#buildpropWork#0" expanded="false" />
-            <element signature="e#406#416#0" expanded="true" />
-            <element signature="e#1439#1447#0" expanded="true" />
+            <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="253" column="4" selection-start="9837" selection-end="11383" vertical-scroll-proportion="0.113464445">
+        <state line="776" column="204" selection-start="37933" selection-end="37933" vertical-scroll-proportion="0.96974283">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#mainForm#0" expanded="false" />
@@ -824,6 +821,7 @@
             <element signature="method#getCertificate#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
             <element signature="method#getPrivateKey#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
             <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
+            <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
             <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
             <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
             <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
@@ -840,37 +838,37 @@
             <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
             <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
             <element signature="method#isSmaliPatch#0;class#mainForm#0" expanded="false" />
-            <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
-            <element signature="e#37850#37911#0" expanded="false" />
-            <element signature="e#38979#39259#0" expanded="false" />
+            <element signature="e#35489#35548#0" expanded="false" />
+            <element signature="e#38057#38118#0" expanded="false" />
+            <element signature="e#39186#39466#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
             <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-            <element signature="e#59214#59222#0" expanded="true" />
+            <element signature="e#59421#59429#0" expanded="true" />
             <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
-            <element signature="e#61576#61632#0" expanded="false" />
-            <element signature="e#65351#65472#0" expanded="false" />
+            <element signature="e#61783#61839#0" expanded="false" />
+            <element signature="e#65558#65679#0" expanded="false" />
             <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-            <element signature="e#82553#82590#0" expanded="false" />
+            <element signature="e#82760#82797#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#84888:85354" expanded="false" />
-            <element signature="method#accept#0;class#84888:85354" expanded="false" />
-            <element signature="method#getDescription#0;class#84888:85354" expanded="false" />
+            <element signature="class#85095:85561" expanded="false" />
+            <element signature="method#accept#0;class#85095:85561" expanded="false" />
+            <element signature="method#getDescription#0;class#85095:85561" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="e#86808#86816#0" expanded="true" />
+            <element signature="e#87015#87023#0" expanded="true" />
             <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <marker date="1354461561000" expanded="false" signature="90403:99212" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1354464886000" expanded="false" signature="90610:99419" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#99562#99597#0" expanded="false" />
+            <element signature="e#99769#99804#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1354461561000" expanded="false" signature="102232:103343" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1354464886000" expanded="false" signature="102439:103550" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
