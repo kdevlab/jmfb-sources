@@ -12,12 +12,12 @@
     <list default="true" id="5273302d-c4be-4b52-935c-c78201c3f4f4" name="Default" comment="" />
     <ignored path="jMFB.iws" />
     <ignored path=".idea/workspace.xml" />
-    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtXmlSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
-    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtMXSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
-    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtFile.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
-    <file path="/Androlib.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350131491347" ignored="false" />
-    <file path="/ApkDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350130841417" ignored="false" />
     <file path="/mainForm.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1352649499117" ignored="false" />
+    <file path="/ApkDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350130841417" ignored="false" />
+    <file path="/Androlib.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350131491347" ignored="false" />
+    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtFile.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
+    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtMXSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
+    <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtXmlSerializer.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
     <option name="TRACKING_ENABLED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -84,9 +84,8 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="776" column="204" selection-start="37933" selection-end="37933" vertical-scroll-proportion="0.96974283">
+            <state line="1750" column="25" selection-start="101521" selection-end="101521" vertical-scroll-proportion="0.9515885">
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="docComment;class#mainForm#0" expanded="false" />
                 <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
                 <element signature="method#getBootClassPathFromFolder#0;class#mainForm#0" expanded="false" />
@@ -95,19 +94,17 @@
                 <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
-                <element signature="class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-                <element signature="method#ApkFileSign#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-                <element signature="method#getCertificate#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-                <element signature="method#getPrivateKey#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
+                <element signature="e#7380#7419#0" expanded="false" />
                 <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
-                <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
+                <element signature="e#9294#9331#0" expanded="false" />
+                <element signature="e#9962#10001#0" expanded="false" />
                 <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
                 <element signature="method#getOSDir#0;class#mainForm#0" expanded="false" />
                 <element signature="method#extractFolder#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initMFB#0;class#mainForm#0" expanded="false" />
-                <element signature="e#15389#15429#0" expanded="false" />
+                <element signature="e#15573#15613#0" expanded="false" />
                 <element signature="method#installFrameworks#0;class#mainForm#0" expanded="false" />
                 <element signature="method#execFile#0;class#mainForm#0" expanded="false" />
                 <element signature="method#getFilesFromGit#0;class#mainForm#0" expanded="false" />
@@ -117,48 +114,44 @@
                 <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
                 <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
                 <element signature="method#isSmaliPatch#0;class#mainForm#0" expanded="false" />
-                <element signature="e#35489#35548#0" expanded="false" />
-                <element signature="e#38057#38118#0" expanded="false" />
-                <element signature="e#39186#39466#0" expanded="false" />
+                <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
+                <element signature="e#35032#35091#0" expanded="false" />
+                <element signature="e#37924#37985#0" expanded="false" />
+                <element signature="e#38835#39115#0" expanded="false" />
+                <element signature="e#41354#41415#0" expanded="false" />
+                <element signature="e#45853#45931#0" expanded="false" />
                 <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
                 <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-                <element signature="e#59421#59429#0" expanded="true" />
                 <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
-                <element signature="e#61783#61839#0" expanded="false" />
-                <element signature="e#65558#65679#0" expanded="false" />
+                <element signature="method#doInBackground#0;class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
+                <element signature="e#60461#60517#0" expanded="false" />
+                <element signature="e#63950#64071#0" expanded="false" />
+                <element signature="e#70804#70969#0" expanded="false" />
                 <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-                <element signature="e#82760#82797#0" expanded="false" />
+                <element signature="e#80587#80624#0" expanded="false" />
                 <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="class#85095:85561" expanded="false" />
-                <element signature="method#accept#0;class#85095:85561" expanded="false" />
-                <element signature="method#getDescription#0;class#85095:85561" expanded="false" />
+                <element signature="class#82922:83388" expanded="false" />
+                <element signature="method#accept#0;class#82922:83388" expanded="false" />
+                <element signature="method#getDescription#0;class#82922:83388" expanded="false" />
                 <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
+                <element signature="e#83972#84004#0" expanded="false" />
                 <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
                 <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="e#87015#87023#0" expanded="true" />
                 <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-                <marker date="1354464886000" expanded="false" signature="90610:99419" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <marker date="1354538155000" expanded="false" signature="88398:97204" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <element signature="class#94927:95330" expanded="false" />
+                <element signature="method#getSize#0;class#94927:95330" expanded="false" />
+                <element signature="method#getElementAt#0;class#94927:95330" expanded="false" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
-                <element signature="e#99769#99804#0" expanded="false" />
+                <element signature="e#97554#97589#0" expanded="false" />
                 <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-                <marker date="1354464886000" expanded="false" signature="102439:103550" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="buildpropWork.java" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildpropWork.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="60" column="12" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
-              <folding>
-                <element signature="imports" expanded="true" />
+                <marker date="1354538155000" expanded="false" signature="100224:101335" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
             </state>
           </provider>
@@ -181,15 +174,9 @@
   <component name="IdeDocumentHistory">
     <option name="changedFiles">
       <list>
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/xml/ResXmlEncoders.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/ApkDecoder.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/src/SmaliBuilder.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResArrayValue.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStyleValue.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/Androlib.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java" />
-        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/src/SmaliDecoder.java" />
         <option value="$PROJECT_DIR$/src/org/jf/smali/main.java" />
         <option value="$PROJECT_DIR$/src/brut/androlib/res/data/value/ResScalarValue.java" />
@@ -197,6 +184,12 @@
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.jfd" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildpropWork.java" />
         <option value="$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/ApkDecoder.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/data/ResTable.java" />
+        <option value="$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java" />
       </list>
     </option>
   </component>
@@ -214,10 +207,13 @@
           <State>
             <id />
           </State>
+          <State>
+            <id>Probable bugs</id>
+          </State>
         </expanded-state>
         <selected-state>
           <State>
-            <id>Abstraction issues</id>
+            <id>IgnoreResultOfCall</id>
           </State>
         </selected-state>
       </profile-state>
@@ -249,16 +245,6 @@
       <sortByType />
     </navigator>
     <panes>
-      <pane id="Scope">
-        <subPane subId="Project Files">
-          <PATH>
-            <PATH_ELEMENT USER_OBJECT="Root">
-              <option name="myItemId" value="" />
-              <option name="myItemType" value="" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -305,7 +291,7 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
+              <option name="myItemId" value="brut" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -323,37 +309,11 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
+              <option name="myItemId" value="brut" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
             <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="src" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="com" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="utils" />
+              <option name="myItemId" value="androlib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -369,6 +329,16 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="Scope">
+        <subPane subId="Project Files">
+          <PATH>
+            <PATH_ELEMENT USER_OBJECT="Root">
+              <option name="myItemId" value="" />
+              <option name="myItemType" value="" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -392,14 +362,14 @@
   <component name="PropertiesComponent">
     <property name="GenerateAntBuildDialog.generateIdeaHomeProperty" value="false" />
     <property name="project.structure.last.edited" value="Libraries" />
-    <property name="project.structure.proportion" value="0.15" />
     <property name="OverrideImplement.combined" value="true" />
+    <property name="project.structure.proportion" value="0.15" />
     <property name="options.splitter.main.proportions" value="0.3" />
-    <property name="MemberChooser.sorted" value="false" />
-    <property name="recentsLimit" value="5" />
     <property name="GenerateAntBuildDialog.generateSingleFile" value="true" />
-    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
+    <property name="recentsLimit" value="5" />
+    <property name="MemberChooser.sorted" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/lib/kdglib.jar!/" />
+    <property name="GenerateAntBuildDialog.inclineRuntiemClasspath" value="false" />
     <property name="GenerateAntBuildDialog.outputFileNameProperty" value="build" />
     <property name="GenerateAntBuildDialog.enableUiFormCompile" value="false" />
     <property name="GoToClass.toSaveIncludeLibraries" value="false" />
@@ -467,24 +437,6 @@
         <option name="Maven.BeforeRunTask" enabled="false" />
       </method>
     </configuration>
-    <configuration default="true" type="Applet" factoryName="Applet">
-      <module name="" />
-      <option name="MAIN_CLASS_NAME" />
-      <option name="HTML_FILE_NAME" />
-      <option name="HTML_USED" value="false" />
-      <option name="WIDTH" value="400" />
-      <option name="HEIGHT" value="300" />
-      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
-      <option name="VM_PARAMETERS" />
-      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
-      <option name="ALTERNATIVE_JRE_PATH" />
-      <method>
-        <option name="AntTarget" enabled="false" />
-        <option name="BuildArtifacts" enabled="false" />
-        <option name="Make" enabled="true" />
-        <option name="Maven.BeforeRunTask" enabled="false" />
-      </method>
-    </configuration>
     <configuration default="true" type="TestNG" factoryName="TestNG">
       <module name="" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
@@ -510,6 +462,24 @@
       <envs />
       <properties />
       <listeners />
+      <method>
+        <option name="AntTarget" enabled="false" />
+        <option name="BuildArtifacts" enabled="false" />
+        <option name="Make" enabled="true" />
+        <option name="Maven.BeforeRunTask" enabled="false" />
+      </method>
+    </configuration>
+    <configuration default="true" type="Applet" factoryName="Applet">
+      <module name="" />
+      <option name="MAIN_CLASS_NAME" />
+      <option name="HTML_FILE_NAME" />
+      <option name="HTML_USED" value="false" />
+      <option name="WIDTH" value="400" />
+      <option name="HEIGHT" value="300" />
+      <option name="POLICY_FILE" value="$APPLICATION_HOME_DIR$/bin/appletviewer.policy" />
+      <option name="VM_PARAMETERS" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="false" />
+      <option name="ALTERNATIVE_JRE_PATH" />
       <method>
         <option name="AntTarget" enabled="false" />
         <option name="BuildArtifacts" enabled="false" />
@@ -627,7 +597,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="0" width="1280" height="800" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="JetGradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32954547" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -642,7 +612,7 @@
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24918832" sideWeight="0.21825963" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.6766382" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.39935064" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18019481" sideWeight="0.6804565" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18019481" sideWeight="0.6804565" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32952926" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="IntelliGuard" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3266762" sideWeight="0.49675325" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
@@ -722,39 +692,9 @@
     </buildFile>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResStyleValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="73" selection-start="2100" selection-end="2100" vertical-scroll-proportion="0.606264" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/value/ResArrayValue.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="52" column="34" selection-start="1848" selection-end="1848" vertical-scroll-proportion="0.12080537" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="561" column="51" selection-start="19370" selection-end="19370" vertical-scroll-proportion="0.48813057" />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/brut/androlib/Androlib.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="377" column="54" selection-start="14340" selection-end="14340" vertical-scroll-proportion="0.4027778" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="460" column="1" selection-start="15753" selection-end="15753" vertical-scroll-proportion="10.237389" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="54" column="49" selection-start="2237" selection-end="2237" vertical-scroll-proportion="0.6008902" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="337" column="55" selection-start="11585" selection-end="11585" vertical-scroll-proportion="2.203264" />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/build.xml">
@@ -782,11 +722,6 @@
         <state line="55" column="53" selection-start="1908" selection-end="1908" vertical-scroll-proportion="-0.13333334" />
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.jfd">
-      <provider selected="true" editor-type-id="JFormDesigner">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/searchTools.java">
       <provider selected="true" editor-type-id="text-editor">
         <state line="33" column="32" selection-start="873" selection-end="873" vertical-scroll-proportion="0.24035609">
@@ -794,20 +729,70 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildpropWork.java">
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.jfd">
+      <provider selected="true" editor-type-id="JFormDesigner">
+        <state />
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/utils/buildPropTools.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="60" column="12" selection-start="1688" selection-end="1688" vertical-scroll-proportion="0.0">
+        <state line="44" column="20" selection-start="1250" selection-end="1250" vertical-scroll-proportion="0.35459942">
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/ARSCDecoder.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="776" column="204" selection-start="37933" selection-end="37933" vertical-scroll-proportion="0.96974283">
+        <state line="320" column="21" selection-start="10658" selection-end="10658" vertical-scroll-proportion="0.42284867">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResConfigFlags.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="408" column="57" selection-start="13333" selection-end="13333" vertical-scroll-proportion="0.6439169">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/AndrolibResources.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="239" column="37" selection-start="8104" selection-end="8104" vertical-scroll-proportion="0.4925816">
           <folding>
             <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/data/ResTable.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="140" column="0" selection-start="4241" selection-end="4241" vertical-scroll-proportion="0.6439169">
+          <folding>
+            <element signature="e#1578#1594#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/ApkDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="270" column="8" selection-start="8648" selection-end="8648" vertical-scroll-proportion="0.8011869">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/brut/androlib/res/decoder/XmlPullStreamDecoder.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="92" column="94" selection-start="3949" selection-end="3949" vertical-scroll-proportion="0.42284867">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="1750" column="25" selection-start="101521" selection-end="101521" vertical-scroll-proportion="0.9515885">
+          <folding>
             <element signature="docComment;class#mainForm#0" expanded="false" />
             <element signature="method#mainForm#0;class#mainForm#0" expanded="false" />
             <element signature="method#getBootClassPathFromFolder#0;class#mainForm#0" expanded="false" />
@@ -816,19 +801,17 @@
             <element signature="method#packFile#0;class#mainForm#0" expanded="false" />
             <element signature="method#deodex#0;class#mainForm#0" expanded="false" />
             <element signature="method#deodexFirmware#0;class#mainForm#0" expanded="false" />
-            <element signature="class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-            <element signature="method#ApkFileSign#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-            <element signature="method#getCertificate#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
-            <element signature="method#getPrivateKey#0;class#ApkFileSign#0;class#mainForm#0" expanded="false" />
+            <element signature="e#7380#7419#0" expanded="false" />
             <element signature="method#readLanuagesFile#0;class#mainForm#0" expanded="false" />
-            <element signature="method#writeBuildProp#0;class#mainForm#0" expanded="false" />
+            <element signature="e#9294#9331#0" expanded="false" />
+            <element signature="e#9962#10001#0" expanded="false" />
             <element signature="method#isOSX#0;class#mainForm#0" expanded="false" />
             <element signature="method#isWindows#0;class#mainForm#0" expanded="false" />
             <element signature="method#isUnix#0;class#mainForm#0" expanded="false" />
             <element signature="method#getOSDir#0;class#mainForm#0" expanded="false" />
             <element signature="method#extractFolder#0;class#mainForm#0" expanded="false" />
             <element signature="method#initMFB#0;class#mainForm#0" expanded="false" />
-            <element signature="e#15389#15429#0" expanded="false" />
+            <element signature="e#15573#15613#0" expanded="false" />
             <element signature="method#installFrameworks#0;class#mainForm#0" expanded="false" />
             <element signature="method#execFile#0;class#mainForm#0" expanded="false" />
             <element signature="method#getFilesFromGit#0;class#mainForm#0" expanded="false" />
@@ -838,37 +821,44 @@
             <element signature="method#rebuildFiles#0;class#mainForm#0" expanded="false" />
             <element signature="method#writeAllBPValues#0;class#mainForm#0" expanded="false" />
             <element signature="method#isSmaliPatch#0;class#mainForm#0" expanded="false" />
-            <element signature="e#35489#35548#0" expanded="false" />
-            <element signature="e#38057#38118#0" expanded="false" />
-            <element signature="e#39186#39466#0" expanded="false" />
+            <element signature="class#kBigBlackBox_Decompiler#0;class#mainForm#0" expanded="false" />
+            <element signature="e#35032#35091#0" expanded="false" />
+            <element signature="e#37924#37985#0" expanded="false" />
+            <element signature="e#38835#39115#0" expanded="false" />
+            <element signature="e#41354#41415#0" expanded="false" />
+            <element signature="e#45853#45931#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
             <element signature="method#patchXMLs#0;class#mainForm#0" expanded="false" />
-            <element signature="e#59421#59429#0" expanded="true" />
             <element signature="class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
-            <element signature="e#61783#61839#0" expanded="false" />
-            <element signature="e#65558#65679#0" expanded="false" />
+            <element signature="method#doInBackground#0;class#kBigBlackBox_Compile#0;class#mainForm#0" expanded="false" />
+            <element signature="e#60461#60517#0" expanded="false" />
+            <element signature="e#63950#64071#0" expanded="false" />
+            <element signature="e#70804#70969#0" expanded="false" />
             <element signature="class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#kBigBlackBox_Init#0;class#mainForm#0" expanded="false" />
-            <element signature="e#82760#82797#0" expanded="false" />
+            <element signature="e#80587#80624#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#85095:85561" expanded="false" />
-            <element signature="method#accept#0;class#85095:85561" expanded="false" />
-            <element signature="method#getDescription#0;class#85095:85561" expanded="false" />
+            <element signature="class#82922:83388" expanded="false" />
+            <element signature="method#accept#0;class#82922:83388" expanded="false" />
+            <element signature="method#getDescription#0;class#82922:83388" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
+            <element signature="e#83972#84004#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="e#87015#87023#0" expanded="true" />
             <element signature="method#miNewProjectActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#watermarkImage#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <marker date="1354464886000" expanded="false" signature="90610:99419" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1354538155000" expanded="false" signature="88398:97204" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <element signature="class#94927:95330" expanded="false" />
+            <element signature="method#getSize#0;class#94927:95330" expanded="false" />
+            <element signature="method#getElementAt#0;class#94927:95330" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#99769#99804#0" expanded="false" />
+            <element signature="e#97554#97589#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1354464886000" expanded="false" signature="102439:103550" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1354538155000" expanded="false" signature="100224:101335" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>

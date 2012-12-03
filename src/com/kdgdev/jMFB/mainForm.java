@@ -39,8 +39,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.*;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 
 /**
@@ -63,8 +61,8 @@ public class mainForm extends JFrame {
         searchTools su = new searchTools();
         try {
             List jarFiles = su.findAll(fold.getAbsolutePath(), ".*.jar");
-            for (int i = 0; i < jarFiles.size(); i++) {
-                File jar = new File(jarFiles.get(i).toString());
+            for (Object jarFile : jarFiles) {
+                File jar = new File(jarFile.toString());
                 if (extraBootClassPath != null) {
                     extraBootClassPath = extraBootClassPath + ":" + jar.getName();
                 } else {
@@ -105,7 +103,7 @@ public class mainForm extends JFrame {
         cmd.add("-c");
         cmd.add(getBootClassPathFromFolder(classPathDir));
         try {
-            OS.exec(cmd.toArray(new String[0]));
+            OS.exec(cmd.toArray(new String[cmd.size()]));
         } catch (AndrolibException e) {
             LOGGER.info(e.getMessage());
         } catch (BrutException e) {
@@ -138,7 +136,7 @@ public class mainForm extends JFrame {
         cmd.add(destFile.getAbsolutePath());
         cmd.add(fileToPack.getName());
         try {
-            OS.exec(cmd.toArray(new String[0]), fileToPack.getParent());
+            OS.exec(cmd.toArray(new String[cmd.size()]), fileToPack.getParent());
         } catch (BrutException ex) {
             LOGGER.info(ex.getMessage());
         }
@@ -149,15 +147,17 @@ public class mainForm extends JFrame {
         LOGGER.info("Deodexing file: " + odexFile.getName());
         File classesDir = new File(workDir + File.separatorChar + projectName + File.separatorChar + "deodexed" + File.separatorChar + odexFile.getName() + ".classes");
         if (!classesDir.exists()) {
-            classesDir.mkdirs();
+            if(classesDir.mkdirs()) LOGGER.info("classes dir created");
         }
         File classesFile = new File(classesDir.getAbsolutePath() + File.separatorChar + "classes.dex");
         baksmali(odexFile, outDir, apiLevel, classPathDir);
         smali(outDir, classesFile);
         packFile(new File(FilenameUtils.removeExtension(odexFile.toString()) + ext), classesFile);
         if (classesFile.exists()) {
-            odexFile.delete();
-            LOGGER.info("File deodexed successfully");
+            if(odexFile.delete())
+                LOGGER.info("File deodexed successfully");
+            else
+                LOGGER.info("Error deodexing file");
         } else {
             LOGGER.info("Error deodexing file. No classes.dex file found");
         }
@@ -184,9 +184,11 @@ public class mainForm extends JFrame {
         pbProgress.setIndeterminate(true);
     }
 
-    private class ApkFileSign {
+    //<editor-fold desc="Deleted old code">
 
-        private File reader;
+    /*private class ApkFileSign {
+
+        //private File reader;
 
         public ApkFileSign(File fileName) {
             reader = fileName;
@@ -223,7 +225,9 @@ public class mainForm extends JFrame {
             }
             return null;
         }
-    }
+    }*/
+
+    //</editor-fold>
 
     private void readLanuagesFile(String fileName, Boolean cleanLangs) {
         if (cleanLangs) {
@@ -251,7 +255,9 @@ public class mainForm extends JFrame {
         }
     }
 
-    private String readBuildProp(String filename, String section) {
+    //<editor-fold desc="Deleted old code">
+
+    /*private String readBuildProp(String filename, String section) {
         String sPattern = section + "=(.*)";
         Pattern p = Pattern.compile(sPattern);
         File file = new File(filename);
@@ -288,7 +294,9 @@ public class mainForm extends JFrame {
             LOGGER.info(e.getMessage());
             JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
         }
-    }
+    }*/
+
+    //</editor-fold>
 
     public static boolean isOSX() {
         String osName = System.getProperty("os.name");
@@ -299,7 +307,7 @@ public class mainForm extends JFrame {
 
         String os = System.getProperty("os.name").toLowerCase();
         // windows
-        return (os.indexOf("win") >= 0);
+        return (os.contains("win"));
 
     }
 
@@ -307,7 +315,7 @@ public class mainForm extends JFrame {
 
         String os = System.getProperty("os.name").toLowerCase();
         // linux or unix
-        return (os.indexOf("nix") >= 0 || os.indexOf("nux") >= 0);
+        return (os.contains("nix") || os.contains("nux"));
 
     }
 
@@ -415,12 +423,11 @@ public class mainForm extends JFrame {
                 bad.execute();
                 while (!bad.isDone()) {
                 }
-                ;
-                kBigBlackBox_Compile bac = new kBigBlackBox_Compile();
+                kBigBlackBox_Compile bac;
+                bac = new kBigBlackBox_Compile();
                 bac.execute();
                 while (!bac.isDone()) {
                 }
-                ;
                 System.exit(0);
                 return false;
             }
@@ -461,9 +468,9 @@ public class mainForm extends JFrame {
         searchTools finder = new searchTools();
         pbProgress.setIndeterminate(false);
         pbProgress.setValue(0);
-        List frameworks = null;
+        //List frameworks;
         try {
-            frameworks = finder.findAll(Folder, ".*.apk");
+            List frameworks = finder.findAll(Folder, ".*.apk");
             pbProgress.setMaximum(frameworks.size());
             for (int i = 0; i < frameworks.size(); i++) {
                 pbProgress.setValue(i);
@@ -480,17 +487,16 @@ public class mainForm extends JFrame {
         if (!aAppsDir.equals("")) cmd[0] = aAppsDir + File.separatorChar + cmd[0];
         ProcessBuilder procBuilder = new ProcessBuilder(cmd);
         procBuilder.redirectErrorStream(true);
-        Process process = null;
+        Process process;
         try {
             process = procBuilder.start();
             InputStream stdout = process.getInputStream();
             InputStreamReader isrStdout = new InputStreamReader(stdout);
             BufferedReader brStdout = new BufferedReader(isrStdout);
-            String line = null;
+            String line;
             while ((line = brStdout.readLine()) != null) {
                 if (testReturn) LOGGER.info(line);
             }
-            ;
             int exitVal = process.waitFor();
             if (testReturn) {
                 if (exitVal == 2) return false;
@@ -653,9 +659,8 @@ public class mainForm extends JFrame {
         }
 
         if (ApkName.equals("miuicompass.apk")) {
-            Map<String, Object> meta = new LinkedHashMap<String, Object>();
             try {
-                meta = new Androlib().readMetaFile(new ExtFile(Apk));
+                Map<String, Object> meta = new Androlib().readMetaFile(new ExtFile(Apk));
                 Map<String, Object> uses = new LinkedHashMap<String, Object>();
                 Integer[] ids = {1, 6};
                 uses.put("ids", ids);
@@ -667,9 +672,8 @@ public class mainForm extends JFrame {
             }
         }
         if (ApkName.equals("framework-miui-res.apk")) {
-            Map<String, Object> meta = new LinkedHashMap<String, Object>();
             try {
-                meta = new Androlib().readMetaFile(new ExtFile(Apk));
+                Map<String, Object> meta = new Androlib().readMetaFile(new ExtFile(Apk));
                 Map<String, Object> uses = new LinkedHashMap<String, Object>();
                 Integer[] ids = {1, 2, 3, 4, 5};
                 uses.put("ids", ids);
@@ -682,58 +686,57 @@ public class mainForm extends JFrame {
         }
     }
 
-    private void writeAllBPValues(String buildPropPath) throws UnknownHostException {
+    private void writeAllBPValues(buildPropTools bldprp) throws UnknownHostException {
         if (writeBProp) {
-            writeBuildProp(buildPropPath, "ro.config.ringtone", "MI.ogg");
-            writeBuildProp(buildPropPath, "ro.config.notification_sound", "FadeIn.ogg");
-            writeBuildProp(buildPropPath, "ro.config.alarm_alert", "GoodMorning.ogg");
-            writeBuildProp(buildPropPath, "ro.config.sms_received_sound", "FadeIn.ogg");
-            writeBuildProp(buildPropPath, "ro.config.sms_delivered_sound", "MessageComplete.ogg");
+            bldprp.writeProp("ro.config.ringtone", "MI.ogg");
+            bldprp.writeProp("ro.config.notification_sound", "FadeIn.ogg");
+            bldprp.writeProp("ro.config.alarm_alert", "GoodMorning.ogg");
+            bldprp.writeProp("ro.config.sms_received_sound", "FadeIn.ogg");
+            bldprp.writeProp("ro.config.sms_delivered_sound", "MessageComplete.ogg");
         }
-        writeBuildProp(buildPropPath, "ro.build.user", System.getProperty("user.name").toLowerCase());
-        writeBuildProp(buildPropPath, "ro.build.host", InetAddress.getLocalHost().getHostName().toLowerCase());
+        bldprp.writeProp("ro.build.user", System.getProperty("user.name").toLowerCase());
+        bldprp.writeProp("ro.build.host", InetAddress.getLocalHost().getHostName().toLowerCase());
         Calendar now = Calendar.getInstance(Locale.getDefault());
-        writeBuildProp(buildPropPath, "persist.sys.timezone", timeZones.get(cbTimeZone.getSelectedIndex()));
-        writeBuildProp(buildPropPath, "ro.jmfb.version", "test-2012");
-        writeBuildProp(buildPropPath, "ro.build.type", "user");
-        writeBuildProp(buildPropPath, "ro.build.tags", "release-keys");
-        writeBuildProp(buildPropPath, "dalvik.vm.dexopt-flags", "m=y,o=v,u=y");
-        writeBuildProp(buildPropPath, "ro.product.mod_device", readBuildProp(buildPropPath, "ro.product.device"));
-        writeBuildProp(buildPropPath, "dalvik.vm.verify-bytecode", "false");
-        writeBuildProp(buildPropPath, "persist.sys.purgeable_assets", "1");
-        writeBuildProp(buildPropPath, "persist.sys.use_dithering", "1");
+        bldprp.writeProp("persist.sys.timezone", timeZones.get(cbTimeZone.getSelectedIndex()));
+        bldprp.writeProp("ro.jmfb.version", "beta-2013");
+        bldprp.writeProp("ro.build.type", "user");
+        bldprp.writeProp("ro.build.tags", "release-keys");
+        bldprp.writeProp("dalvik.vm.dexopt-flags", "m=y,o=v,u=y");
+        bldprp.writeProp("ro.product.mod_device", bldprp.readProp("ro.product.device"));
+        bldprp.writeProp("dalvik.vm.verify-bytecode", "false");
+        bldprp.writeProp("persist.sys.purgeable_assets", "1");
+        bldprp.writeProp("persist.sys.use_dithering", "1");
 
         //Энергосбережение
-        writeBuildProp(buildPropPath, "ro.ril.disable.power.collapse", "1");
-        writeBuildProp(buildPropPath, "pm.sleep_mode", "1");
-        writeBuildProp(buildPropPath, "windowsmgr.max_events_per_sec", "60");
-        writeBuildProp(buildPropPath, "wifi.supplicant_scan_interval", "180");
+        bldprp.writeProp("ro.ril.disable.power.collapse", "1");
+        bldprp.writeProp("pm.sleep_mode", "1");
+        bldprp.writeProp("windowsmgr.max_events_per_sec", "60");
+        bldprp.writeProp("wifi.supplicant_scan_interval", "180");
 
         //Ускорение скорости передачи данных
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.default", "4096,87380,256960,4096,16384,256960");
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.wifi", "4096,87380,256960,4096,16384,256960");
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.umts", "4096,87380,256960,4096,16384,256960");
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.gprs", "4096,87380,256960,4096,16384,256960");
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.edge", "4096,87380,256960,4096,16384,256960");
-        writeBuildProp(buildPropPath, "net.tcp.buffersize.evdo_b", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.default", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.wifi", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.umts", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.gprs", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.edge", "4096,87380,256960,4096,16384,256960");
+        bldprp.writeProp("net.tcp.buffersize.evdo_b", "4096,87380,256960,4096,16384,256960");
 
         //Отключение пересылки информации о использовании
-        writeBuildProp(buildPropPath, "ro.config.nocheckin", "1");
+        bldprp.writeProp("ro.config.nocheckin", "1");
 
-        writeBuildProp(buildPropPath, "ro.kernel.android.checkjni", "0");
-        writeBuildProp(buildPropPath, "ro.kernel.checkjni", "0");
-        writeBuildProp(buildPropPath, "ro.build.date", now.getTime().toString());
-        writeBuildProp(buildPropPath, "ro.repo.build", "kdgdev");
+        bldprp.writeProp("ro.kernel.android.checkjni", "0");
+        bldprp.writeProp("ro.kernel.checkjni", "0");
+        bldprp.writeProp("ro.build.date", now.getTime().toString());
+        bldprp.writeProp("ro.repo.build", "kdgdev");
         long unixTime = System.currentTimeMillis() / 1000L;
-        writeBuildProp(buildPropPath, "ro.build.date.utc", Long.toString(unixTime));
-        writeBuildProp(buildPropPath, "ro.product.locale.language", langs[cbLang.getSelectedIndex()]);
-        writeBuildProp(buildPropPath, "ro.product.locale.region", regions[cbLang.getSelectedIndex()]);
+        bldprp.writeProp("ro.build.date.utc", Long.toString(unixTime));
+        bldprp.writeProp("ro.product.locale.language", langs[cbLang.getSelectedIndex()]);
+        bldprp.writeProp("ro.product.locale.region", regions[cbLang.getSelectedIndex()]);
     }
 
     private boolean isSmaliPatch(String fileName, String translationDir) {
         File patchFile = new File(translationDir + File.separatorChar + fileName + File.separatorChar + "smali");
-        if (patchFile.exists()) return true;
-        return false;
+        return patchFile.exists();
     }
 
     private class kBigBlackBox_Decompiler extends SwingWorker<Integer, Object> {
@@ -755,7 +758,7 @@ public class mainForm extends JFrame {
                     lbProgressstate.setText("Extracting firmware...");
                     extractFolder(edtFirmwareFile.getText(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
                     extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-                    String frmDir = new String(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar);
+                    String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
                     if (!cbNotOdex.isSelected()) {
                         if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
                             try {
@@ -774,13 +777,19 @@ public class mainForm extends JFrame {
                 }
                 //</editor-fold>
 
-                buildpropWork bldprop = new buildpropWork(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
+                buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
+
+
+                LOGGER.info("!!Firmware info:");
+                LOGGER.info("!!Device name: " + bldprop.readProp("ro.product.device"));
+                LOGGER.info("!!Version: " + bldprop.readProp("ro.build.version.incremental"));
+                LOGGER.info("!!Android version: " + bldprop.readProp("ro.build.version.release"));
+
 
                 installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
                 //<editor-fold desc="Downloading precompiled files from git">
                 if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
                     lbProgressstate.setText("Getting precompiled files...");
-                    String device = readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device");
                     getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repo_Precompiled);
                     new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
                     new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
@@ -796,10 +805,10 @@ public class mainForm extends JFrame {
                         e.printStackTrace();
                     }
                 }
-                if (new File(workDir + File.separatorChar + "Override" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device")).exists() && UpdateFromFolder) {
+                if (new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device")).exists() && UpdateFromFolder) {
                     LOGGER.info("Override system files...");
                     lbProgressstate.setText("Updating files...");
-                    File src = new File(workDir + File.separatorChar + "Override" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar);
+                    File src = new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
                     File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
                     try {
                         FileUtils.copyDirectory(src, dsc);
@@ -809,8 +818,6 @@ public class mainForm extends JFrame {
                     }
                 }
                 //</editor-fold>
-                if (readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.build.version.release").contains("4.1"))
-                    isJB = true;
 
                 lbProgressstate.setText("Getting translation files...");
                 //<editor-fold desc="Downloading translation files from git">
@@ -831,23 +838,19 @@ public class mainForm extends JFrame {
                 }
 
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
-                if (!false) {
-                    if (!false) {
-                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
-                        File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                        File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                        try {
-                            FileUtils.copyDirectory(source, desc);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                        deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
-                    }
+                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
+                File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                try {
+                    FileUtils.copyDirectory(source, desc);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
+                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                 if (!sets.getProperty("Patches","no").contains("downloaded")) {
                     getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
-                    File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                    source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     try {
                         FileUtils.copyDirectory(source, desc);
                     } catch (IOException e) {
@@ -857,8 +860,8 @@ public class mainForm extends JFrame {
                     sets.setProperty("Patches", "downloaded");
                 }
                 if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
-                    File source = new File(workDir + File.separatorChar + "Language_Overlay");
-                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                    source = new File(workDir + File.separatorChar + "Language_Overlay");
+                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     try {
                         FileUtils.copyDirectory(source, desc);
                     } catch (IOException e) {
@@ -866,16 +869,16 @@ public class mainForm extends JFrame {
                     }
                 }
                 //</editor-fold>
-                File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
-                File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                 try {
+                    source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
+                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                     FileUtils.copyDirectory(source, desc);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
-                setTitle("jMFB - " + titleProjName + " (" + readBuildProp(buildPropPath, "ro.product.device") + ")");
-                writeAllBPValues(buildPropPath);
+                //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
+                setTitle("jMFB - " + titleProjName + " (" + bldprop.readProp("ro.product.device") + ")");
+                writeAllBPValues(bldprop);
                 lbProgressstate.setText("Installing frameworks...");
                 installFrameworks(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework");
                 //<editor-fold desc="Building new workspace - decompiling app and frameworks">
@@ -897,10 +900,10 @@ public class mainForm extends JFrame {
                         pbProgress.setValue(0);
                         for (int i = 0; i < apkFiles.size(); i++) {
                             File frm = new File(apkFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
                                 pbProgress.setValue(i);
                                 LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(buildPropPath, "ro.product.device")));
+                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
                                 rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
                             } else {
                                 frm.delete();
@@ -923,10 +926,10 @@ public class mainForm extends JFrame {
                         pbProgress.setValue(0);
                         for (int i = 0; i < apkFiles.size(); i++) {
                             File frm = new File(apkFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
                                 pbProgress.setValue(i);
                                 LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(buildPropPath, "ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
+                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
                                 rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
                             } else {
                                 File dectFile = File.createTempFile("KDGDEV", ".kdg");
@@ -955,7 +958,7 @@ public class mainForm extends JFrame {
                         pbProgress.setValue(0);
                         for (int i = 0; i < frmFiles.size(); i++) {
                             File frm = new File(frmFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
                                 pbProgress.setValue(i);
                                 LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                                 decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
@@ -989,6 +992,7 @@ public class mainForm extends JFrame {
                 sets.store(new FileOutputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"), "KDevGroup Settings");
                 LOGGER.info("======== End of decompiling files ========");
                 btnBuild.setEnabled(true);
+                bldprop.write();
             } catch (IOException e) {
                 LOGGER.info(e.getMessage());
                 JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
@@ -1030,6 +1034,7 @@ public class mainForm extends JFrame {
             searchTools finder = new searchTools();
             btnBuild.setEnabled(false);
             try {
+                buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "build"));
                 List buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", ".*.apk");
                 pbProgress.setMaximum(buildFiles.size());
@@ -1052,8 +1057,8 @@ public class mainForm extends JFrame {
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
                         FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                     }
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                     }
                     if (buildFiles.get(i).toString().contains("Settings.apk")) {
                         if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
@@ -1101,8 +1106,8 @@ public class mainForm extends JFrame {
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
                         FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                     }
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                     }
                     kAndrolib.build(sourceDir, dectFile, true, false, true);
                     if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
@@ -1130,10 +1135,10 @@ public class mainForm extends JFrame {
                         if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
                             FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                         }
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + readBuildProp(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop", "ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                         }
-                        ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
+                        //ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
 
                         //kAndrolib.build(sourceDir, dectFile, true, false, true);
                         kAndrolib.build(sourceDir, dectFile, true, false, false);
@@ -1148,8 +1153,8 @@ public class mainForm extends JFrame {
                     }
                 }
                 LOGGER.info("======== End of compiling files ========");
-                String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
-                writeAllBPValues(buildPropPath);
+                //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
+                writeAllBPValues(bldprop);
                 LOGGER.info("Building firmware file...");
                 lbProgressstate.setText("Building firmware file...");
                 pbProgress.setIndeterminate(true);
@@ -1176,10 +1181,11 @@ public class mainForm extends JFrame {
                 if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists())
                     new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
                 zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
+                bldprop.write();
 
                 zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
-                String firmwareVersion = readBuildProp(buildPropPath, "ro.build.version.incremental");
-                String phoneModel = readBuildProp(buildPropPath, "ro.product.device");
+                String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
+                String phoneModel = bldprop.readProp("ro.product.device");
                 lbProgressstate.setText("Signing firmware file...");
                 LOGGER.info("Signing firmware file...");
                 new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
@@ -1320,7 +1326,7 @@ public class mainForm extends JFrame {
         return filename.substring(0, extensionIndex);
     }
 
-    private void miOpenProjectActionPerformed(ActionEvent e) {
+    private void miOpenProjectActionPerformed() {
         searchTools finder = new searchTools();
         try {
         List<String> projects = new ArrayList<String>();
@@ -1370,7 +1376,7 @@ public class mainForm extends JFrame {
 
     }
 
-    private void miNewProjectActionPerformed(ActionEvent e) {
+    private void miNewProjectActionPerformed() {
         projectName = JOptionPane.showInputDialog(null, "Project name:", "Creating MFB project", JOptionPane.QUESTION_MESSAGE);
         titleProjName = projectName;
         projectName = projectName + ".mfbproj";
@@ -1398,7 +1404,7 @@ public class mainForm extends JFrame {
         ImageIO.write(newImage, "PNG", new File(fileName));
     }
 
-    private void btnBuildActionPerformed(ActionEvent e) {
+    private void btnBuildActionPerformed() {
         kBigBlackBox_Compile bbb1 = new kBigBlackBox_Compile();
         bbb1.execute();
     }
@@ -1458,7 +1464,7 @@ public class mainForm extends JFrame {
                 miNewProject.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        miNewProjectActionPerformed(e);
+                        miNewProjectActionPerformed();
                     }
                 });
                 fileMenu.add(miNewProject);
@@ -1468,7 +1474,7 @@ public class mainForm extends JFrame {
                 miOpenProject.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        miOpenProjectActionPerformed(e);
+                        miOpenProjectActionPerformed();
                     }
                 });
                 fileMenu.add(miOpenProject);
@@ -1623,7 +1629,7 @@ public class mainForm extends JFrame {
             btnBuild.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    btnBuildActionPerformed(e);
+                    btnBuildActionPerformed();
                 }
             });
             pCmdButtons.add(btnBuild, CC.xy(7, 1));
@@ -1758,7 +1764,7 @@ public class mainForm extends JFrame {
     private Boolean HWUpdate = false;
     private Boolean UpdateFromFolder = false;
     private Boolean writeBProp = true;
-    private Boolean isJB = false;
+    //private Boolean isJB = false;
     private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
     //private Boolean fullLog=false;
 }

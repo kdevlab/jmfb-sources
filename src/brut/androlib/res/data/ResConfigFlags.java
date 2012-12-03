@@ -54,6 +54,8 @@ public class ResConfigFlags {
 
     private final String mQualifiers;
 
+    public final short oppoflag;
+
     public ResConfigFlags() {
         mcc = 0;
         mnc = 0;
@@ -62,7 +64,7 @@ public class ResConfigFlags {
         layoutDirection = SCREENLAYOUT_LAYOUTDIR_ANY;
         orientation = ORIENTATION_ANY;
         touchscreen = TOUCHSCREEN_ANY;
-        density = DENSITY_DEFAULT;
+        density = DENSITY_DPI_UNDEFINED;
         keyboard = KEYBOARD_ANY;
         navigation = NAVIGATION_ANY;
         inputFlags = KEYSHIDDEN_ANY | NAVHIDDEN_ANY;
@@ -76,6 +78,7 @@ public class ResConfigFlags {
         screenHeightDp = 0;
         isInvalid = false;
         mQualifiers = "";
+        oppoflag = 0;
     }
 
     public ResConfigFlags(short mcc, short mnc, char[] language, char[] country,
@@ -83,7 +86,7 @@ public class ResConfigFlags {
                           short density, byte keyboard, byte navigation, byte inputFlags,
                           short screenWidth, short screenHeight, short sdkVersion, byte screenLayout,
                           byte uiMode, short smallestScreenWidthDp, short screenWidthDp,
-                          short screenHeightDp, boolean isInvalid) {
+                          short screenHeightDp, boolean isInvalid, short oppoflag) {
         if (orientation < 0 || orientation > 3) {
             LOGGER.warning("Invalid orientation value: " + orientation);
             orientation = 0;
@@ -130,6 +133,7 @@ public class ResConfigFlags {
         this.screenWidthDp = screenWidthDp;
         this.screenHeightDp = screenHeightDp;
         this.isInvalid = isInvalid;
+        this.oppoflag = oppoflag;
         mQualifiers = generateQualifiers();
     }
 
@@ -236,7 +240,7 @@ public class ResConfigFlags {
                 break;
         }
         switch (density) {
-            case DENSITY_DEFAULT:
+            case DENSITY_DPI_UNDEFINED:
                 break;
             case DENSITY_LOW:
                 ret.append("-ldpi");
@@ -327,6 +331,9 @@ public class ResConfigFlags {
         if (sdkVersion > getNaturalSdkVersionRequirement()) {
             ret.append("-v").append(sdkVersion);
         }
+        if (oppoflag == 1) {
+            ret.append("-oppo");
+        }
         if (isInvalid) {
             ret.append("-ERR" + sErrCounter++);
         }
@@ -343,7 +350,7 @@ public class ResConfigFlags {
             return 8;
         }
         if ((screenLayout & (MASK_SCREENSIZE | MASK_SCREENLONG)) != 0
-                || density != DENSITY_DEFAULT) {
+                || density != DENSITY_DPI_UNDEFINED) {
             return 4;
         }
         return 0;
@@ -389,7 +396,7 @@ public class ResConfigFlags {
     public final static byte TOUCHSCREEN_STYLUS = 2;
     public final static byte TOUCHSCREEN_FINGER = 3;
 
-    public final static short DENSITY_DEFAULT = 0;
+    public final static short DENSITY_DPI_UNDEFINED = 0;
     public final static short DENSITY_LOW = 120;
     public final static short DENSITY_MEDIUM = 160;
     public final static short DENSITY_TV = 213;

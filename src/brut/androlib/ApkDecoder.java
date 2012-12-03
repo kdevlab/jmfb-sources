@@ -225,6 +225,7 @@ public class ApkDecoder {
                     Boolean.valueOf(mAndrolib.isFrameworkApk(getResTable())));
             putUsesFramework(meta);
             putSdkInfo(meta);
+            putPackageInfo(meta);
         }
 
         mAndrolib.writeMetaFile(mOutDir, meta);
@@ -261,6 +262,13 @@ public class ApkDecoder {
             meta.put("sdkInfo", info);
         }
 
+    }
+
+    private void putPackageInfo(Map<String, Object> meta) throws AndrolibException {
+        Map<String, String> info = getResTable().getPackageInfo();
+        if (info.size() > 0) {
+            meta.put("packageInfo", info);
+        }
     }
 
     private final Androlib mAndrolib;

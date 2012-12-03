@@ -16,12 +16,12 @@ import java.util.regex.Pattern;
  * Time: 18:09
  * To change this template use File | Settings | File Templates.
  */
-public class buildpropWork {
+public class buildPropTools {
 
     private List<String[]> values = new ArrayList<String[]>();
     File workFile;
 
-    public buildpropWork(String file) throws IOException {
+    public buildPropTools(String file) throws IOException {
         workFile = new File(file);
         List<String> contents = FileUtils.readLines(workFile);
         String sPattern = "(.*)=(.*)";
@@ -42,7 +42,7 @@ public class buildpropWork {
         for (String[] val : values) {
             if (val[0].equals(section)) return val[1];
         }
-        return null;
+        return "null";
     }
 
     public void writeProp(String section, String value) {
