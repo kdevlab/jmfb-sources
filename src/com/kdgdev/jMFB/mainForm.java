@@ -402,6 +402,8 @@ public class mainForm extends JFrame {
             readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
         kBigBlackBox_Init bbb2 = new kBigBlackBox_Init();
         bbb2.execute();
+
+
         //<editor-fold desc="Init main patches">
         if (!execFile(false, "aapt") || !execFile(false, "zipalign")) {
             aAppsDir = "";
@@ -417,8 +419,6 @@ public class mainForm extends JFrame {
                 projectName = args[1] + ".mfbproj";
                 titleProjName = args[1];
                 edtFirmwareFile.setText(args[2]);
-                int[] sel = {1, 1, 0};
-                lstRepos.setSelectedIndices(sel);
                 kBigBlackBox_Decompiler bad = new kBigBlackBox_Decompiler();
                 bad.execute();
                 while (!bad.isDone()) {
@@ -1382,6 +1382,10 @@ public class mainForm extends JFrame {
         projectName = projectName + ".mfbproj";
         if (!projectName.isEmpty()) {
             setTitle("jMFB - " + titleProjName);
+            int[] sel = new int[repos_count];
+            sel[0]=1;
+            sel[1]=1;
+            lstRepos.setSelectedIndices(sel);
             setInterfaceState(true);
         }
     }
