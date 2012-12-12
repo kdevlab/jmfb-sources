@@ -64,22 +64,6 @@ public class ResPackage {
         return spec;
     }
 
-    public List<ResConfig> getConfigs() {
-        return new ArrayList<ResConfig>(mConfigs.values());
-    }
-
-    public boolean hasConfig(ResConfigFlags flags) {
-        return mConfigs.containsKey(flags);
-    }
-
-    public ResConfig getConfig(ResConfigFlags flags) throws AndrolibException {
-        ResConfig config = mConfigs.get(flags);
-        if (config == null) {
-            throw new UndefinedResObject("config: " + flags);
-        }
-        return config;
-    }
-
     public ResConfig getOrCreateConfig(ResConfigFlags flags)
             throws AndrolibException {
         ResConfig config = mConfigs.get(flags);
@@ -88,14 +72,6 @@ public class ResPackage {
             mConfigs.put(flags, config);
         }
         return config;
-    }
-
-    public List<ResType> listTypes() {
-        return new ArrayList<ResType>(mTypes.values());
-    }
-
-    public boolean hasType(String typeName) {
-        return mTypes.containsKey(typeName);
     }
 
     public ResType getType(String typeName) throws AndrolibException {
@@ -159,12 +135,6 @@ public class ResPackage {
     public void addResSpec(ResResSpec spec) throws AndrolibException {
         if (mResSpecs.put(spec.getId(), spec) != null) {
             throw new AndrolibException("Multiple resource specs: " + spec);
-        }
-    }
-
-    public void addConfig(ResConfig config) throws AndrolibException {
-        if (mConfigs.put(config.getFlags(), config) != null) {
-            throw new AndrolibException("Multiple configs: " + config);
         }
     }
 

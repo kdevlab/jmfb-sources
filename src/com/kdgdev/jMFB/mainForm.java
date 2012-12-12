@@ -44,6 +44,7 @@ import java.util.logging.*;
 /**
  * @author Kirill
  */
+
 public class mainForm extends JFrame {
 
     private final static Androlib kAndrolib = new Androlib();
@@ -147,14 +148,14 @@ public class mainForm extends JFrame {
         LOGGER.info("Deodexing file: " + odexFile.getName());
         File classesDir = new File(workDir + File.separatorChar + projectName + File.separatorChar + "deodexed" + File.separatorChar + odexFile.getName() + ".classes");
         if (!classesDir.exists()) {
-            if(classesDir.mkdirs()) LOGGER.info("classes dir created");
+            if (classesDir.mkdirs()) LOGGER.info("classes dir created");
         }
         File classesFile = new File(classesDir.getAbsolutePath() + File.separatorChar + "classes.dex");
         baksmali(odexFile, outDir, apiLevel, classPathDir);
         smali(outDir, classesFile);
         packFile(new File(FilenameUtils.removeExtension(odexFile.toString()) + ext), classesFile);
         if (classesFile.exists()) {
-            if(odexFile.delete())
+            if (odexFile.delete())
                 LOGGER.info("File deodexed successfully");
             else
                 LOGGER.info("Error deodexing file");
@@ -386,7 +387,7 @@ public class mainForm extends JFrame {
 
     private boolean initMFB(String[] args) {
         setupLogging(Verbosity.NORMAL);
-        LOGGER.info("========== Welcome to jMFB =========");
+        LOGGER.info("========== Welcome to "+Branding+" =========");
         LOGGER.info("| Original version only on ROMZ.bz |");
         LOGGER.info("|  This program code protected by  |");
         LOGGER.info("|             US Patents           |");
@@ -400,7 +401,7 @@ public class mainForm extends JFrame {
             readLanuagesFile(workDir + File.separatorChar + "repos.list", true);
         if (new File(workDir + File.separatorChar + "repos_add.list").exists())
             readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
-        kBigBlackBox_Init bbb2 = new kBigBlackBox_Init();
+        jmfbInit bbb2 = new jmfbInit();
         bbb2.execute();
 
 
@@ -414,23 +415,7 @@ public class mainForm extends JFrame {
         }
         kAndrolib.setAapTool(aAppsDir + File.separatorChar + "aapt");
         if (args.length > 0) {
-            if (args[0].equals("-build") || args[0].equals("-b")) {
-                cmd = true;
-                projectName = args[1] + ".mfbproj";
-                titleProjName = args[1];
-                edtFirmwareFile.setText(args[2]);
-                kBigBlackBox_Decompiler bad = new kBigBlackBox_Decompiler();
-                bad.execute();
-                while (!bad.isDone()) {
-                }
-                kBigBlackBox_Compile bac;
-                bac = new kBigBlackBox_Compile();
-                bac.execute();
-                while (!bac.isDone()) {
-                }
-                System.exit(0);
-                return false;
-            }
+            if (args[0].equals("-v")) setupLogging(Verbosity.VERBOSE);
         }
         //</editor-fold>
         Properties writeProp = new Properties();
@@ -708,7 +693,7 @@ public class mainForm extends JFrame {
         bldprp.writeProp("persist.sys.use_dithering", "1");
 
         //Энергосбережение
-        bldprp.writeProp("ro.ril.disable.power.collapse", "1");
+        //bldprp.writeProp("ro.ril.disable.power.collapse", "1");
         bldprp.writeProp("pm.sleep_mode", "1");
         bldprp.writeProp("windowsmgr.max_events_per_sec", "60");
         bldprp.writeProp("wifi.supplicant_scan_interval", "180");
@@ -739,270 +724,291 @@ public class mainForm extends JFrame {
         return patchFile.exists();
     }
 
-    private class kBigBlackBox_Decompiler extends SwingWorker<Integer, Object> {
+    private void DecompileFrmw(){
+        try {
+            btnBuild.setEnabled(false);
+            Properties sets = new Properties();
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop").exists())
+                sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
+            btnDeCompile.setEnabled(false);
+            pbProgress.setIndeterminate(true);
+            new File(workDir + File.separatorChar + projectName).mkdirs();
+            kAndrolib.setFrameworksDir(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
+            File fromFile = new File(edtFirmwareFile.getText());
+            File toFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "stockrom.zip");
+            //<editor-fold desc="Extracting firmware and update files">
+            pbProgress.setIndeterminate(true);
+            if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware").exists()) {
+                toggleFirmwareChoise(false);
+                lbProgressstate.setText("Extracting firmware...");
 
-        @Override
-        protected Integer doInBackground() {
-            try {
-                btnBuild.setEnabled(false);
-                Properties sets = new Properties();
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop").exists())
-                    sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
-                btnDeCompile.setEnabled(false);
-                pbProgress.setIndeterminate(true);
-                new File(workDir + File.separatorChar + projectName).mkdirs();
-                kAndrolib.setFrameworksDir(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
-                //<editor-fold desc="Extracting firmware and update files">
-                pbProgress.setIndeterminate(true);
-                if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware").exists()) {
-                    lbProgressstate.setText("Extracting firmware...");
-                    extractFolder(edtFirmwareFile.getText(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
-                    extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-                    String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
-                    if (!cbNotOdex.isSelected()) {
-                        if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
-                            try {
-                                lbProgressstate.setText("Deodexing firmware...");
-                                LOGGER.info("----- Starting BurgerZ deodex code -----");
-                                deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
-                                deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
-                                LOGGER.info("----- DONE! -----");
-                            } catch (Exception e) {
-                                LOGGER.info(e.getMessage());
-                                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                            }
-
+                if(!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
+                extractFolder(toFile.getAbsolutePath(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
+                extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
+                if (!cbNotOdex.isSelected()) {
+                    if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
+                        try {
+                            lbProgressstate.setText("Deodexing firmware...");
+                            LOGGER.info("----- Starting BurgerZ deodex code -----");
+                            deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
+                            deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
+                            LOGGER.info("----- DONE! -----");
+                        } catch (Exception e) {
+                            LOGGER.info(e.getMessage());
+                            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
                         }
+
                     }
                 }
-                //</editor-fold>
+            }
+            //</editor-fold>
 
-                buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
-
-
-                LOGGER.info("!!Firmware info:");
-                LOGGER.info("!!Device name: " + bldprop.readProp("ro.product.device"));
-                LOGGER.info("!!Version: " + bldprop.readProp("ro.build.version.incremental"));
-                LOGGER.info("!!Android version: " + bldprop.readProp("ro.build.version.release"));
+            buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
 
 
-                installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
-                //<editor-fold desc="Downloading precompiled files from git">
-                if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
-                    lbProgressstate.setText("Getting precompiled files...");
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repo_Precompiled);
-                    new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
-                    new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
-                    //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/LatinIME.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "LatinIME.apk", "ics");
-                    //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/lib/libjni_latinime.so", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "lib" + File.separatorChar + "libjni_latinime.so", "ics");
-                    new gitTools().downloadFileFromGit(repo_Bootanimation, "system/media/bootanimation.zip", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "bootanimation.zip");
-                    lbProgressstate.setText("Updating files...");
-                    File src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar);
-                    File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
+            LOGGER.info("!--------------- Firmware info: ---------------------!");
+            LOGGER.info("!!Device name: " + bldprop.readProp("ro.product.device"));
+            LOGGER.info("!!Version: " + bldprop.readProp("ro.build.version.incremental"));
+            LOGGER.info("!!Android version: " + bldprop.readProp("ro.build.version.release"));
+            LOGGER.info("!----------------------------------------------------!");
+
+
+            installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
+            //<editor-fold desc="Downloading precompiled files from git">
+            if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
+                lbProgressstate.setText("Getting precompiled files...");
+                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repo_Precompiled);
+                new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
+                new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
+                //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/LatinIME.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "LatinIME.apk", "ics");
+                //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/lib/libjni_latinime.so", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "lib" + File.separatorChar + "libjni_latinime.so", "ics");
+                new gitTools().downloadFileFromGit(repo_Bootanimation, "system/media/bootanimation.zip", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "bootanimation.zip");
+                lbProgressstate.setText("Updating files...");
+                File src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar);
+                File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
+                try {
+                    FileUtils.copyDirectory(src, dsc);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar).exists()) {
+                    src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
+                    dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
                     try {
                         FileUtils.copyDirectory(src, dsc);
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
                 }
-                if (new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device")).exists() && UpdateFromFolder) {
-                    LOGGER.info("Override system files...");
-                    lbProgressstate.setText("Updating files...");
-                    File src = new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
-                    File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
+            }
+            if (new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device")).exists() && UpdateFromFolder) {
+                LOGGER.info("Override system files...");
+                lbProgressstate.setText("Updating files...");
+                File src = new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
+                File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
+                try {
+                    FileUtils.copyDirectory(src, dsc);
+                    LOGGER.info("Copy done: " + src.getAbsolutePath() + " -> " + dsc.getAbsolutePath());
+                } catch (IOException e) {
+                    LOGGER.info("Copy failed");
+                }
+            }
+            //</editor-fold>
+
+            lbProgressstate.setText("Getting translation files...");
+            //<editor-fold desc="Downloading translation files from git">
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git"));
+
+            for (int i = 0; i < repos_count; i++) {
+                if (lstRepos.isSelectedIndex(i)) {
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
+                    File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
+                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     try {
-                        FileUtils.copyDirectory(src, dsc);
-                        LOGGER.info("Copy done: " + src.getAbsolutePath() + " -> " + dsc.getAbsolutePath());
+                        FileUtils.copyDirectory(source, desc);
                     } catch (IOException e) {
-                        LOGGER.info("Copy failed");
+                        e.printStackTrace();
                     }
                 }
-                //</editor-fold>
+                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString()));
+            }
 
-                lbProgressstate.setText("Getting translation files...");
-                //<editor-fold desc="Downloading translation files from git">
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git"));
-
-                for (int i = 0; i < repos_count; i++) {
-                    if (lstRepos.isSelectedIndex(i)) {
-                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
-                        File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
-                        File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                        try {
-                            FileUtils.copyDirectory(source, desc);
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                    deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString()));
-                }
-
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
-                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
-                File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
+            getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
+            File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+            File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+            try {
+                FileUtils.copyDirectory(source, desc);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
+            if (!sets.getProperty("Patches", "no").contains("downloaded")) {
+                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
+                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                 try {
                     FileUtils.copyDirectory(source, desc);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
-                if (!sets.getProperty("Patches","no").contains("downloaded")) {
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
-                    source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                    try {
-                        FileUtils.copyDirectory(source, desc);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                    deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
-                    sets.setProperty("Patches", "downloaded");
-                }
-                if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
-                    source = new File(workDir + File.separatorChar + "Language_Overlay");
-                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                    try {
-                        FileUtils.copyDirectory(source, desc);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
-                }
-                //</editor-fold>
+                sets.setProperty("Patches", "downloaded");
+            }
+            if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
+                source = new File(workDir + File.separatorChar + "Language_Overlay");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                 try {
-                    source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
-                    desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                     FileUtils.copyDirectory(source, desc);
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
-                //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
-                setTitle("jMFB - " + titleProjName + " (" + bldprop.readProp("ro.product.device") + ")");
-                writeAllBPValues(bldprop);
-                lbProgressstate.setText("Installing frameworks...");
-                installFrameworks(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework");
-                //<editor-fold desc="Building new workspace - decompiling app and frameworks">
-
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists() || !new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
-                    lbProgressstate.setText("Building new workspace - Decompiling data apps...");
-                    File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
-                    apkSrc.mkdirs();
-                    pbProgress.setIndeterminate(false);
-                    searchTools finder = new searchTools();
-                    try {
-                        List apkFiles;
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) {
-                            apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps", ".*.apk");
-                        } else {
-                            apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps", ".*.apk");
-                        }
-                        pbProgress.setMaximum(apkFiles.size());
-                        pbProgress.setValue(0);
-                        for (int i = 0; i < apkFiles.size(); i++) {
-                            File frm = new File(apkFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
-                                pbProgress.setValue(i);
-                                LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
-                                rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
-                            } else {
-                                frm.delete();
-                            }
-                        }
-                    } catch (Exception err) {
-                        LOGGER.info(err.getMessage());
-                    }
-                }
-
-                if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources").exists()) {
-                    lbProgressstate.setText("Building new workspace - Decompiling apps...");
-                    File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
-                    apkSrc.mkdirs();
-                    pbProgress.setIndeterminate(false);
-                    searchTools finder = new searchTools();
-                    try {
-                        List apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app", ".*.apk");
-                        pbProgress.setMaximum(apkFiles.size());
-                        pbProgress.setValue(0);
-                        for (int i = 0; i < apkFiles.size(); i++) {
-                            File frm = new File(apkFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
-                                pbProgress.setValue(i);
-                                LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
-                                rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
-                            } else {
-                                File dectFile = File.createTempFile("KDGDEV", ".kdg");
-                                File dctFile = frm;
-                                FileUtils.copyFile(dctFile, dectFile);
-                                dctFile.delete();
-                                if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
-                                    LOGGER.info("Zipaligning...");
-                                else FileUtils.copyFile(dectFile, dctFile);
-                                dectFile.delete();
-                            }
-                        }
-                    } catch (Exception err) {
-                        LOGGER.info(err.getMessage());
-                    }
-                }
-                //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data"));
-                if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources").exists()) {
-                    lbProgressstate.setText("Building new workspace - Decompiling frameworks...");
-                    File frmSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
-                    frmSrc.mkdirs();
-                    searchTools finder = new searchTools();
-                    try {
-                        List frmFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework", ".*.apk");
-                        pbProgress.setMaximum(frmFiles.size());
-                        pbProgress.setValue(0);
-                        for (int i = 0; i < frmFiles.size(); i++) {
-                            File frm = new File(frmFiles.get(i).toString());
-                            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
-                                pbProgress.setValue(i);
-                                LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                                decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
-                                rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
-                            } else {
-                                File dectFile = File.createTempFile("KDGDEV", ".kdg");
-                                File dctFile = frm;
-                                FileUtils.copyFile(dctFile, dectFile);
-                                dctFile.delete();
-                                if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
-                                    LOGGER.info("Zipaligning...");
-                                else FileUtils.copyFile(dectFile, dctFile);
-                                dectFile.delete();
-                            }
-                        }
-                    } catch (Exception err) {
-                        LOGGER.info(err.getMessage());
-                    }
-                }
-                //</editor-fold>
-                pbProgress.setMaximum(100);
-                pbProgress.setValue(100);
-                pbProgress.setIndeterminate(false);
-                lbProgressstate.setText("Done!");
-                sets.setProperty("FirmwareFile", edtFirmwareFile.getText());
-                for (int i = 0; i < repos_count; i++) {
-                    if (lstRepos.isSelectedIndex(i))
-                        sets.setProperty("Repo" + ((Integer) i).toString(), "1");
-                    else sets.setProperty("Repo" + ((Integer) i).toString(), "0");
-                }
-                sets.store(new FileOutputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"), "KDevGroup Settings");
-                LOGGER.info("======== End of decompiling files ========");
-                btnBuild.setEnabled(true);
-                bldprop.write();
-            } catch (IOException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (BrutException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (ZipException e) {
-                System.out.println(e.getMessage());
             }
-            return 1;
+            //</editor-fold>
+            try {
+                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                FileUtils.copyDirectory(source, desc);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
+            setTitle(Branding + " - " + titleProjName + " (" + bldprop.readProp("ro.product.device") + ")");
+            writeAllBPValues(bldprop);
+            lbProgressstate.setText("Installing frameworks...");
+            installFrameworks(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework");
+            //<editor-fold desc="Building new workspace - decompiling app and frameworks">
+
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists() || !new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
+                lbProgressstate.setText("Building new workspace - Decompiling data apps...");
+                File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
+                apkSrc.mkdirs();
+                pbProgress.setIndeterminate(false);
+                searchTools finder = new searchTools();
+                try {
+                    List apkFiles;
+                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) {
+                        apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps", ".*.apk");
+                    } else {
+                        apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps", ".*.apk");
+                    }
+                    pbProgress.setMaximum(apkFiles.size());
+                    pbProgress.setValue(0);
+                    for (int i = 0; i < apkFiles.size(); i++) {
+                        File frm = new File(apkFiles.get(i).toString());
+                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            pbProgress.setValue(i);
+                            LOGGER.info("======== Decompiling " + frm.getName() + " ========");
+                            decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                        } else {
+                            frm.delete();
+                        }
+                    }
+                } catch (Exception err) {
+                    LOGGER.info(err.getMessage());
+                }
+            }
+
+            if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources").exists()) {
+                lbProgressstate.setText("Building new workspace - Decompiling apps...");
+                File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
+                apkSrc.mkdirs();
+                pbProgress.setIndeterminate(false);
+                searchTools finder = new searchTools();
+                try {
+                    List apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app", ".*.apk");
+                    pbProgress.setMaximum(apkFiles.size());
+                    pbProgress.setValue(0);
+                    for (int i = 0; i < apkFiles.size(); i++) {
+                        File frm = new File(apkFiles.get(i).toString());
+                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            pbProgress.setValue(i);
+                            LOGGER.info("======== Decompiling " + frm.getName() + " ========");
+                            decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                        } else {
+                            File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                            File dctFile = frm;
+                            FileUtils.copyFile(dctFile, dectFile);
+                            dctFile.delete();
+                            if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
+                                LOGGER.info("Zipaligning...");
+                            else FileUtils.copyFile(dectFile, dctFile);
+                            dectFile.delete();
+                        }
+                    }
+                } catch (Exception err) {
+                    LOGGER.info(err.getMessage());
+                }
+            }
+            //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data"));
+            if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources").exists()) {
+                lbProgressstate.setText("Building new workspace - Decompiling frameworks...");
+                File frmSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
+                frmSrc.mkdirs();
+                searchTools finder = new searchTools();
+                try {
+                    List frmFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework", ".*.apk");
+                    pbProgress.setMaximum(frmFiles.size());
+                    pbProgress.setValue(0);
+                    for (int i = 0; i < frmFiles.size(); i++) {
+                        File frm = new File(frmFiles.get(i).toString());
+                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                            pbProgress.setValue(i);
+                            LOGGER.info("======== Decompiling " + frm.getName() + " ========");
+                            decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                        } else {
+                            File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                            File dctFile = frm;
+                            FileUtils.copyFile(dctFile, dectFile);
+                            dctFile.delete();
+                            if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
+                                LOGGER.info("Zipaligning...");
+                            else FileUtils.copyFile(dectFile, dctFile);
+                            dectFile.delete();
+                        }
+                    }
+                } catch (Exception err) {
+                    LOGGER.info(err.getMessage());
+                }
+            }
+            //</editor-fold>
+            pbProgress.setMaximum(100);
+            pbProgress.setValue(100);
+            pbProgress.setIndeterminate(false);
+            lbProgressstate.setText("Done!");
+            //sets.setProperty("FirmwareFile", toFile.getAbsolutePath());
+            for (int i = 0; i < repos_count; i++) {
+                if (lstRepos.isSelectedIndex(i))
+                    sets.setProperty("Repo" + ((Integer) i).toString(), "1");
+                else sets.setProperty("Repo" + ((Integer) i).toString(), "0");
+            }
+            sets.store(new FileOutputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"), "KDevGroup Settings");
+            LOGGER.info("======== End of decompiling files ========");
+            btnBuild.setEnabled(true);
+            bldprop.write();
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (BrutException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (ZipException e) {
+            System.out.println(e.getMessage());
+        }
+    }
+
+    private class DecompileFirmware extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            DecompileFrmw();
+            //return 1;
+            return null;
         }
     }
 
@@ -1028,148 +1034,146 @@ public class mainForm extends JFrame {
         LOGGER.info("Updating workspace with auth system...Done!");
     }
 
-    private class kBigBlackBox_Compile extends SwingWorker<Integer, Object> {
-        @Override
-        protected Integer doInBackground() {
-            searchTools finder = new searchTools();
-            btnBuild.setEnabled(false);
-            try {
-                buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "build"));
-                List buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", ".*.apk");
+    private void CompileFrmw(){
+        searchTools finder = new searchTools();
+        btnBuild.setEnabled(false);
+        try {
+            buildPropTools bldprop = new buildPropTools(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop");
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "build"));
+            List buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", ".*.apk");
+            pbProgress.setMaximum(buildFiles.size());
+            pbProgress.setValue(0);
+            lbProgressstate.setText("Building apps...");
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"));
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
+            kAndrolib.setFrameworksDir(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
+            File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
+            patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
+            for (int i = 0; i < buildFiles.size(); i++) {
+                pbProgress.setValue(i);
+                LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
+                File sourceDir = new File(buildFiles.get(i).toString());
+                File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                LOGGER.info(dectFile.getAbsolutePath());
+                //File signFile = File.createTempFile("KDGDEV", ".kdg");
+                //String FileName = (new File(buildFiles.get(i).toString()).getName());
+                File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                }
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                }
+                if (buildFiles.get(i).toString().contains("Settings.apk")) {
+                    if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
+                        watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png");
+                    }
+                    if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-xhdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
+                        watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-xhdpi" + File.separatorChar + "miui_logo.9.png");
+                    }
+                    if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
+                        watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-hdpi" + File.separatorChar + "miui_logo.9.png");
+                    }
+                    if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-xhdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
+                        watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-xhdpi" + File.separatorChar + "miui_logo.9.png");
+                    }
+                }
+                //ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
+
+                kAndrolib.build(sourceDir, dectFile, true, false, true);
+                //kAndrolib.build(sourceDir, dectFile, true, false, (signerData.getCertificate(FileName).equalsIgnoreCase("PRESIGNED")));
+                //if(!(signerData.getCertificate(FileName).equalsIgnoreCase("PRESIGNED"))) {
+                //    signApk signer = new signApk();
+                //    LOGGER.info("Signing with "+signerData.getCertificate(FileName)+"...");
+                //    signer.signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar +signerData.getCertificate(FileName), workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar +signerData.getPrivateKey(FileName), dectFile.getAbsolutePath(), dectFile.getAbsolutePath());
+                //}
+                if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
+                    LOGGER.info("Zipaligning...");
+                else FileUtils.copyFile(dectFile, dctFile);
+                dectFile.delete();
+            }
+            buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", ".*.apk");
+            pbProgress.setMaximum(buildFiles.size());
+            pbProgress.setValue(0);
+            lbProgressstate.setText("Building framework...");
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
+            patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
+            for (int i = 0; i < buildFiles.size(); i++) {
+                pbProgress.setValue(i);
+                LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
+                File sourceDir = new File(buildFiles.get(i).toString());
+                File dectFile = File.createTempFile("KDGDEV", ".kdg");
+                LOGGER.info(dectFile.getAbsolutePath());
+                //String FileName = (new File(buildFiles.get(i).toString()).getName());
+                File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                }
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
+                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
+                }
+                kAndrolib.build(sourceDir, dectFile, true, false, true);
+                if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
+                    LOGGER.info("Zipaligning...");
+                else FileUtils.copyFile(dectFile, dctFile);
+                dectFile.delete();
+            }
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
+                buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", ".*.apk");
                 pbProgress.setMaximum(buildFiles.size());
                 pbProgress.setValue(0);
-                lbProgressstate.setText("Building apps...");
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"));
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
-                kAndrolib.setFrameworksDir(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
-                File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
-                patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
+                lbProgressstate.setText("Building data...");
+                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"));
+                new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
+                patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
                 for (int i = 0; i < buildFiles.size(); i++) {
                     pbProgress.setValue(i);
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                     File sourceDir = new File(buildFiles.get(i).toString());
                     File dectFile = File.createTempFile("KDGDEV", ".kdg");
                     LOGGER.info(dectFile.getAbsolutePath());
-                    //File signFile = File.createTempFile("KDGDEV", ".kdg");
+                    File signFile = File.createTempFile("KDGDEV", ".kdg");
                     //String FileName = (new File(buildFiles.get(i).toString()).getName());
-                    File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
+                    File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
                         FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
                     }
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
                         FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                    }
-                    if (buildFiles.get(i).toString().contains("Settings.apk")) {
-                        if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
-                            watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png");
-                        }
-                        if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-xhdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
-                            watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-xhdpi" + File.separatorChar + "miui_logo.9.png");
-                        }
-                        if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
-                            watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-hdpi" + File.separatorChar + "miui_logo.9.png");
-                        }
-                        if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-xhdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
-                            watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-uk-xhdpi" + File.separatorChar + "miui_logo.9.png");
-                        }
                     }
                     //ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
 
-                    kAndrolib.build(sourceDir, dectFile, true, false, true);
-                    //kAndrolib.build(sourceDir, dectFile, true, false, (signerData.getCertificate(FileName).equalsIgnoreCase("PRESIGNED")));
-                    //if(!(signerData.getCertificate(FileName).equalsIgnoreCase("PRESIGNED"))) {
-                    //    signApk signer = new signApk();
-                    //    LOGGER.info("Signing with "+signerData.getCertificate(FileName)+"...");
-                    //    signer.signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar +signerData.getCertificate(FileName), workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar +signerData.getPrivateKey(FileName), dectFile.getAbsolutePath(), dectFile.getAbsolutePath());
-                    //}
-                    if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
+                    //kAndrolib.build(sourceDir, dectFile, true, false, true);
+                    kAndrolib.build(sourceDir, dectFile, true, false, false);
+                    signApk signer = new signApk();
+                    LOGGER.info("Signing with testkey...");
+                    signer.signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", dectFile.getAbsolutePath(), signFile.getAbsolutePath());
+                    if (execFile(true, "zipalign", "-f", "4", signFile.getAbsolutePath(), dctFile.getAbsolutePath()))
                         LOGGER.info("Zipaligning...");
-                    else FileUtils.copyFile(dectFile, dctFile);
+                    else FileUtils.copyFile(signFile, dctFile);
                     dectFile.delete();
+                    signFile.delete();
                 }
-                buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", ".*.apk");
-                pbProgress.setMaximum(buildFiles.size());
-                pbProgress.setValue(0);
-                lbProgressstate.setText("Building framework...");
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
-                patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
-                for (int i = 0; i < buildFiles.size(); i++) {
-                    pbProgress.setValue(i);
-                    LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
-                    File sourceDir = new File(buildFiles.get(i).toString());
-                    File dectFile = File.createTempFile("KDGDEV", ".kdg");
-                    LOGGER.info(dectFile.getAbsolutePath());
-                    //String FileName = (new File(buildFiles.get(i).toString()).getName());
-                    File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                    }
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                    }
-                    kAndrolib.build(sourceDir, dectFile, true, false, true);
-                    if (execFile(true, "zipalign", "-f", "4", dectFile.getAbsolutePath(), dctFile.getAbsolutePath()))
-                        LOGGER.info("Zipaligning...");
-                    else FileUtils.copyFile(dectFile, dctFile);
-                    dectFile.delete();
-                }
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
-                    buildFiles = finder.findDirectories_InFolder(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", ".*.apk");
-                    pbProgress.setMaximum(buildFiles.size());
-                    pbProgress.setValue(0);
-                    lbProgressstate.setText("Building data...");
-                    deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"));
-                    new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
-                    patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
-                    for (int i = 0; i < buildFiles.size(); i++) {
-                        pbProgress.setValue(i);
-                        LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
-                        File sourceDir = new File(buildFiles.get(i).toString());
-                        File dectFile = File.createTempFile("KDGDEV", ".kdg");
-                        LOGGER.info(dectFile.getAbsolutePath());
-                        File signFile = File.createTempFile("KDGDEV", ".kdg");
-                        //String FileName = (new File(buildFiles.get(i).toString()).getName());
-                        File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                        }
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                        }
-                        //ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
-
-                        //kAndrolib.build(sourceDir, dectFile, true, false, true);
-                        kAndrolib.build(sourceDir, dectFile, true, false, false);
-                        signApk signer = new signApk();
-                        LOGGER.info("Signing with testkey...");
-                        signer.signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", dectFile.getAbsolutePath(), signFile.getAbsolutePath());
-                        if (execFile(true, "zipalign", "-f", "4", signFile.getAbsolutePath(), dctFile.getAbsolutePath()))
-                            LOGGER.info("Zipaligning...");
-                        else FileUtils.copyFile(signFile, dctFile);
-                        dectFile.delete();
-                        signFile.delete();
-                    }
-                }
-                LOGGER.info("======== End of compiling files ========");
-                //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
-                writeAllBPValues(bldprop);
-                LOGGER.info("Building firmware file...");
-                lbProgressstate.setText("Building firmware file...");
-                pbProgress.setIndeterminate(true);
-                FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework"));
-                FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app"));
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists())
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps"));
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists())
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps"));
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out").mkdirs();
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.RSA").delete();
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.SF").delete();
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "MANIFEST.MF").delete();
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "tmps"));
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").delete();
+            }
+            LOGGER.info("======== End of compiling files ========");
+            //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
+            writeAllBPValues(bldprop);
+            LOGGER.info("Building firmware file...");
+            lbProgressstate.setText("Building firmware file...");
+            pbProgress.setIndeterminate(true);
+            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework"));
+            FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app"));
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists())
+                FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps"));
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists())
+                FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"), new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps"));
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out").mkdirs();
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.RSA").delete();
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "CERT.SF").delete();
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "META-INF" + File.separatorChar + "MANIFEST.MF").delete();
+            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "tmps"));
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").delete();
 
                 /*ZipFile LockscreenZip = new ZipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen");
                 ZipParameters parameters = new ZipParameters();
@@ -1178,53 +1182,73 @@ public class mainForm extends JFrame {
                 parameters.setIncludeRootFolder(false);
                 parameters.setRootFolderInZip("/");
                 LockscreenZip.addFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", parameters);*/
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists())
-                    new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
-                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
-                bldprop.write();
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists())
+                new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
+            zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
+            bldprop.write();
 
-                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
-                String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
-                String phoneModel = bldprop.readProp("ro.product.device");
-                lbProgressstate.setText("Signing firmware file...");
-                LOGGER.info("Signing firmware file...");
-                new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip").delete();
-                pbProgress.setIndeterminate(false);
-                pbProgress.setMaximum(100);
-                pbProgress.setValue(100);
-                lbProgressstate.setText("Done!");
-                if (!cmd) {
-                    JTextArea textArea = new JTextArea();
-                    textArea.setText("Firmware builded successfully!\nYou firmware available: <jMFB_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using jMFB");
-                    textArea.setSize(300, Short.MAX_VALUE);
-                    textArea.setWrapStyleWord(true);
-                    textArea.setLineWrap(true);
-                    textArea.setEditable(false);
-                    textArea.setOpaque(false);
-                    JOptionPane.showMessageDialog(null, textArea);
+            zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
+            String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
+            String phoneModel = bldprop.readProp("ro.product.device");
+            lbProgressstate.setText("Signing firmware file...");
+            LOGGER.info("Signing firmware file...");
+            new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
+            new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip").delete();
+            pbProgress.setIndeterminate(false);
+            pbProgress.setMaximum(100);
+            pbProgress.setValue(100);
+            lbProgressstate.setText("Done!");
+            if (!cmd) {
+                JTextArea textArea = new JTextArea();
+                textArea.setText("Firmware builded successfully!\nYou firmware available: <jMFB_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using jMFB");
+                textArea.setSize(300, Short.MAX_VALUE);
+                textArea.setWrapStyleWord(true);
+                textArea.setLineWrap(true);
+                textArea.setEditable(false);
+                textArea.setOpaque(false);
+                JOptionPane.showMessageDialog(null, textArea);
 
-                } else deleteDirectory(new File(workDir + File.separatorChar + projectName));
-                LOGGER.info("======== Compiling done! ========");
-            } catch (AndrolibException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (IOException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (Exception e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
-            btnBuild.setEnabled(true);
-            return 1;
+            } else deleteDirectory(new File(workDir + File.separatorChar + projectName));
+            LOGGER.info("======== Compiling done! ========");
+        } catch (AndrolibException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        }
+        btnBuild.setEnabled(true);
+
+    }
+
+    private class CompileFirmware extends SwingWorker {
+        @Override
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            CompileFrmw();
+            return null;
         }
     }
 
-    private class kBigBlackBox_Init extends SwingWorker<Integer, Object> {
+    private class OneClickBuild extends SwingWorker {
 
         @Override
-        protected Integer doInBackground() {
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            DecompileFrmw();
+            CompileFrmw();
+            oneClick.setEnabled(true);
+            return null;
+        }
+    }
+
+    private class jmfbInit extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() {
             //<editor-fold desc="Read timezones">
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
@@ -1265,12 +1289,12 @@ public class mainForm extends JFrame {
             cbTimeZone.setSelectedIndex(76);
             //</editor-fold>
 
-            return 1;
+            return null;
         }
     }
 
     private void btnCompileActionPerformed(ActionEvent e) {
-        kBigBlackBox_Decompiler bbb1 = new kBigBlackBox_Decompiler();
+        DecompileFirmware bbb1 = new DecompileFirmware();
         bbb1.execute();
     }
 
@@ -1301,6 +1325,7 @@ public class mainForm extends JFrame {
         decompAll.setEnabled(State);
         cbLang.setEnabled(State);
         lstRepos.setEnabled(State);
+        oneClick.setEnabled(State);
         //cbDisableCS.setEnabled(State);
         //btnDeCompile.setEnabled(State);
     }
@@ -1326,66 +1351,76 @@ public class mainForm extends JFrame {
         return filename.substring(0, extensionIndex);
     }
 
-    private void miOpenProjectActionPerformed() {
+    private void toggleFirmwareChoise(boolean choise) {
+        lblFirmwareHelp.setVisible(choise);
+        pOpenFirmware.setVisible(choise);
+        spSeparator1.setVisible(choise);
+        this.pack();
+    }
+
+    private void miOpenProjectActionPerformed(ActionEvent e) {
         searchTools finder = new searchTools();
         try {
-        List<String> projects = new ArrayList<String>();
-        List<File> buildFiles = finder.findDirectories_InFolder(workDir, ".*.mfbproj");
-        for(int i=0; i<buildFiles.size(); i++) {
-            projects.add(removeExtension(buildFiles.get(i).getAbsolutePath()));
-        }
-        projectName = (String) JOptionPane.showInputDialog(this,
-                "Which project you want to load?",
-                "Selecting project",
-                JOptionPane.QUESTION_MESSAGE,
-                null,
-                projects.toArray(),
-                projects.get(0));
-        //projectName = JOptionPane.showInputDialog(null, "Project name:", "Opening MFB project", JOptionPane.QUESTION_MESSAGE);
-        titleProjName = projectName;
-        projectName = projectName + ".mfbproj";
-        if (!projectName.isEmpty() && new File(workDir + File.separatorChar + projectName).exists()) {
-            setTitle("jMFB - " + titleProjName);
-            setInterfaceState(true);
-            Properties sets = new Properties();
-            try {
-                sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
-                edtFirmwareFile.setText(sets.getProperty("FirmwareFile"));
-                int[] sel = new int[repos_count];
-                for (int i = 0; i < repos_count; i++) {
-                    try {
-                        String repo = sets.getProperty("Repo" + ((Integer) i).toString());
-                        sel[i] = Integer.parseInt(repo);
-                    } catch (NumberFormatException ex) {
-                        sel[i] = 0;
-                    }
-
-                }
-                lstRepos.setSelectedIndices(sel);
-            } catch (IOException e1) {
-                LOGGER.info(e1.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e1.getMessage());
+            List<String> projects = new ArrayList<String>();
+            List<File> buildFiles = finder.findDirectories_InFolder(workDir, ".*.mfbproj");
+            for (int i = 0; i < buildFiles.size(); i++) {
+                projects.add(removeExtension(buildFiles.get(i).getAbsolutePath()));
             }
-            btnCompileActionPerformed(null);
-        } else {
-            JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
-        }
+            projectName = (String) JOptionPane.showInputDialog(this,
+                    "Which project you want to load?",
+                    "Selecting project",
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    projects.toArray(),
+                    projects.get(0));
+            //projectName = JOptionPane.showInputDialog(null, "Project name:", "Opening MFB project", JOptionPane.QUESTION_MESSAGE);
+            titleProjName = projectName;
+            projectName = projectName + ".mfbproj";
+            if (!projectName.isEmpty() && new File(workDir + File.separatorChar + projectName).exists()) {
+                setTitle("jMFB - " + titleProjName);
+                setInterfaceState(true);
+                Properties sets = new Properties();
+                try {
+                    sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
+                    edtFirmwareFile.setText(sets.getProperty("FirmwareFile"));
+                    int[] sel = new int[repos_count];
+                    for (int i = 0; i < repos_count; i++) {
+                        try {
+                            String repo = sets.getProperty("Repo" + ((Integer) i).toString());
+                            sel[i] = Integer.parseInt(repo);
+                        } catch (NumberFormatException ex) {
+                            sel[i] = 0;
+                        }
+
+                    }
+                    lstRepos.setSelectedIndices(sel);
+                    toggleFirmwareChoise(false);
+
+                } catch (IOException e1) {
+                    LOGGER.info(e1.getMessage());
+                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e1.getMessage());
+                }
+                btnCompileActionPerformed(null);
+            } else {
+                JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
+            }
         } catch (Exception e1) {
             System.out.println(e1.getMessage());
         }
 
     }
 
-    private void miNewProjectActionPerformed() {
+    private void miNewProjectActionPerformed(ActionEvent e) {
         projectName = JOptionPane.showInputDialog(null, "Project name:", "Creating MFB project", JOptionPane.QUESTION_MESSAGE);
         titleProjName = projectName;
         projectName = projectName + ".mfbproj";
         if (!projectName.isEmpty()) {
-            setTitle("jMFB - " + titleProjName);
+            setTitle(Branding + " - " + titleProjName);
             int[] sel = new int[repos_count];
-            sel[0]=1;
-            sel[1]=1;
+            sel[0] = 1;
+            sel[1] = 1;
             lstRepos.setSelectedIndices(sel);
+            toggleFirmwareChoise(true);
             setInterfaceState(true);
         }
     }
@@ -1408,8 +1443,13 @@ public class mainForm extends JFrame {
         ImageIO.write(newImage, "PNG", new File(fileName));
     }
 
-    private void btnBuildActionPerformed() {
-        kBigBlackBox_Compile bbb1 = new kBigBlackBox_Compile();
+    private void btnBuildActionPerformed(ActionEvent e) {
+        CompileFirmware bbb1 = new CompileFirmware();
+        bbb1.execute();
+    }
+
+    private void oneClickActionPerformed(ActionEvent e) {
+        OneClickBuild bbb1= new OneClickBuild();
         bbb1.execute();
     }
 
@@ -1443,13 +1483,13 @@ public class mainForm extends JFrame {
         pbProgress = new JProgressBar();
         pCmdButtons = new JPanel();
         btnDeCompile = new JButton();
+        oneClick = new JButton();
         btnBuild = new JButton();
 
         //======== this ========
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setTitle("jMFB Lite");
+        setTitle("jMFB v2");
         setBackground(Color.white);
-        setResizable(false);
         Container contentPane = getContentPane();
         contentPane.setLayout(new FormLayout(
             "$lcgap, 204dlu:grow, 2*($lcgap)",
@@ -1468,7 +1508,7 @@ public class mainForm extends JFrame {
                 miNewProject.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        miNewProjectActionPerformed();
+                        miNewProjectActionPerformed(e);
                     }
                 });
                 fileMenu.add(miNewProject);
@@ -1478,7 +1518,7 @@ public class mainForm extends JFrame {
                 miOpenProject.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {
-                        miOpenProjectActionPerformed();
+                        miOpenProjectActionPerformed(e);
                     }
                 });
                 fileMenu.add(miOpenProject);
@@ -1488,7 +1528,7 @@ public class mainForm extends JFrame {
         setJMenuBar(mbMainBar);
 
         //---- headerLogo ----
-        headerLogo.setIcon(new ImageIcon(getClass().getResource("/com/kdgdev/jMFB/resources/Header.png")));
+        headerLogo.setIcon(new ImageIcon(getClass().getResource("/com/kdgdev/jMFB/resources/header.png")));
         contentPane.add(headerLogo, CC.xywh(1, 1, 4, 1, CC.CENTER, CC.DEFAULT));
 
         //---- lblFirmwareHelp ----
@@ -1611,7 +1651,7 @@ public class mainForm extends JFrame {
         //======== pCmdButtons ========
         {
             pCmdButtons.setLayout(new FormLayout(
-                "$glue, $lcgap, default, $lcgap, $glue, $lcgap, default, $lcgap, $glue",
+                "default, 2*($lcgap), default:grow, $glue, $lcgap, default",
                 "default, $lgap, $lcgap"));
 
             //---- btnDeCompile ----
@@ -1624,7 +1664,18 @@ public class mainForm extends JFrame {
                     btnCompileActionPerformed(e);
                 }
             });
-            pCmdButtons.add(btnDeCompile, CC.xy(3, 1));
+            pCmdButtons.add(btnDeCompile, CC.xy(1, 1));
+
+            //---- oneClick ----
+            oneClick.setText("1ClickBuild\u2122");
+            oneClick.setEnabled(false);
+            oneClick.addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    oneClickActionPerformed(e);
+                }
+            });
+            pCmdButtons.add(oneClick, CC.xywh(4, 1, 2, 1));
 
             //---- btnBuild ----
             btnBuild.setText("Build Firmware");
@@ -1633,24 +1684,18 @@ public class mainForm extends JFrame {
             btnBuild.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    btnBuildActionPerformed();
+                    btnBuildActionPerformed(e);
                 }
             });
             pCmdButtons.add(btnBuild, CC.xy(7, 1));
         }
         contentPane.add(pCmdButtons, CC.xy(2, 25));
         pack();
-        setLocationRelativeTo(getOwner());
+        setLocationRelativeTo(null);
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
     public static void main(String[] args) {
-        if (args.length > 0) {
-            if (args[0].equals("-h") || args[0].equals("-help") || args[0].equals("/h") || args[0].equals("/help")) {
-                LOGGER.info("Usage: jmfb  -b[uild] <project name> <firmware.zip>");
-                System.exit(0);
-            }
-        }
         //<editor-fold desc="Init mainFrm">
         if (isOSX()) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
@@ -1698,7 +1743,7 @@ public class mainForm extends JFrame {
                     try {
                         Date now = new Date();
                         FileWriter sw;
-                        if (!logRecord.getMessage().contains("warning")) {
+                        if (!(logRecord.getMessage().contains("warning")||logRecord.getMessage().contains("config flags"))) {
                             sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Logging.txt", true);
                             sw.write("[" + now.toString() + "] " + logRecord.getMessage() + System.getProperty("line.separator"));
                             sw.close();
@@ -1745,6 +1790,7 @@ public class mainForm extends JFrame {
     private JProgressBar pbProgress;
     private JPanel pCmdButtons;
     private JButton btnDeCompile;
+    private JButton oneClick;
     private JButton btnBuild;
     // JFormDesigner - End of variables declaration  //GEN-END:variables
     private String workDir;
@@ -1761,13 +1807,14 @@ public class mainForm extends JFrame {
     private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid"));
     private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
-    private String repo_Precompiled = "KDGDev/jmfb-firmware-precompiled";
+    private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
     private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
     private String repo_Overlay = "KDGDev/jmfb-additional";
     private String repo_Patches = "KDGDev/jmfb-patches";
     private Boolean HWUpdate = false;
     private Boolean UpdateFromFolder = false;
     private Boolean writeBProp = true;
+    private String Branding = "jMFB v2";
     //private Boolean isJB = false;
     private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
     //private Boolean fullLog=false;

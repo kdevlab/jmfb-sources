@@ -28,10 +28,6 @@ public class ResFileValue extends ResValue {
         this.mPath = path;
     }
 
-    public String getPath() {
-        return mPath;
-    }
-
     public String getStrippedPath() throws AndrolibException {
         if (!mPath.startsWith("res/")) {
             throw new AndrolibException(

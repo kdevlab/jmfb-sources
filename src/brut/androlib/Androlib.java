@@ -44,10 +44,6 @@ import java.util.logging.Logger;
 public class Androlib {
     private final AndrolibResources mAndRes = new AndrolibResources();
 
-    public ResTable getResTable(ExtFile apkFile) throws AndrolibException {
-        return mAndRes.getResTable(apkFile, true);
-    }
-
     public ResTable getResTable(ExtFile apkFile, boolean loadMainPkg) throws AndrolibException {
         return mAndRes.getResTable(apkFile, loadMainPkg);
     }
@@ -197,16 +193,6 @@ public class Androlib {
     public void build(File appDir, File outFile, boolean forceBuildAll,
                       boolean debug, boolean copySign) throws AndrolibException {
         build(new ExtFile(appDir), outFile, forceBuildAll, debug, copySign);
-    }
-
-    public void build(File appDir, File outFile, boolean forceBuildAll,
-                      boolean debug) throws AndrolibException {
-        build(new ExtFile(appDir), outFile, forceBuildAll, debug, false);
-    }
-
-    public void build(ExtFile appDir, File outFile, boolean forceBuildAll,
-                      boolean debug) throws AndrolibException {
-        build(appDir, outFile, forceBuildAll, debug, false);
     }
 
     public void build(ExtFile appDir, File outFile, boolean forceBuildAll,
@@ -542,10 +528,6 @@ public class Androlib {
                 new File(appDir, APK_DIRNAME), assetDir, null, false, framework);
     }
 
-    public void publicizeResources(File arscFile) throws AndrolibException {
-        mAndRes.publicizeResources(arscFile);
-    }
-
     public void installFramework(File frameFile, String tag)
             throws AndrolibException {
         mAndRes.installFramework(frameFile, tag);
@@ -558,14 +540,6 @@ public class Androlib {
             }
         }
         return false;
-    }
-
-    public static String getVersion() {
-        String version = ApktoolProperties.get("application.version");
-        return version.endsWith("-SNAPSHOT") ?
-                version.substring(0, version.length() - 9) + '.' +
-                        ApktoolProperties.get("git.commit.id.abbrev")
-                : version;
     }
 
     private File[] parseUsesFramework(Map<String, Object> usesFramework)

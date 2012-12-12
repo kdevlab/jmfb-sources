@@ -26,10 +26,6 @@ public class ResID {
 
     public final int id;
 
-    public ResID(int package_, int type, int entry) {
-        this(package_, type, entry, (package_ << 24) + (type << 16) + entry);
-    }
-
     public ResID(int id) {
         this(id >> 24, (id >> 16) & 0x000000ff, id & 0x0000ffff, id);
     }

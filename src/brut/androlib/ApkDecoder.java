@@ -36,21 +36,9 @@ import java.util.Set;
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 public class ApkDecoder {
-    public ApkDecoder() {
-        this(new Androlib());
-    }
 
     public ApkDecoder(Androlib androlib) {
         mAndrolib = androlib;
-    }
-
-    public ApkDecoder(File apkFile) {
-        this(apkFile, new Androlib());
-    }
-
-    public ApkDecoder(File apkFile, Androlib androlib) {
-        mAndrolib = androlib;
-        setApkFile(apkFile);
     }
 
     public void setApkFile(File apkFile) {
@@ -132,30 +120,8 @@ public class ApkDecoder {
         mDecodeSources = mode;
     }
 
-    public void setDecodeResources(short mode) throws AndrolibException {
-        if (mode != DECODE_RESOURCES_NONE && mode != DECODE_RESOURCES_FULL) {
-            throw new AndrolibException("Invalid decode resources mode");
-        }
-        mDecodeResources = mode;
-    }
-
-    public void setDebugMode(boolean debug) {
-        mDebug = debug;
-    }
-
-    public void setBaksmaliDebugMode(boolean bakdeb) {
-        mBakDeb = bakdeb;
-    }
-
     public void setForceDelete(boolean forceDelete) {
         mForceDelete = forceDelete;
-    }
-
-    public void setFrameworkTag(String tag) throws AndrolibException {
-        mFrameTag = tag;
-        if (mResTable != null) {
-            getResTable().setFrameTag(tag);
-        }
     }
 
     public void setKeepBrokenResources(boolean keepBrokenResources) {
@@ -264,6 +230,15 @@ public class ApkDecoder {
 
     }
 
+    public void setDecodeResources(short mode) throws AndrolibException {
+        if (mode != DECODE_RESOURCES_NONE && mode != DECODE_RESOURCES_FULL) {
+            throw new AndrolibException("Invalid decode resources mode");
+        }
+        mDecodeResources = mode;
+    }
+
+
+
     private void putPackageInfo(Map<String, Object> meta) throws AndrolibException {
         Map<String, String> info = getResTable().getPackageInfo();
         if (info.size() > 0) {
@@ -282,5 +257,4 @@ public class ApkDecoder {
     private boolean mForceDelete = false;
     private String mFrameTag;
     private boolean mKeepBrokenResources = false;
-    private boolean mBakDeb = true;
 }

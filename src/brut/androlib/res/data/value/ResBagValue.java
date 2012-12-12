@@ -58,8 +58,4 @@ public class ResBagValue extends ResValue implements ResValuesXmlSerializable {
         serializer.attribute(null, "name", res.getResSpec().getName());
         serializer.endTag(null, "item");
     }
-
-    public ResReferenceValue getParent() {
-        return mParent;
-    }
 }

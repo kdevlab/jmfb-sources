@@ -50,10 +50,6 @@ public class ResValuesFile {
         return mType;
     }
 
-    public ResConfig getConfig() {
-        return mConfig;
-    }
-
     public boolean isSynthesized(ResResource res) {
         return mPackage.isSynthesized(res.getResSpec().getId());
     }

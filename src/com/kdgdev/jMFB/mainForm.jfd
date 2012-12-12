@@ -1,4 +1,4 @@
-JFDML JFormDesigner: "5.1.0.0.51" Java: "1.6.0_37" encoding: "UTF-8"
+JFDML JFormDesigner: "5.1.0.2.64" Java: "1.6.0_37" encoding: "UTF-8"
 
 new FormModel {
 	contentType: "form/swing"
@@ -9,12 +9,13 @@ new FormModel {
 		} ) {
 			name: "this"
 			"defaultCloseOperation": 3
-			"title": "jMFB Lite"
+			"title": "jMFB v2"
 			"background": new java.awt.Color( 255, 255, 255, 255 )
-			"resizable": false
+			"$sizePolicy": 0
+			"$locationPolicy": 1
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "headerLogo"
-				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/kdgdev/jMFB/resources/Header.png" )
+				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/kdgdev/jMFB/resources/header.png" )
 			}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 				"gridWidth": 4
 				"hAlign": sfield com.jgoodies.forms.layout.CellConstraints CENTER
@@ -186,7 +187,7 @@ new FormModel {
 				"gridY": 23
 			} )
 			add( new FormContainer( "javax.swing.JPanel", new FormLayoutManager( class com.jgoodies.forms.layout.FormLayout ) {
-				"$columnSpecs": "glue, labelcompgap, default, labelcompgap, glue, labelcompgap, default, labelcompgap, glue"
+				"$columnSpecs": "default, labelcompgap, labelcompgap, default:grow, glue, labelcompgap, default"
 				"$rowSpecs": "default, linegap, labelcompgap"
 			} ) {
 				name: "pCmdButtons"
@@ -197,8 +198,16 @@ new FormModel {
 					"enabled": false
 					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "btnCompileActionPerformed", true ) )
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
-					"gridX": 3
 					"gridY": 1
+				} )
+				add( new FormComponent( "javax.swing.JButton" ) {
+					name: "oneClick"
+					"text": "1ClickBuild™"
+					"enabled": false
+					addEvent( new FormEvent( "java.awt.event.ActionListener", "actionPerformed", "oneClickActionPerformed", true ) )
+				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
+					"gridX": 4
+					"gridWidth": 2
 				} )
 				add( new FormComponent( "javax.swing.JButton" ) {
 					name: "btnBuild"

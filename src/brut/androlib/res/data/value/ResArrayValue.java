@@ -40,11 +40,6 @@ public class ResArrayValue extends ResBagValue implements ResValuesXmlSerializab
         }
     }
 
-    public ResArrayValue(ResReferenceValue parent, ResScalarValue[] items) {
-        super(parent);
-        mItems = items;
-    }
-
     @Override
     public void serializeToResValuesXml(XmlSerializer serializer, ResResource res)
             throws IOException, AndrolibException {

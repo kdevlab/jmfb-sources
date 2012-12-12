@@ -17,12 +17,9 @@
 package brut.androlib.res.data;
 
 import brut.androlib.AndrolibException;
-import brut.androlib.err.UndefinedResObject;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -34,23 +31,6 @@ public class ResConfig {
 
     public ResConfig(ResConfigFlags flags) {
         this.mFlags = flags;
-    }
-
-    public Set<ResResource> listResources() {
-        return new LinkedHashSet<ResResource>(mResources.values());
-    }
-
-    public ResResource getResource(ResResSpec spec) throws AndrolibException {
-        ResResource res = mResources.get(spec);
-        if (res == null) {
-            throw new UndefinedResObject(String.format(
-                    "resource: spec=%s, config=%s", spec, this));
-        }
-        return res;
-    }
-
-    public Set<ResResSpec> listResSpecs() {
-        return mResources.keySet();
     }
 
     public ResConfigFlags getFlags() {

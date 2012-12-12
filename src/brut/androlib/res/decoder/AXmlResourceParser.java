@@ -744,9 +744,6 @@ public class AXmlResourceParser implements XmlResourceParser {
 //			result.setStrings(m_strings);
 //		}
 //	}
-    final StringBlock getStrings() {
-        return m_strings;
-    }
 
     ///////////////////////////////////
     private final int getAttributeOffset(int index) {
@@ -917,57 +914,6 @@ public class AXmlResourceParser implements XmlResourceParser {
             }
         }
     }
-
-    private static String formatArray(int[] array, int min, int max) {
-        if (max > array.length) {
-            max = array.length;
-        }
-        if (min < 0) {
-            min = 0;
-        }
-        StringBuffer sb = new StringBuffer("[");
-        int i = min;
-        while (true) {
-            sb.append(array[i]);
-            i++;
-            if (i < max) {
-                sb.append(", ");
-            } else {
-                sb.append("]");
-                break;
-            }
-        }
-        return sb.toString();
-    }
-
-    private boolean compareAttr(int[] attr1, int[] attr2) {
-        //TODO:  sort Attrs
-        /*
-        * ATTRIBUTE_IX_VALUE_TYPE == TYPE_STRING	: ATTRIBUTE_IX_VALUE_STRING :
-        * ATTRIBUTE_IX_NAMESPACE_URI ATTRIBUTE_IX_NAMESPACE_URI	:
-        * ATTRIBUTE_IX_NAME id
-        *
-        */
-        if (attr1[ATTRIBUTE_IX_VALUE_TYPE] == TypedValue.TYPE_STRING
-                && attr1[ATTRIBUTE_IX_VALUE_TYPE] == attr2[ATTRIBUTE_IX_VALUE_TYPE]
-                && //(m_strings.touch(attr1[ATTRIBUTE_IX_VALUE_STRING], m_name) || 
-                //		m_strings.touch(attr2[ATTRIBUTE_IX_VALUE_STRING], m_name)) && 
-                //m_strings.touch(attr1[ATTRIBUTE_IX_VALUE_STRING], m_name) && 
-                attr1[ATTRIBUTE_IX_VALUE_STRING] != attr2[ATTRIBUTE_IX_VALUE_STRING]) {
-            return (attr1[ATTRIBUTE_IX_VALUE_STRING] < attr2[ATTRIBUTE_IX_VALUE_STRING]);
-        } else if ((attr1[ATTRIBUTE_IX_NAMESPACE_URI] == attr2[ATTRIBUTE_IX_NAMESPACE_URI]) && (attr1[ATTRIBUTE_IX_NAMESPACE_URI] != -1)
-                && //(m_strings.touch(attr1[ATTRIBUTE_IX_NAME], m_name) || 
-                //		m_strings.touch(attr2[ATTRIBUTE_IX_NAME], m_name)) && 
-                //m_strings.touch(attr1[ATTRIBUTE_IX_NAME], m_name) && 
-                (attr1[ATTRIBUTE_IX_NAME] != attr2[ATTRIBUTE_IX_NAME])) {
-            return (attr1[ATTRIBUTE_IX_NAME] < attr2[ATTRIBUTE_IX_NAME]);
-            //} else if (attr1[ATTRIBUTE_IX_NAMESPACE_URI] < attr2[ATTRIBUTE_IX_NAMESPACE_URI]) {
-            //	return true;
-        } else {
-            return false;
-        }
-    }
-
 
     private void setFirstError(AndrolibException error) {
         if (mFirstError == null) {

@@ -314,7 +314,7 @@ public class ARSCDecoder {
             }
         }
 
-        ResConfigFlags flags =  new ResConfigFlags(mcc, mnc, language, country, layoutDirection, orientation,
+        ResConfigFlags flags = new ResConfigFlags(mcc, mnc, language, country, layoutDirection, orientation,
                 touchscreen, density, keyboard, navigation, inputFlags,
                 screenWidth, screenHeight, sdkVersion, screenLayout, uiMode,
                 smallestScreenWidthDp, screenWidthDp, screenHeightDp, isInvalid, oppoflag);

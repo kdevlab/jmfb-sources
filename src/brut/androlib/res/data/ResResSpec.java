@@ -47,10 +47,6 @@ public class ResResSpec {
         return new LinkedHashSet<ResResource>(mResources.values());
     }
 
-    public ResResource getResource(ResConfig config) throws AndrolibException {
-        return getResource(config.getFlags());
-    }
-
     public ResResource getResource(ResConfigFlags config)
             throws AndrolibException {
         ResResource res = mResources.get(config);
@@ -59,10 +55,6 @@ public class ResResSpec {
                     "resource: spec=%s, config=%s", this, config));
         }
         return res;
-    }
-
-    public boolean hasResource(ResConfig config) {
-        return hasResource(config.getFlags());
     }
 
     private boolean hasResource(ResConfigFlags flags) {

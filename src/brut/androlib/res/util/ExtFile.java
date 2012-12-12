@@ -22,7 +22,6 @@ import brut.directory.FileDirectory;
 import brut.directory.ZipRODirectory;
 
 import java.io.File;
-import java.net.URI;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -32,15 +31,7 @@ public class ExtFile extends File {
         super(file.getPath());
     }
 
-    public ExtFile(URI uri) {
-        super(uri);
-    }
-
     public ExtFile(File parent, String child) {
-        super(parent, child);
-    }
-
-    public ExtFile(String parent, String child) {
         super(parent, child);
     }
 

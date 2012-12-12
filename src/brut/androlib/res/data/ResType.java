@@ -20,9 +20,7 @@ import brut.androlib.AndrolibException;
 import brut.androlib.err.UndefinedResObject;
 
 import java.util.LinkedHashMap;
-import java.util.LinkedHashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -44,10 +42,6 @@ public final class ResType {
 
     public String getName() {
         return mName;
-    }
-
-    public Set<ResResSpec> listResSpecs() {
-        return new LinkedHashSet<ResResSpec>(mResSpecs.values());
     }
 
     public ResResSpec getResSpec(String name) throws AndrolibException {

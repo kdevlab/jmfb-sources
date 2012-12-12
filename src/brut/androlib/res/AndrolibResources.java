@@ -38,7 +38,6 @@ import org.xmlpull.v1.XmlSerializer;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
@@ -48,9 +47,6 @@ import java.util.zip.*;
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
  */
 final public class AndrolibResources {
-    public ResTable getResTable(ExtFile apkFile) throws AndrolibException {
-        return getResTable(apkFile, true);
-    }
 
     public ResTable getResTable(ExtFile apkFile, boolean loadMainPkg) throws AndrolibException {
         ResTable resTable = new ResTable(this);
@@ -206,18 +202,14 @@ final public class AndrolibResources {
         }
     }
 
-    public void setPackageInfo(Map<String, String> map) {
-        if (map != null) {
-            mPackageRenamed = map.get("package");
-        }
-    }
-
     public void aaptPackage(File apkFile, File manifest, File resDir,
                             File rawDir, File assetDir, File[] include,
                             boolean update, boolean framework) throws AndrolibException {
         List<String> cmd = new ArrayList<String>();
 
+
         cmd.add(aapTool);
+
         cmd.add("p");
         if (update) {
             cmd.add("-u");
@@ -245,8 +237,6 @@ final public class AndrolibResources {
 
         if (framework) {
             cmd.add("-x");
-//            cmd.add("-0");
-//            cmd.add("arsc");
         }
 
         if (include != null) {
@@ -278,33 +268,12 @@ final public class AndrolibResources {
         }
     }
 
-    public boolean detectWhetherAppIsFramework(File appDir)
-            throws AndrolibException {
-        File publicXml = new File(appDir, "res/values/public.xml");
-        if (!publicXml.exists()) {
-            return false;
-        }
-
-        Iterator<String> it;
+    public File getAaptFile() throws AndrolibException {
         try {
-            it = IOUtils.lineIterator(
-                    new FileReader(new File(appDir, "res/values/public.xml")));
-        } catch (FileNotFoundException ex) {
-            throw new AndrolibException(
-                    "Could not detect whether app is framework one", ex);
+            return Jar.getResourceAsFile("/oppo/aapt-oppo");
+        } catch (BrutException ex) {
+            throw new AndrolibException(ex);
         }
-        it.next();
-        it.next();
-        return it.next().contains("0x01");
-    }
-
-    public void tagSmaliResIDs(ResTable resTable, File smaliDir)
-            throws AndrolibException {
-        new ResSmaliUpdater().tagResIDs(resTable, smaliDir);
-    }
-
-    public void updateSmaliResIDs(ResTable resTable, File smaliDir) throws AndrolibException {
-        new ResSmaliUpdater().updateResIDs(resTable, smaliDir);
     }
 
     public Duo<ResFileDecoder, AXmlResourceParser> getResFileDecoder() {
@@ -518,43 +487,6 @@ final public class AndrolibResources {
         }
     }
 
-    public void publicizeResources(File arscFile) throws AndrolibException {
-        byte[] data = new byte[(int) arscFile.length()];
-
-        InputStream in = null;
-        OutputStream out = null;
-        try {
-            in = new FileInputStream(arscFile);
-            in.read(data);
-
-            publicizeResources(data);
-
-            out = new FileOutputStream(arscFile);
-            out.write(data);
-        } catch (IOException ex) {
-            throw new AndrolibException(ex);
-        } finally {
-            if (in != null) {
-                try {
-                    in.close();
-                } catch (IOException ex) {
-                }
-            }
-            if (out != null) {
-                try {
-                    out.close();
-                } catch (IOException ex) {
-                }
-            }
-        }
-    }
-
-    public void publicizeResources(byte[] arsc) throws AndrolibException {
-        publicizeResources(arsc,
-                ARSCDecoder.decode(new ByteArrayInputStream(arsc), true, true)
-                        .getFlagsOffsets());
-    }
-
     public void publicizeResources(byte[] arsc, FlagsOffset[] flagsOffsets)
             throws AndrolibException {
         for (FlagsOffset flags : flagsOffsets) {
@@ -580,15 +512,6 @@ final public class AndrolibResources {
         }
         return dir;
     }
-
-    public File getAndroidResourcesFile() throws AndrolibException {
-        try {
-            return Jar.getResourceAsFile("/brut/androlib/android-framework.jar");
-        } catch (BrutException ex) {
-            throw new AndrolibException(ex);
-        }
-    }
-
 
     // TODO: dirty static hack. I have to refactor decoding mechanisms.
     public String frmdir = System.getProperty("user.dir") + File.separatorChar + "MFB_Core";

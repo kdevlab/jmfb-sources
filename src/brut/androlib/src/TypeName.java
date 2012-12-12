@@ -32,19 +32,11 @@ public class TypeName {
     public final String innerType;
     public final int array;
 
-    public TypeName(String type, int array) {
-        this(null, type, null, array);
-    }
-
     public TypeName(String package_, String type, String innerType, int array) {
         this.package_ = package_;
         this.type = type;
         this.innerType = innerType;
         this.array = array;
-    }
-
-    public String getShortenedName() {
-        return getName("java.lang".equals(package_), isFileOwner());
     }
 
     public String getName() {
@@ -62,14 +54,6 @@ public class TypeName {
         return name;
     }
 
-    public String getJavaFilePath() {
-        return getFilePath(isFileOwner()) + ".java";
-    }
-
-    public String getSmaliFilePath() {
-        return getFilePath(true) + ".smali";
-    }
-
     public String getFilePath(boolean separateInner) {
         return package_.replace('.', File.separatorChar) + File.separatorChar
                 + type + (separateInner && isInner() ? "$" + innerType : "");
@@ -79,36 +63,9 @@ public class TypeName {
         return innerType != null;
     }
 
-    public boolean isArray() {
-        return array != 0;
-    }
-
-    public boolean isFileOwner() {
-        if (mIsFileOwner == null) {
-            mIsFileOwner = true;
-            if (isInner()) {
-                char c = innerType.charAt(0);
-                if (c < '0' || c > '9') {
-                    mIsFileOwner = false;
-                }
-            }
-        }
-        return mIsFileOwner;
-    }
-
     @Override
     public String toString() {
         return getName();
-    }
-
-    public static TypeName fromInternalName(String internal)
-            throws AndrolibException {
-        Duo<TypeName, Integer> duo = fetchFromInternalName(internal);
-        if (duo.m2 != internal.length()) {
-            throw new AndrolibException(
-                    "Invalid internal name: " + internal);
-        }
-        return duo.m1;
     }
 
     public static List<TypeName> listFromInternalName(String internal)
