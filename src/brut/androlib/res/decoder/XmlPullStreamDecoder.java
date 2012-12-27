@@ -60,31 +60,35 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                         if ("manifest".equalsIgnoreCase(pp.getName())) {
                             try {
                                 hidePackageInfo = parseManifest(pp);
-                                if (hidePackageInfo) {
-                                    return;
-                                }
                             } catch (AndrolibException e) {
                             }
-                        }
-                        if ("uses-sdk".equalsIgnoreCase(pp.getName())) {
+                        } else if ("uses-sdk".equalsIgnoreCase(pp.getName())) {
                             try {
                                 hideSdkInfo = parseAttr(pp);
-                                if (hideSdkInfo) {
-                                    return;
-                                }
                             } catch (AndrolibException e) {
                             }
                         }
                     } else if (hideSdkInfo && type == XmlPullParser.END_TAG &&
-                            "uses-sdk".equalsIgnoreCase(pp.getName())) {
+                            "uses-sdk".equalsIgnoreCase(pp.getName()) ||
+                            hidePackageInfo && type == XmlPullParser.END_TAG &&
+                                    "manifest".equalsIgnoreCase(pp.getName())) {
+
+                        super.event(pp);
                         return;
                     }
                     super.event(pp);
                 }
 
                 private boolean parseManifest(XmlPullParser pp) throws AndrolibException {
-                    // @todo read <manifest> for package:
-                    return false;
+                    ResTable restable = resTable;
+
+                    // read <manifest> for package:
+                    for (int i = 0; i < pp.getAttributeCount(); i++) {
+                        if (pp.getAttributeName(i).equalsIgnoreCase(("package"))) {
+                            restable.addPackageInfo("orig_package", pp.getAttributeValue(i));
+                        }
+                    }
+                    return true;
                 }
 
                 private boolean parseAttr(XmlPullParser pp) throws AndrolibException {
@@ -92,6 +96,7 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                     for (int i = 0; i < pp.getAttributeCount(); i++) {
                         final String a_ns = "http://schemas.android.com/apk/res/android";
                         String ns = pp.getAttributeNamespace(i);
+
                         if (a_ns.equalsIgnoreCase(ns)) {
                             String name = pp.getAttributeName(i);
                             String value = pp.getAttributeValue(i);
@@ -107,6 +112,7 @@ public class XmlPullStreamDecoder implements ResStreamDecoder {
                             }
                         } else {
                             resTable.clearSdkInfo();
+
                             if (i >= pp.getAttributeCount()) {
                                 return false;//Found unknown flags
                             }

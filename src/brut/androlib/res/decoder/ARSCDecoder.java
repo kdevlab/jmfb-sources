@@ -87,6 +87,10 @@ public class ARSCDecoder {
             packages[i] = readPackage();
         }
 
+        if (this.mResTable.isPackageInfoValueSet("cur_package") != true) {
+            this.mResTable.addPackageInfo("cur_package", packages[0].getName());
+        }
+
         return packages;
     }
 
@@ -159,8 +163,8 @@ public class ARSCDecoder {
         if (flags.isInvalid) {
             String resName = mType.getName() + flags.getQualifiers();
             if (mKeepBroken) {
-                LOGGER.warning(
-                        "Invalid config flags detected: " + resName);
+                /*LOGGER.warning(
+                        "Invalid config flags detected: " + resName);*/
             } else {
                 LOGGER.warning(
                         "Invalid config flags detected. Dropping resources: " + resName);
@@ -303,13 +307,13 @@ public class ARSCDecoder {
             BigInteger exceedingBI = new BigInteger(1, buf);
 
             if (exceedingBI.equals(BigInteger.ZERO)) {
-                LOGGER.fine(String.format(
+                /*LOGGER.fine(String.format(
                         "Config flags size > %d, but exceeding bytes are all zero, so it should be ok.",
-                        KNOWN_CONFIG_BYTES));
+                        KNOWN_CONFIG_BYTES));*/
             } else {
-                LOGGER.warning(String.format(
+                /*LOGGER.warning(String.format(
                         "Config flags size > %d. Exceeding bytes: 0x%X.",
-                        KNOWN_CONFIG_BYTES, exceedingBI));
+                        KNOWN_CONFIG_BYTES, exceedingBI));*/
                 isInvalid = true;
             }
         }

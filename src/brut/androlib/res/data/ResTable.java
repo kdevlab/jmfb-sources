@@ -125,6 +125,14 @@ public class ResTable {
         mSdkInfo.put(key, value);
     }
 
+    public void addPackageInfo(String key, String value) {
+        mPackageInfo.put(key, value);
+    }
+
+    public boolean isPackageInfoValueSet(String key) {
+        return (mPackageInfo.containsKey(key));
+    }
+
     public Map<String, String> getPackageInfo() {
 
         return mPackageInfo;

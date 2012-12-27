@@ -34,8 +34,20 @@ import brut.util.Duo;
 import brut.util.Jar;
 import brut.util.OS;
 import org.apache.commons.io.IOUtils;
+import org.w3c.dom.Document;
+import org.w3c.dom.NamedNodeMap;
+import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import org.xmlpull.v1.XmlSerializer;
 
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -54,6 +66,52 @@ final public class AndrolibResources {
             loadMainPkg(resTable, apkFile);
         }
         return resTable;
+    }
+
+    public void adjust_package_manifest(ResTable resTable, String filePath)
+            throws AndrolibException {
+
+        // check if packages different, and that package is not equal to "android"
+        Map<String, String> packageInfo = resTable.getPackageInfo();
+        if ((packageInfo.get("cur_package").equalsIgnoreCase(packageInfo.get("orig_package"))
+                || ("android".equalsIgnoreCase(packageInfo.get("cur_package"))))) {
+            LOGGER.info("Regular manifest package...");
+        } else {
+            try {
+
+                LOGGER.info("Renamed manifest package found! Fixing...");
+                DocumentBuilderFactory docFactory = DocumentBuilderFactory
+                        .newInstance();
+                DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+                Document doc = docBuilder.parse(filePath.toString());
+
+                // Get the manifest line
+                Node manifest = doc.getFirstChild();
+
+                // update package attribute
+                NamedNodeMap attr = manifest.getAttributes();
+                Node nodeAttr = attr.getNamedItem("package");
+                mPackageRenamed = nodeAttr.getNodeValue();
+                nodeAttr.setNodeValue(packageInfo.get("cur_package"));
+
+                // re-save manifest.
+                // fancy an auto-sort :p
+                TransformerFactory transformerFactory = TransformerFactory.newInstance();
+                Transformer transformer = transformerFactory.newTransformer();
+                DOMSource source = new DOMSource(doc);
+                StreamResult result = new StreamResult(new File(filePath));
+                transformer.transform(source, result);
+
+            } catch (ParserConfigurationException ex) {
+                throw new AndrolibException(ex);
+            } catch (TransformerException ex) {
+                throw new AndrolibException(ex);
+            } catch (IOException ex) {
+                throw new AndrolibException(ex);
+            } catch (SAXException ex) {
+                throw new AndrolibException(ex);
+            }
+        }
     }
 
     public ResPackage loadMainPkg(ResTable resTable, ExtFile apkFile)
@@ -91,7 +149,7 @@ final public class AndrolibResources {
                                        String frameTag) throws AndrolibException {
         File apk = getFrameworkApk(id, frameTag);
 
-        LOGGER.info("Loading resource table from file: " + apk);
+        LOGGER.info("Loading resource table from framework: " + apk.getName() + "...");
         ResPackage[] pkgs = getResPackagesFromApk(new ExtFile(apk), resTable, true);
 
         if (pkgs.length != 1) {
@@ -158,6 +216,7 @@ final public class AndrolibResources {
             fileDecoder.decode(
                     inApk, "AndroidManifest.xml", out, "AndroidManifest.xml",
                     "xml");
+            adjust_package_manifest(resTable, outDir.getAbsolutePath() + "/AndroidManifest.xml");
 
             if (inApk.containsDir("res")) {
                 in = inApk.getDir("res");
@@ -181,7 +240,7 @@ final public class AndrolibResources {
                 generateValuesFile(valuesFile, out, xmlSerializer);
             }
             generatePublicXml(pkg, out, xmlSerializer);
-            LOGGER.info("Done.");
+            //LOGGER.info("Done.");
         }
 
         AndrolibException decodeError = duo.m2.getFirstError();
@@ -199,6 +258,20 @@ final public class AndrolibResources {
             mMinSdkVersion = map.get("minSdkVersion");
             mTargetSdkVersion = map.get("targetSdkVersion");
             mMaxSdkVersion = map.get("maxSdkVersion");
+        }
+    }
+
+    public void aaptAddFile(File apkFile, String relaAdd, File root)
+            throws AndrolibException {
+        List<String> cmd = new ArrayList<String>();
+        cmd.add(aapTool);
+        cmd.add("a");
+        cmd.add(apkFile.getAbsolutePath());
+        cmd.add(relaAdd);
+        try {
+            OS.exec(cmd.toArray(new String[0]), root.getAbsolutePath());
+        } catch (BrutException ex) {
+            throw new AndrolibException(ex);
         }
     }
 
@@ -431,6 +504,12 @@ final public class AndrolibResources {
         }
 
         throw new CantFindFrameworkResException(id);
+    }
+
+    public void setPackageInfo(Map<String, String> map) {
+        if (map != null) {
+            mPackageRenamed = map.get("package");
+        }
     }
 
     public void installFramework(File frameFile, String tag)

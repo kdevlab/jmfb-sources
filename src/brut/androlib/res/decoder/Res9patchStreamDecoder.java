@@ -41,9 +41,7 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
             BufferedImage im = ImageIO.read(new ByteArrayInputStream(data));
             int w = im.getWidth(), h = im.getHeight();
 
-            BufferedImage im2 = new BufferedImage(
-                    w + 2, h + 2, BufferedImage.TYPE_4BYTE_ABGR);
-
+            BufferedImage im2 = new BufferedImage(w + 2, h + 2, BufferedImage.TYPE_4BYTE_ABGR);
             Raster src = im.getRaster();
             WritableRaster dst = im2.getRaster();
             int nbands = im.getSampleModel().getNumBands();
@@ -63,17 +61,6 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
                     band = src.getSamples(0, y, w, 1, bands[bi], band);
                     dst.setSamples(1, y + 1, w, 1, bi, band);
                 }
-            }
-
-            if (!licensed()) {
-
-                Graphics g = im2.getGraphics();
-                g.setColor(Color.BLACK);
-                g.drawChars("jMFB Demo".toCharArray(), 0, "jMFB Demo".length(), 6, 11);
-                g.setColor(Color.WHITE);
-                g.drawChars("jMFB Demo".toCharArray(), 0, "jMFB Demo".length(), 5, 10);
-                g.dispose();
-
             }
 
             drawHLine(im2, h + 1, np.padLeft + 1, w - np.padRight);
@@ -123,10 +110,6 @@ public class Res9patchStreamDecoder implements ResStreamDecoder {
         for (int x = x1; x <= x2; x++) {
             im.setRGB(x, y, NP_COLOR);
         }
-    }
-
-    private boolean licensed() {
-        return true;
     }
 
     private void drawVLine(BufferedImage im, int x, int y1, int y2) {

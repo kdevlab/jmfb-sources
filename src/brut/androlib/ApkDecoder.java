@@ -109,6 +109,7 @@ public class ApkDecoder {
         }
 
         mAndrolib.decodeRawFiles(mApkFile, outDir);
+        mAndrolib.decodeExtFiles(mApkFile, outDir);
         writeMetaFile();
     }
 
@@ -230,20 +231,18 @@ public class ApkDecoder {
 
     }
 
-    public void setDecodeResources(short mode) throws AndrolibException {
-        if (mode != DECODE_RESOURCES_NONE && mode != DECODE_RESOURCES_FULL) {
-            throw new AndrolibException("Invalid decode resources mode");
-        }
-        mDecodeResources = mode;
-    }
-
-
-
     private void putPackageInfo(Map<String, Object> meta) throws AndrolibException {
         Map<String, String> info = getResTable().getPackageInfo();
         if (info.size() > 0) {
             meta.put("packageInfo", info);
         }
+    }
+
+    public void setDecodeResources(short mode) throws AndrolibException {
+        if (mode != DECODE_RESOURCES_NONE && mode != DECODE_RESOURCES_FULL) {
+            throw new AndrolibException("Invalid decode resources mode");
+        }
+        mDecodeResources = mode;
     }
 
     private final Androlib mAndrolib;
