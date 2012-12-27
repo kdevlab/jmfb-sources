@@ -261,6 +261,20 @@ final public class AndrolibResources {
         }
     }
 
+    public void aaptRemoveFile(File apkFile, String relaAdd, File root)
+            throws AndrolibException {
+        List<String> cmd = new ArrayList<String>();
+        cmd.add(aapTool);
+        cmd.add("r");
+        cmd.add(apkFile.getAbsolutePath());
+        cmd.add(relaAdd);
+        try {
+            OS.exec(cmd.toArray(new String[0]), root.getAbsolutePath());
+        } catch (BrutException ex) {
+            throw new AndrolibException(ex);
+        }
+    }
+
     public void aaptAddFile(File apkFile, String relaAdd, File root)
             throws AndrolibException {
         List<String> cmd = new ArrayList<String>();

@@ -232,6 +232,7 @@ public class Androlib {
                 (Map<String, Object>) meta.get("usesFramework"));
         buildManifest(appDir, forceBuildAll);
         buildLib(appDir, forceBuildAll);
+        if(copySign) buildINF(appDir, forceBuildAll);
         buildApk(appDir, outFile, framework);
         buildExtData(appDir, outFile, copySign);
     }
@@ -245,6 +246,26 @@ public class Androlib {
             LOGGER.warning("Could not find sources");
         }
     }
+
+    public void buildINF(File appDir, boolean forceBuildAll)
+            throws AndrolibException {
+        File metaDir = new File(appDir.getAbsolutePath() + File.separatorChar + EXT_DIRNAME);
+        File working = new File(metaDir, "META-INF");
+        if (!working.exists()) {
+            return;
+        }
+        File stored = new File(appDir, APK_DIRNAME + "/META-INF");
+        if (forceBuildAll || isModified(working, stored)) {
+            LOGGER.info("Signing...");
+            try {
+                OS.rmdir(stored);
+                OS.cpdir(working, stored);
+            } catch (BrutException ex) {
+                throw new AndrolibException(ex);
+            }
+        }
+    }
+
 
     private void buildExtData(ExtFile appDir, File outFile, boolean copySign)
             throws AndrolibException {
@@ -270,13 +291,18 @@ public class Androlib {
 
         for(String file : dir.getFiles(true)) {
             LOGGER.info("Extended file path: " + file);
+            if(file.contains("META-INF")) continue;
             if(!copySign) {
                 if(file.contains("META-INF")||file.contains("AndroidManifest.xml")){
-                    LOGGER.info("Not copy META-INF");
+                    LOGGER.info("Not copying META-INF and Manifest...");
                     continue;
                 }
-            }
-            mAndRes.aaptAddFile(outFile, file, extDir);
+                mAndRes.aaptAddFile(outFile, file, extDir);
+            } else if(file.contains("AndroidManifest.xml")) {
+                LOGGER.info("Copying META-INF and Manifest...");
+                mAndRes.aaptRemoveFile(outFile, file, extDir);
+                mAndRes.aaptAddFile(outFile, file, extDir);
+            } else mAndRes.aaptAddFile(outFile, file, extDir);
         }
 
     }
@@ -618,6 +644,6 @@ public class Androlib {
     private final static String[] APK_MANIFEST_FILENAMES =
             new String[]{"AndroidManifest.xml"};
     private final static String[] APK_ALL_FILENAMES =
-            new String[] {"classes.dex", "resources.arsc","res","lib","assets", "AndroidManifest.xml"};
+            new String[] {"classes.dex", "resources.arsc","res","lib","assets"};
 
 }
