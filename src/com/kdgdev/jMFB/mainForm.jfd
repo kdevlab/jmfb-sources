@@ -13,6 +13,9 @@ new FormModel {
 			"background": new java.awt.Color( 255, 255, 255, 255 )
 			"$sizePolicy": 0
 			"$locationPolicy": 1
+			auxiliary() {
+				"JavaCodeGenerator.postInitCode": "setTitle(Branding);"
+			}
 			add( new FormComponent( "javax.swing.JLabel" ) {
 				name: "headerLogo"
 				"icon": new com.jformdesigner.model.SwingIcon( 0, "/com/kdgdev/jMFB/resources/header.png" )
@@ -110,6 +113,9 @@ new FormModel {
 					name: "decompAll"
 					"text": "Decompile all files"
 					"enabled": false
+					auxiliary() {
+						"JavaCodeGenerator.preInitCode": "${field}.setVisible(devversion);"
+					}
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridY": 5
 					"gridWidth": 3
@@ -118,6 +124,9 @@ new FormModel {
 					name: "cbNotOdex"
 					"text": "Don't deodex firmware"
 					"enabled": false
+					auxiliary() {
+						"JavaCodeGenerator.preInitCode": "${field}.setVisible(devversion);"
+					}
 				}, new FormLayoutConstraints( class com.jgoodies.forms.layout.CellConstraints ) {
 					"gridY": 7
 					"gridWidth": 3

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.kdgdev.jMFB.utils;
+package com.kdgdev.apkengine.utils;
 
 import sun.misc.BASE64Encoder;
 import sun.security.pkcs.ContentInfo;

@@ -9,13 +9,14 @@ import brut.common.BrutException;
 import brut.util.OS;
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
-import com.kdgdev.jMFB.patchsupport.ResValuesModify;
-import com.kdgdev.jMFB.utils.*;
+import com.kdgdev.apkengine.patcher;
+import com.kdgdev.apkengine.patchsupport.ResValuesModify;
+import com.kdgdev.apkengine.utils.*;
+import com.kdgdev.extended.SearchException;
 import net.lingala.zip4j.core.ZipFile;
 import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -230,7 +231,7 @@ public class mainForm extends JFrame {
 
     //</editor-fold>
 
-    private void readLanuagesFile(String fileName, Boolean cleanLangs) {
+    private void readLanuagesFile(String fileName, Boolean cleanLangs) throws IOException {
         if (cleanLangs) {
             repos_names.clear();
             repos_git.clear();
@@ -240,19 +241,15 @@ public class mainForm extends JFrame {
         //String sPattern = "(.*)=(.*)=(.*)";
         //Pattern p = Pattern.compile(sPattern);
         File file = new File(fileName);
-        try {
-            List<String> contents = FileUtils.readLines(file);
-            for (String line : contents) {
-                //Matcher m = p.matcher(line);
-                String[] all = line.split("=");
-                repos_names.add(all[0]);
-                repos_git.add(all[1]);
-                repos_lang.add(all[2]);
-                repos_count++;
-                LOGGER.info("Added language: " + all[0]);
-            }
-        } catch (IOException e) {
-            System.out.println(e.getMessage());
+        List<String> contents = FileUtils.readLines(file);
+        for (String line : contents) {
+            //Matcher m = p.matcher(line);
+            String[] all = line.split("=");
+            repos_names.add(all[0]);
+            repos_git.add(all[1]);
+            repos_lang.add(all[2]);
+            repos_count++;
+            //LOGGER.info("Added language: " + all[0]);
         }
     }
 
@@ -387,20 +384,29 @@ public class mainForm extends JFrame {
 
     private boolean initMFB(String[] args) {
         setupLogging(Verbosity.NORMAL);
-        LOGGER.info("========== Welcome to "+Branding+" =========");
+        Date now = new Date();
+        SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
+        LOGGER.info("[Program log started at " + formatter.format(now) + "]");
+        LOGGER.info("");
+        LOGGER.info("====================================");
+        LOGGER.info("|    Welcome to " + Branding + "   |");
         LOGGER.info("| Original version only on ROMZ.bz |");
         LOGGER.info("|  This program code protected by  |");
         LOGGER.info("|             US Patents           |");
         LOGGER.info("====================================");
         workDir = System.getProperty("user.dir");
-        LOGGER.info("WorkDir = " + workDir);
+        //LOGGER.info("WorkDir = " + workDir);
         aAppsDir = workDir + File.separatorChar + "aApps" + File.separatorChar + getOSDir();
         binDir = workDir + File.separatorChar + "aApps" + File.separatorChar + "bin";
-        LOGGER.info("aAppsDir = " + aAppsDir);
-        if (new File(workDir + File.separatorChar + "repos.list").exists())
-            readLanuagesFile(workDir + File.separatorChar + "repos.list", true);
-        if (new File(workDir + File.separatorChar + "repos_add.list").exists())
-            readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
+        //LOGGER.info("aAppsDir = " + aAppsDir);
+        try {
+            if (new File(workDir + File.separatorChar + "repos.list").exists())
+                readLanuagesFile(workDir + File.separatorChar + "repos.list", true);
+            if (new File(workDir + File.separatorChar + "repos_add.list").exists())
+                readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
+        } catch (IOException e) {
+            LOGGER.info("Failed loading language list...");
+        }
         jmfbInit bbb2 = new jmfbInit();
         bbb2.execute();
 
@@ -409,7 +415,7 @@ public class mainForm extends JFrame {
         if (!execFile(false, "aapt") || !execFile(false, "zipalign")) {
             aAppsDir = "";
             if (!execFile(false, "aapt") || !execFile(false, "zipalign")) {
-                JOptionPane.showMessageDialog(null, "Failed to init jMFB", "Alert", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "Failed to init " + Branding, "Alert", JOptionPane.ERROR_MESSAGE);
                 System.exit(2);
             }
         }
@@ -426,23 +432,23 @@ public class mainForm extends JFrame {
                 InputStream in = mainForm.class.getResourceAsStream("/properties/jmfb.properties");
                 writeProp.load(in);
             }
-            LOGGER.info("Properties loaded:");
+            //LOGGER.info("Properties loaded:");
             repo_Precompiled = writeProp.getProperty("repo_Precompiled", repo_Precompiled);
-            LOGGER.info(" - repo_Precompiled = " + repo_Precompiled);
+            //LOGGER.info(" - repo_Precompiled = " + repo_Precompiled);
             repo_Bootanimation = writeProp.getProperty("repo_Bootanimation", repo_Bootanimation);
-            LOGGER.info(" - repo_Bootanimation = " + repo_Bootanimation);
+            //LOGGER.info(" - repo_Bootanimation = " + repo_Bootanimation);
             repo_Overlay = writeProp.getProperty("repo_Overlay", repo_Overlay);
-            LOGGER.info(" - repo_Overlay = " + repo_Overlay);
+            //LOGGER.info(" - repo_Overlay = " + repo_Overlay);
             repo_Patches = writeProp.getProperty("repo_Patches", repo_Patches);
-            LOGGER.info(" - repo_Patches = " + repo_Patches);
+            //LOGGER.info(" - repo_Patches = " + repo_Patches);
             otaUpdateURL = writeProp.getProperty("otaUpdateURL", otaUpdateURL);
-            LOGGER.info(" - otaUpdateURL = " + otaUpdateURL);
+            //LOGGER.info(" - otaUpdateURL = " + otaUpdateURL);
             writeBProp = Boolean.parseBoolean(writeProp.getProperty("writeBuildProp", writeBProp.toString()));
-            LOGGER.info(" - writeBuildProp = " + writeBProp.toString());
+            //LOGGER.info(" - writeBuildProp = " + writeBProp.toString());
             HWUpdate = Boolean.parseBoolean(writeProp.getProperty("HWUpdate", HWUpdate.toString()));
-            LOGGER.info(" - HWUpdate = " + HWUpdate.toString());
+            //LOGGER.info(" - HWUpdate = " + HWUpdate.toString());
             UpdateFromFolder = Boolean.parseBoolean(writeProp.getProperty("UpdateFromFolder", UpdateFromFolder.toString()));
-            LOGGER.info(" - UpdateFromFolder = " + UpdateFromFolder.toString());
+            //LOGGER.info(" - UpdateFromFolder = " + UpdateFromFolder.toString());
         } catch (IOException e) {
             LOGGER.info("Properties not found. Loading defaults...OK!");
         }
@@ -533,145 +539,11 @@ public class mainForm extends JFrame {
         }
     }
 
-    private void rebuildFiles(String Apk, String ApkName) {
-        if (HWUpdate) {
-            if (ApkName.equals("miuihome.apk")) {
-                File res = new File(Apk + File.separatorChar + "res" + File.separatorChar + "values" + File.separatorChar + "bools.xml");
-                if (res.exists()) {
-                    try {
-                        String patchFile = FileUtils.readFileToString(res);
-                        patchFile = StringUtils.replace(patchFile, "<bool name=\"config_hardwareAccelerated\">false</bool>", "<bool name=\"config_hardwareAccelerated\">true</bool>");
-                        FileUtils.writeStringToFile(res, patchFile);
-                    } catch (IOException e) {
-                        LOGGER.info(e.getMessage());
-                        JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                    }
-                }
-            }
-        }
-        //http://update.miui.com/updates/mi-updateV4.php
-
-        if (ApkName.equals("miuihome.apk")) {
-            File res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "miui" + File.separatorChar + "home" + File.separatorChar + "launcher" + File.separatorChar + "gadget" + File.separatorChar + "WeatherBase.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "\"market://details?id=com.miui.weather2\"", "\"https://github.com/KDGDev/jmfb-firmware-precompiled/raw/master/data/preinstall_apps/Weather.apk\"");
-                    patchFile = StringUtils.replace(patchFile, "\"com.xiaomi.market\"", "\"com.android.browser\"");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-        }
-
-        if (ApkName.equals("updater.apk")) {
-            File res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "android" + File.separatorChar + "updater" + File.separatorChar + "utils" + File.separatorChar + "SysUtils.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV4.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV5.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV6.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV7.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV8.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV9.php\"", "\"" + otaUpdateURL + "\"");
-                    patchFile = StringUtils.replace(patchFile, "\"http://www.miui.com/api.php?mod=wm", "\"http://ota.romz.bz/api.php?mod=wm");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-        }
-
-        if (ApkName.equals("mms.apk")) {
-            File res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "android" + File.separatorChar + "mms" + File.separatorChar + "data" + File.separatorChar + "FestivalSmsUpdater.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "\"http://www.miui.com\"", "\"http://localhost\"");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-            res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "android" + File.separatorChar + "mms" + File.separatorChar + "ui" + File.separatorChar + "BirthdayActivity.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "\"\\u751f\\u65e5\\u5feb\\u4e50\"", "\"\\u0441 \\u0434\\u043d\\u0435\\u043c \\u0440\\u043e\\u0436\\u0434\\u0435\\u043d\\u0438\\u044f\"");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-        }
-
-        if (ApkName.equals("contactsprovider.apk")) {
-            File res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "android" + File.separatorChar + "providers" + File.separatorChar + "contacts" + File.separatorChar + "t9" + File.separatorChar + "T9Builder.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "invoke-static {v4}, Lcom/android/providers/contacts/t9/T9Utils;->d(C)C", "invoke-static {v4}, Lcom/android/providers/contacts/t9/T9Kdg;->formatCharToT9(C)C");
-                    patchFile = StringUtils.replace(patchFile, "Lcom/android/providers/contacts/t9/T9Utils;->formatCharToT9(C)C", "Lcom/android/providers/contacts/t9/T9Kdg;->formatCharToT9(C)C");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-            res = new File(Apk + File.separatorChar + "smali" + File.separatorChar + "com" + File.separatorChar + "android" + File.separatorChar + "providers" + File.separatorChar + "contacts" + File.separatorChar + "t9" + File.separatorChar + "k.smali");
-            if (res.exists()) {
-                try {
-                    String patchFile = FileUtils.readFileToString(res);
-                    patchFile = StringUtils.replace(patchFile, "invoke-static {v4}, Lcom/android/providers/contacts/t9/h;->b(C)C", "invoke-static {v4}, Lcom/android/providers/contacts/t9/T9Kdg;->formatCharToT9(C)C");
-                    FileUtils.writeStringToFile(res, patchFile);
-
-                } catch (IOException e) {
-                    LOGGER.info(e.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-                }
-            }
-        }
-
-        if (ApkName.equals("miuicompass.apk")) {
-            try {
-                Map<String, Object> meta = new Androlib().readMetaFile(new ExtFile(Apk));
-                Map<String, Object> uses = new LinkedHashMap<String, Object>();
-                Integer[] ids = {1, 6};
-                uses.put("ids", ids);
-                meta.put("usesFramework", uses);
-                new Androlib().writeMetaFile(new File(Apk), meta);
-            } catch (AndrolibException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
-        }
-        if (ApkName.equals("framework-miui-res.apk")) {
-            try {
-                Map<String, Object> meta = new Androlib().readMetaFile(new ExtFile(Apk));
-                Map<String, Object> uses = new LinkedHashMap<String, Object>();
-                Integer[] ids = {1, 2, 3, 4, 5};
-                uses.put("ids", ids);
-                meta.put("usesFramework", uses);
-                new Androlib().writeMetaFile(new File(Apk), meta);
-            } catch (AndrolibException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
-        }
+    private void rebuildFiles(String Apk, String ApkName) throws IOException, AndrolibException {
+        patcher.rebuildFiles(Apk, ApkName, otaUpdateURL);
     }
 
-    private void writeAllBPValues(buildPropTools bldprp) throws UnknownHostException {
+    private void writeAllBPValues(buildPropTools bldprp, boolean onlySafe) throws UnknownHostException {
         if (writeBProp) {
             bldprp.writeProp("ro.config.ringtone", "MI.ogg");
             bldprp.writeProp("ro.config.notification_sound", "FadeIn.ogg");
@@ -683,40 +555,46 @@ public class mainForm extends JFrame {
         bldprp.writeProp("ro.build.host", InetAddress.getLocalHost().getHostName().toLowerCase());
         Calendar now = Calendar.getInstance(Locale.getDefault());
         bldprp.writeProp("persist.sys.timezone", timeZones.get(cbTimeZone.getSelectedIndex()));
-        bldprp.writeProp("ro.jmfb.version", "beta-2013");
+        bldprp.writeProp("ro.tt.version", "user-2013");
         bldprp.writeProp("ro.build.type", "user");
         bldprp.writeProp("ro.build.tags", "release-keys");
-        bldprp.writeProp("dalvik.vm.dexopt-flags", "m=y,o=v,u=y");
-        bldprp.writeProp("ro.product.mod_device", bldprp.readProp("ro.product.device"));
-        bldprp.writeProp("dalvik.vm.verify-bytecode", "false");
-        bldprp.writeProp("persist.sys.purgeable_assets", "1");
-        bldprp.writeProp("persist.sys.use_dithering", "1");
-
-        //Энергосбережение
-        //bldprp.writeProp("ro.ril.disable.power.collapse", "1");
-        bldprp.writeProp("pm.sleep_mode", "1");
-        bldprp.writeProp("windowsmgr.max_events_per_sec", "60");
-        bldprp.writeProp("wifi.supplicant_scan_interval", "180");
-
-        //Ускорение скорости передачи данных
-        bldprp.writeProp("net.tcp.buffersize.default", "4096,87380,256960,4096,16384,256960");
-        bldprp.writeProp("net.tcp.buffersize.wifi", "4096,87380,256960,4096,16384,256960");
-        bldprp.writeProp("net.tcp.buffersize.umts", "4096,87380,256960,4096,16384,256960");
-        bldprp.writeProp("net.tcp.buffersize.gprs", "4096,87380,256960,4096,16384,256960");
-        bldprp.writeProp("net.tcp.buffersize.edge", "4096,87380,256960,4096,16384,256960");
-        bldprp.writeProp("net.tcp.buffersize.evdo_b", "4096,87380,256960,4096,16384,256960");
-
-        //Отключение пересылки информации о использовании
-        bldprp.writeProp("ro.config.nocheckin", "1");
-
-        bldprp.writeProp("ro.kernel.android.checkjni", "0");
-        bldprp.writeProp("ro.kernel.checkjni", "0");
         bldprp.writeProp("ro.build.date", now.getTime().toString());
         bldprp.writeProp("ro.repo.build", "kdgdev");
         long unixTime = System.currentTimeMillis() / 1000L;
         bldprp.writeProp("ro.build.date.utc", Long.toString(unixTime));
         bldprp.writeProp("ro.product.locale.language", langs[cbLang.getSelectedIndex()]);
         bldprp.writeProp("ro.product.locale.region", regions[cbLang.getSelectedIndex()]);
+
+
+        if (!onlySafe) {
+
+            bldprp.writeProp("dalvik.vm.dexopt-flags", "m=y,o=v,u=y");
+            bldprp.writeProp("ro.product.mod_device", bldprp.readProp("ro.product.device"));
+            bldprp.writeProp("dalvik.vm.verify-bytecode", "false");
+            bldprp.writeProp("persist.sys.purgeable_assets", "1");
+            bldprp.writeProp("persist.sys.use_dithering", "1");
+
+            //Энергосбережение
+            //bldprp.writeProp("ro.ril.disable.power.collapse", "1");
+            bldprp.writeProp("pm.sleep_mode", "1");
+            bldprp.writeProp("windowsmgr.max_events_per_sec", "60");
+            bldprp.writeProp("wifi.supplicant_scan_interval", "180");
+
+            //Ускорение скорости передачи данных
+            bldprp.writeProp("net.tcp.buffersize.default", "4096,87380,256960,4096,16384,256960");
+            bldprp.writeProp("net.tcp.buffersize.wifi", "4096,87380,256960,4096,16384,256960");
+            bldprp.writeProp("net.tcp.buffersize.umts", "4096,87380,256960,4096,16384,256960");
+            bldprp.writeProp("net.tcp.buffersize.gprs", "4096,87380,256960,4096,16384,256960");
+            bldprp.writeProp("net.tcp.buffersize.edge", "4096,87380,256960,4096,16384,256960");
+            bldprp.writeProp("net.tcp.buffersize.evdo_b", "4096,87380,256960,4096,16384,256960");
+
+            //Отключение пересылки информации о использовании
+            bldprp.writeProp("ro.config.nocheckin", "1");
+
+            bldprp.writeProp("ro.kernel.android.checkjni", "0");
+            bldprp.writeProp("ro.kernel.checkjni", "0");
+
+        }
     }
 
     private boolean isSmaliPatch(String fileName, String translationDir) {
@@ -724,7 +602,7 @@ public class mainForm extends JFrame {
         return patchFile.exists();
     }
 
-    private void DecompileFrmw(){
+    private void DecompileFrmw() {
         try {
             btnBuild.setEnabled(false);
             Properties sets = new Properties();
@@ -742,23 +620,25 @@ public class mainForm extends JFrame {
                 toggleFirmwareChoise(false);
                 lbProgressstate.setText("Extracting firmware...");
 
-                if(!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
+                if (!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
                 extractFolder(toFile.getAbsolutePath(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
                 extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
                 String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
                 if (!cbNotOdex.isSelected()) {
                     if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
+                        lbProgressstate.setText("Deodexing firmware...");
+                        LOGGER.info("----- Starting BurgerZ deodex code -----");
                         try {
-                            lbProgressstate.setText("Deodexing firmware...");
-                            LOGGER.info("----- Starting BurgerZ deodex code -----");
                             deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
                             deodexFirmware(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
                             LOGGER.info("----- DONE! -----");
                         } catch (Exception e) {
-                            LOGGER.info(e.getMessage());
-                            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+                            StringWriter sw = new StringWriter();
+                            PrintWriter pw = new PrintWriter(sw);
+                            e.printStackTrace(pw);
+                            LOGGER.info(sw.toString());
+                            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
                         }
-
                     }
                 }
             }
@@ -787,19 +667,11 @@ public class mainForm extends JFrame {
                 lbProgressstate.setText("Updating files...");
                 File src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar);
                 File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
-                try {
-                    FileUtils.copyDirectory(src, dsc);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                FileUtils.copyDirectory(src, dsc);
                 if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar).exists()) {
                     src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
                     dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
-                    try {
-                        FileUtils.copyDirectory(src, dsc);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    FileUtils.copyDirectory(src, dsc);
                 }
             }
             if (new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device")).exists() && UpdateFromFolder) {
@@ -807,12 +679,8 @@ public class mainForm extends JFrame {
                 lbProgressstate.setText("Updating files...");
                 File src = new File(workDir + File.separatorChar + "Override" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar);
                 File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
-                try {
-                    FileUtils.copyDirectory(src, dsc);
-                    LOGGER.info("Copy done: " + src.getAbsolutePath() + " -> " + dsc.getAbsolutePath());
-                } catch (IOException e) {
-                    LOGGER.info("Copy failed");
-                }
+                FileUtils.copyDirectory(src, dsc);
+                LOGGER.info("Copy done: " + src.getAbsolutePath() + " -> " + dsc.getAbsolutePath());
             }
             //</editor-fold>
 
@@ -825,11 +693,7 @@ public class mainForm extends JFrame {
                     getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
                     File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
                     File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                    try {
-                        FileUtils.copyDirectory(source, desc);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+                    FileUtils.copyDirectory(source, desc);
                 }
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString()));
             }
@@ -838,55 +702,45 @@ public class mainForm extends JFrame {
             getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
             File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
             File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-            try {
-                FileUtils.copyDirectory(source, desc);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            FileUtils.copyDirectory(source, desc);
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
             if (!sets.getProperty("Patches", "no").contains("downloaded")) {
                 getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
                 source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
                 desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                try {
-                    FileUtils.copyDirectory(source, desc);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                FileUtils.copyDirectory(source, desc);
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                 sets.setProperty("Patches", "downloaded");
             }
             if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
                 source = new File(workDir + File.separatorChar + "Language_Overlay");
                 desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                try {
-                    FileUtils.copyDirectory(source, desc);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
+                FileUtils.copyDirectory(source, desc);
             }
             //</editor-fold>
-            try {
-                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
-                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-                FileUtils.copyDirectory(source, desc);
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
+            desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+            FileUtils.copyDirectory(source, desc);
             //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
             setTitle(Branding + " - " + titleProjName + " (" + bldprop.readProp("ro.product.device") + ")");
-            writeAllBPValues(bldprop);
+            writeAllBPValues(bldprop, bldprop.readProp("ro.product.device").contains("H958"));
             lbProgressstate.setText("Installing frameworks...");
             installFrameworks(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework");
             //<editor-fold desc="Building new workspace - decompiling app and frameworks">
 
-            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists() || !new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
-                lbProgressstate.setText("Building new workspace - Decompiling data apps...");
-                File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
-                apkSrc.mkdirs();
-                pbProgress.setIndeterminate(false);
-                searchTools finder = new searchTools();
+            Boolean molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists();
+            if (!molp)
+                molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists();
+            if (!molp)
+                molp = !new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists();
+
+            if (molp) {
                 try {
+                    lbProgressstate.setText("Building new workspace - Decompiling data apps...");
+                    File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources");
+                    apkSrc.mkdirs();
+                    pbProgress.setIndeterminate(false);
+                    searchTools finder = new searchTools();
                     List apkFiles;
                     if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) {
                         apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps", ".*.apk");
@@ -906,18 +760,18 @@ public class mainForm extends JFrame {
                             frm.delete();
                         }
                     }
-                } catch (Exception err) {
-                    LOGGER.info(err.getMessage());
+                } catch (SearchException e) {
+                    LOGGER.info(e.getMessage());
                 }
             }
 
             if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources").exists()) {
-                lbProgressstate.setText("Building new workspace - Decompiling apps...");
-                File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
-                apkSrc.mkdirs();
-                pbProgress.setIndeterminate(false);
-                searchTools finder = new searchTools();
                 try {
+                    lbProgressstate.setText("Building new workspace - Decompiling apps...");
+                    File apkSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources");
+                    apkSrc.mkdirs();
+                    pbProgress.setIndeterminate(false);
+                    searchTools finder = new searchTools();
                     List apkFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "app", ".*.apk");
                     pbProgress.setMaximum(apkFiles.size());
                     pbProgress.setValue(0);
@@ -939,17 +793,17 @@ public class mainForm extends JFrame {
                             dectFile.delete();
                         }
                     }
-                } catch (Exception err) {
-                    LOGGER.info(err.getMessage());
+                } catch (SearchException e) {
+                    LOGGER.info(e.getMessage());
                 }
             }
             //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data"));
             if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources").exists()) {
-                lbProgressstate.setText("Building new workspace - Decompiling frameworks...");
-                File frmSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
-                frmSrc.mkdirs();
-                searchTools finder = new searchTools();
                 try {
+                    lbProgressstate.setText("Building new workspace - Decompiling frameworks...");
+                    File frmSrc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources");
+                    frmSrc.mkdirs();
+                    searchTools finder = new searchTools();
                     List frmFiles = finder.findAll(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework", ".*.apk");
                     pbProgress.setMaximum(frmFiles.size());
                     pbProgress.setValue(0);
@@ -971,8 +825,8 @@ public class mainForm extends JFrame {
                             dectFile.delete();
                         }
                     }
-                } catch (Exception err) {
-                    LOGGER.info(err.getMessage());
+                } catch (SearchException e) {
+                    LOGGER.info(e.getMessage());
                 }
             }
             //</editor-fold>
@@ -991,13 +845,23 @@ public class mainForm extends JFrame {
             btnBuild.setEnabled(true);
             bldprop.write();
         } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         } catch (BrutException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         } catch (ZipException e) {
-            System.out.println(e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
     }
 
@@ -1034,7 +898,7 @@ public class mainForm extends JFrame {
         LOGGER.info("Updating workspace with auth system...Done!");
     }
 
-    private void CompileFrmw(){
+    private void CompileFrmw() {
         searchTools finder = new searchTools();
         btnBuild.setEnabled(false);
         try {
@@ -1158,7 +1022,7 @@ public class mainForm extends JFrame {
             }
             LOGGER.info("======== End of compiling files ========");
             //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
-            writeAllBPValues(bldprop);
+            writeAllBPValues(bldprop, bldprop.readProp("ro.product.device").contains("H958"));
             LOGGER.info("Building firmware file...");
             lbProgressstate.setText("Building firmware file...");
             pbProgress.setIndeterminate(true);
@@ -1200,7 +1064,7 @@ public class mainForm extends JFrame {
             lbProgressstate.setText("Done!");
             if (!cmd) {
                 JTextArea textArea = new JTextArea();
-                textArea.setText("Firmware builded successfully!\nYou firmware available: <jMFB_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using jMFB");
+                textArea.setText("Firmware builded successfully!\nYou firmware available: <" + Branding + "_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using " + Branding);
                 textArea.setSize(300, Short.MAX_VALUE);
                 textArea.setWrapStyleWord(true);
                 textArea.setLineWrap(true);
@@ -1211,14 +1075,23 @@ public class mainForm extends JFrame {
             } else deleteDirectory(new File(workDir + File.separatorChar + projectName));
             LOGGER.info("======== Compiling done! ========");
         } catch (AndrolibException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
         btnBuild.setEnabled(true);
 
@@ -1377,7 +1250,7 @@ public class mainForm extends JFrame {
             titleProjName = projectName;
             projectName = projectName + ".mfbproj";
             if (!projectName.isEmpty() && new File(workDir + File.separatorChar + projectName).exists()) {
-                setTitle("jMFB - " + titleProjName);
+                setTitle(Branding + " - " + titleProjName);
                 setInterfaceState(true);
                 Properties sets = new Properties();
                 try {
@@ -1411,7 +1284,8 @@ public class mainForm extends JFrame {
     }
 
     private void miNewProjectActionPerformed(ActionEvent e) {
-        projectName = JOptionPane.showInputDialog(null, "Project name:", "Creating MFB project", JOptionPane.QUESTION_MESSAGE);
+        projectName = JOptionPane.showInputDialog(null, "Project name:", "Creating translation project", JOptionPane.QUESTION_MESSAGE);
+        if (projectName == null) projectName = "NoName";
         titleProjName = projectName;
         projectName = projectName + ".mfbproj";
         if (!projectName.isEmpty()) {
@@ -1449,7 +1323,7 @@ public class mainForm extends JFrame {
     }
 
     private void oneClickActionPerformed(ActionEvent e) {
-        OneClickBuild bbb1= new OneClickBuild();
+        OneClickBuild bbb1 = new OneClickBuild();
         bbb1.execute();
     }
 
@@ -1492,8 +1366,9 @@ public class mainForm extends JFrame {
         setBackground(Color.white);
         Container contentPane = getContentPane();
         contentPane.setLayout(new FormLayout(
-            "$lcgap, 204dlu:grow, 2*($lcgap)",
-            "3*(default, $lgap), default, $lcgap, 8*(default, $lgap), default"));
+                "$lcgap, 204dlu:grow, 2*($lcgap)",
+                "3*(default, $lgap), default, $lcgap, 8*(default, $lgap), default"));
+        setTitle(Branding);
 
         //======== mbMainBar ========
         {
@@ -1539,8 +1414,8 @@ public class mainForm extends JFrame {
         //======== pOpenFirmware ========
         {
             pOpenFirmware.setLayout(new FormLayout(
-                "default, $lcgap, default:grow, $lcgap, default",
-                "default"));
+                    "default, $lcgap, default:grow, $lcgap, default",
+                    "default"));
 
             //---- edtFirmwareFile ----
             edtFirmwareFile.setEnabled(false);
@@ -1569,8 +1444,8 @@ public class mainForm extends JFrame {
         //======== pAddons ========
         {
             pAddons.setLayout(new FormLayout(
-                "default, $lcgap, default:grow",
-                "3*(default, $lgap), default"));
+                    "default, $lcgap, default:grow",
+                    "3*(default, $lgap), default"));
 
             //---- lbTimezone ----
             lbTimezone.setText("Timezone:");
@@ -1586,21 +1461,23 @@ public class mainForm extends JFrame {
             pAddons.add(lbLang, CC.xy(1, 3));
 
             //---- cbLang ----
-            cbLang.setModel(new DefaultComboBoxModel(new String[] {
-                "Russian",
-                "Ukrainian",
-                "English (US)"
+            cbLang.setModel(new DefaultComboBoxModel(new String[]{
+                    "Russian",
+                    "Ukrainian",
+                    "English (US)"
             }));
             cbLang.setFocusable(false);
             cbLang.setEnabled(false);
             pAddons.add(cbLang, CC.xy(3, 3));
 
             //---- decompAll ----
+            decompAll.setVisible(devversion);
             decompAll.setText("Decompile all files");
             decompAll.setEnabled(false);
             pAddons.add(decompAll, CC.xywh(1, 5, 3, 1));
 
             //---- cbNotOdex ----
+            cbNotOdex.setVisible(devversion);
             cbNotOdex.setText("Don't deodex firmware");
             cbNotOdex.setEnabled(false);
             pAddons.add(cbNotOdex, CC.xywh(1, 7, 3, 1));
@@ -1616,8 +1493,8 @@ public class mainForm extends JFrame {
         //======== pRepos ========
         {
             pRepos.setLayout(new FormLayout(
-                "$lcgap, default:grow, 2*($lcgap)",
-                "default"));
+                    "$lcgap, default:grow, 2*($lcgap)",
+                    "default"));
 
             //======== spRepos ========
             {
@@ -1625,14 +1502,20 @@ public class mainForm extends JFrame {
                 //---- lstRepos ----
                 lstRepos.setModel(new AbstractListModel() {
                     String[] values = {
-                        "Repo1",
-                        "Repo2",
-                        "Repo3"
+                            "Repo1",
+                            "Repo2",
+                            "Repo3"
                     };
+
                     @Override
-                    public int getSize() { return values.length; }
+                    public int getSize() {
+                        return values.length;
+                    }
+
                     @Override
-                    public Object getElementAt(int i) { return values[i]; }
+                    public Object getElementAt(int i) {
+                        return values[i];
+                    }
                 });
                 lstRepos.setFocusable(false);
                 lstRepos.setEnabled(false);
@@ -1651,8 +1534,8 @@ public class mainForm extends JFrame {
         //======== pCmdButtons ========
         {
             pCmdButtons.setLayout(new FormLayout(
-                "default, 2*($lcgap), default:grow, $glue, $lcgap, default",
-                "default, $lgap, $lcgap"));
+                    "default, 2*($lcgap), default:grow, $glue, $lcgap, default",
+                    "default, $lgap, $lcgap"));
 
             //---- btnDeCompile ----
             btnDeCompile.setText("Decompile Firmware");
@@ -1742,10 +1625,11 @@ public class mainForm extends JFrame {
                 public String format(LogRecord logRecord) {
                     try {
                         Date now = new Date();
+                        SimpleDateFormat formatter = new SimpleDateFormat("H:mm");
                         FileWriter sw;
-                        if (!(logRecord.getMessage().contains("warning")||logRecord.getMessage().contains("config flags"))) {
+                        if (!logRecord.getMessage().contains("warning")) {
                             sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Logging.txt", true);
-                            sw.write("[" + now.toString() + "] " + logRecord.getMessage() + System.getProperty("line.separator"));
+                            sw.write("[" + formatter.format(now) + "] " + logRecord.getMessage() + System.getProperty("line.separator"));
                             sw.close();
                         }
                     } catch (Exception e) {
@@ -1796,16 +1680,16 @@ public class mainForm extends JFrame {
     private String workDir;
     private String aAppsDir = "";
     private String binDir = "";
-    private String projectName;
-    private String titleProjName;
+    private String projectName = null;
+    private String titleProjName = null;
     private static boolean cmd = false;
     private String[] langs = {"ru", "uk", "en"};
     private String[] regions = {"RU", "UK", "US"};
     private List<String> timeZones = new ArrayList<String>();
-    private int repos_count = 2;
-    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)"));
-    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid"));
-    private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian"));
+    private int repos_count = 4;
+    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
+    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian", "Russian", "Russian"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
     private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
     private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
@@ -1814,8 +1698,9 @@ public class mainForm extends JFrame {
     private Boolean HWUpdate = false;
     private Boolean UpdateFromFolder = false;
     private Boolean writeBProp = true;
-    private String Branding = "jMFB v2";
-    //private Boolean isJB = false;
+    private String Branding = "Translating Tool";
     private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
+    //private Boolean isJB = false;
     //private Boolean fullLog=false;
+    private Boolean devversion = false;
 }

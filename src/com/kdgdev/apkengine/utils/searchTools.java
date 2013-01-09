@@ -1,4 +1,6 @@
-package com.kdgdev.jMFB.utils;
+package com.kdgdev.apkengine.utils;
+
+import com.kdgdev.extended.SearchException;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -44,11 +46,11 @@ public class searchTools {
      * @return Список (List) найденных объектов
      * @throws java.lang.Exception если возникли ошибки в процессе поиска
      */
-    public List findAll(String startPath) throws Exception {
+    public List findAll(String startPath) throws SearchException {
         return find(startPath, "", ALL);
     }
 
-    public List findDirectories_InFolder(String startPath, String mask) throws Exception {
+    public List findDirectories_InFolder(String startPath, String mask) throws SearchException {
 
         List<File> findedFolders = new ArrayList<File>();
         File topDirectory = new File(startPath);
@@ -78,7 +80,7 @@ public class searchTools {
      * @throws java.lang.Exception если возникли ошибки в процессе поиска
      */
     public List findAll(String startPath, String mask)
-            throws Exception {
+            throws SearchException {
         return find(startPath, mask, ALL);
     }
 
@@ -194,14 +196,14 @@ public class searchTools {
     Затем вызывает метод search для выполнения поиска.
     */
     private List find(String startPath, String mask, int objectType)
-            throws Exception {
+            throws SearchException {
         //проверка параметров
         if (startPath == null || mask == null) {
-            throw new Exception("Ошибка: не заданы параметры поиска");
+            throw new SearchException("Error: search parameters not init");
         }
         File topDirectory = new File(startPath);
         if (!topDirectory.exists()) {
-            throw new Exception("Ошибка: указанный путь не существует");
+            throw new SearchException("Error: path not found ("+topDirectory.getAbsolutePath()+")");
         }
         //если задано регулярное выражение, создаем Pattern
         if (!mask.equals("")) {

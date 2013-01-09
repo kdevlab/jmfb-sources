@@ -1,4 +1,4 @@
-package com.kdgdev.jMFB.utils;
+package com.kdgdev.apkengine.utils;
 
 
 import brut.androlib.Androlib;
@@ -28,35 +28,31 @@ public class gitTools {
     private static final String GITPATH_GITHUB = "https://github.com";
     private static final String GITPATH_BITBUCKET = "https://bitbucket.org";
 
-    public void downloadFromGit(String project, String saveFolder) {
+    public void downloadFromGit(String project, String saveFolder) throws IOException {
         downloadFromGit(project, saveFolder, "master");
     }
 
-    public void downloadFromBitBucket(String project, String saveFolder) {
+    public void downloadFromBitBucket(String project, String saveFolder) throws IOException {
         downloadFromBitBucket(project, saveFolder, "master");
     }
 
-    public void downloadFileFromGit(String project, String filePath, String saveFile, String Branch) {
+    public void downloadFileFromGit(String project, String filePath, String saveFile, String Branch) throws IOException {
         String url;
         if (project.startsWith("/?"))
             url = project;
         else {
             url = "/" + project + "/" + Branch + "/" + filePath;
         }
-        try {
             LOGGER.info(url);
             downloadFile(url, saveFile);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
     }
 
-    public void downloadFileFromGit(String project, String filePath, String saveFile) {
+    public void downloadFileFromGit(String project, String filePath, String saveFile) throws IOException {
         downloadFileFromGit(project, filePath, saveFile, "master");
     }
 
-    public void downloadFromGit(String project, String saveFolder, String Branch) {
+    public void downloadFromGit(String project, String saveFolder, String Branch) throws IOException {
         String url;
         if (project.startsWith("/?"))
             url = project;
@@ -64,16 +60,11 @@ public class gitTools {
             url = "/" + project + "/zipball/" + Branch + "/";
         }
         this.saveFolder = saveFolder;
-        try {
-            new File(saveFolder).mkdirs();
-
-            downloadFile(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        new File(saveFolder).mkdirs();
+        downloadFile(url);
     }
 
-    public void downloadFromBitBucket(String project, String saveFolder, String Branch) {
+    public void downloadFromBitBucket(String project, String saveFolder, String Branch) throws IOException {
         String url;
         if (project.startsWith("/?"))
             url = project;
@@ -81,13 +72,9 @@ public class gitTools {
             url = "/" + project + "/get/" + Branch + ".zip";
         }
         this.saveFolder = saveFolder;
-        try {
-            new File(saveFolder).mkdirs();
+        new File(saveFolder).mkdirs();
 
-            downloadFileFromBitBucket(url);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+        downloadFileFromBitBucket(url);
     }
 
     private void downloadFile(String href)

@@ -252,6 +252,7 @@ public class ARSCDecoder {
         boolean isInvalid = false;
 
         short oppoflag = mIn.readShort();
+        //LOGGER.info("oppoflag: " + String.valueOf(oppoflag));
 
         short mcc = mIn.readShort();
         short mnc = mIn.readShort();

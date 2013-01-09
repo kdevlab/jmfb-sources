@@ -1,4 +1,4 @@
-package com.kdgdev.jMFB.utils;
+package com.kdgdev.apkengine.utils;
 
 /**
  * Created with IntelliJ IDEA.

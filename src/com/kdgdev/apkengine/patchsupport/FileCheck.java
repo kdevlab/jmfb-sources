@@ -1,4 +1,4 @@
-package com.kdgdev.jMFB.patchsupport;
+package com.kdgdev.apkengine.patchsupport;
 
 import java.io.File;
 import java.util.ArrayList;
