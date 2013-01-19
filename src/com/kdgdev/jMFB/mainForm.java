@@ -536,11 +536,14 @@ public class mainForm extends JFrame {
         } catch (AndrolibException e) {
             LOGGER.info(e.getMessage());
             JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (IOException e) {
+            LOGGER.info(e.getMessage());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
         }
     }
 
-    private void rebuildFiles(String Apk, String ApkName) throws IOException, AndrolibException {
-        patcher.rebuildFiles(Apk, ApkName, otaUpdateURL);
+    private void rebuildFiles(String Apk, String ApkName, String device) throws IOException, AndrolibException {
+        patcher.rebuildFiles(Apk, ApkName, otaUpdateURL, device);
     }
 
     private void writeAllBPValues(buildPropTools bldprp, boolean onlySafe) throws UnknownHostException {
@@ -755,7 +758,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
                         } else {
                             frm.delete();
                         }
@@ -781,7 +784,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
                         } else {
                             File dectFile = File.createTempFile("KDGDEV", ".kdg");
                             File dctFile = frm;
@@ -813,7 +816,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase());
+                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
                         } else {
                             File dectFile = File.createTempFile("KDGDEV", ".kdg");
                             File dctFile = frm;

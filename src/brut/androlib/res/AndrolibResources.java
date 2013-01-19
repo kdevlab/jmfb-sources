@@ -291,7 +291,7 @@ final public class AndrolibResources {
 
     public void aaptPackage(File apkFile, File manifest, File resDir,
                             File rawDir, File assetDir, File[] include,
-                            boolean update, boolean framework) throws AndrolibException {
+                            boolean update, boolean framework, boolean compression) throws AndrolibException {
         List<String> cmd = new ArrayList<String>();
 
 
@@ -324,6 +324,11 @@ final public class AndrolibResources {
 
         if (framework) {
             cmd.add("-x");
+        }
+
+        if (!compression) {
+            cmd.add("-0");
+            cmd.add("arsc");
         }
 
         if (include != null) {

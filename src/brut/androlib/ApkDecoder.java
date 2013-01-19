@@ -27,10 +27,11 @@ import brut.directory.DirectoryException;
 import brut.util.OS;
 
 import java.io.File;
-import java.util.Arrays;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.Set;
+import java.io.IOException;
+import java.util.*;
+import java.util.jar.JarEntry;
+import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 
 /**
  * @author Ryszard Wiśniewski <brut.alll@gmail.com>
@@ -50,7 +51,7 @@ public class ApkDecoder {
         mOutDir = outDir;
     }
 
-    public void decode() throws AndrolibException {
+    public void decode() throws AndrolibException, IOException {
         File outDir = getOutDir();
 
         if (!mForceDelete && outDir.exists()) {
@@ -69,6 +70,13 @@ public class ApkDecoder {
         outDir.mkdirs();
 
         if (hasSources()) {
+            JarFile jf = new JarFile(mApkFile.getAbsoluteFile());
+            JarEntry je = jf.getJarEntry("resources.arsc");
+            if (je != null)    {
+                setCompressionType(je.getMethod());
+            }
+            jf.close();
+
             switch (mDecodeSources) {
                 case DECODE_SOURCES_NONE:
                     mAndrolib.decodeSourcesRaw(mApkFile, outDir, mDebug);
@@ -193,9 +201,23 @@ public class ApkDecoder {
             putUsesFramework(meta);
             putSdkInfo(meta);
             putPackageInfo(meta);
+            putCompressionInfo(meta);
         }
 
         mAndrolib.writeMetaFile(mOutDir, meta);
+    }
+
+    private void putCompressionInfo(Map<String, Object> meta)
+            throws AndrolibException {
+        meta.put("compressionType", getCompressionType());
+    }
+
+    private boolean getCompressionType() {
+        return mCompressResources;
+    }
+
+    private void setCompressionType(int compression) {
+        mCompressResources = (compression != ZipEntry.STORED) && (compression == ZipEntry.DEFLATED);
     }
 
     private void putUsesFramework(Map<String, Object> meta)
@@ -256,4 +278,5 @@ public class ApkDecoder {
     private boolean mForceDelete = false;
     private String mFrameTag;
     private boolean mKeepBrokenResources = false;
+    private boolean mCompressResources = false;
 }

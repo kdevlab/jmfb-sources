@@ -51,11 +51,25 @@ public class ResStyleValue extends ResBagValue implements ResValuesXmlSerializab
         for (int i = 0; i < mItems.length; i++) {
             ResResSpec spec = mItems[i].m1.getReferent();
 
-            if (spec.getDefaultResource().getValue().toString().contains("ResReferenceValue@")) {
-                continue;
+            // fix for ClassCastException by Alsan Wong <alsan.wong@gmail.com> at 2013/01/18 15:08
+            ResAttr attr;
+            String value = null;
+
+            try {
+                // hacky-fix remove bad ReferenceVars
+                ResValue attrValue = spec.getDefaultResource().getValue();
+                value = attrValue.toString();	// I know, this is not good, but I don't want another variable just for exception handling
+
+                if(value.contains("ResReferenceValue@")) {
+                    continue;
+                }
+
+                attr = (ResAttr)attrValue;
+                value = attr.convertToResXmlFormat(mItems[i].m2);
+            } catch(ClassCastException e) {
+                System.out.println("ClassCastException: " + e.getMessage());
+                System.out.println(value);
             }
-            ResAttr attr = (ResAttr) spec.getDefaultResource().getValue();
-            String value = attr.convertToResXmlFormat(mItems[i].m2);
 
             if (value == null) {
                 value = mItems[i].m2.encodeAsResXmlValue();

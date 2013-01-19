@@ -17,7 +17,7 @@ public class patcher {
 
     //private final static Logger LOGGER = Logger.getLogger(Androlib.class.getName());
 
-    public static void rebuildFiles(String Apk, String ApkName, String otaUpdateURL) throws IOException, AndrolibException {
+    public static void rebuildFiles(String Apk, String ApkName, String otaUpdateURL, String device) throws IOException, AndrolibException {
         //http://update.miui.com/updates/mi-updateV4.php
 
         if (ApkName.equals("miuihome.apk")) {
@@ -40,6 +40,8 @@ public class patcher {
                     patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV7.php\"", "\"" + otaUpdateURL + "\"");
                     patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV8.php\"", "\"" + otaUpdateURL + "\"");
                     patchFile = StringUtils.replace(patchFile, "\"http://update.miui.com/updates/mi-updateV9.php\"", "\"" + otaUpdateURL + "\"");
+                    patchFile.replaceAll("\"%s?g=%s&v=%s&c=%s&d=%s&i=%s&b=%s&l=%s\"", "\"%s?g=%s&v=%s&c=%s&nd=%s&d="+device+"&i=%s&b=%s&l=%s\"");
+                    //patchFile = StringUtils.replace(patchFile, "\"%s?g=%s&v=%s&c=%s&d=%s&i=%s&b=%s&l=%s\"", "\"%s?g=%s&v=%s&c=%s&nd=%s&d="+device+"&i=%s&b=%s&l=%s\"");
                     patchFile = StringUtils.replace(patchFile, "\"http://www.miui.com/api.php?mod=wm", "\"http://ota.romz.bz/api.php?mod=wm");
                     FileUtils.writeStringToFile(res, patchFile);
             }
