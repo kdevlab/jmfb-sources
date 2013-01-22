@@ -73,7 +73,10 @@ public class mainForm extends JFrame {
 
             }
         } catch (Exception ex) {
-            LOGGER.info(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
 
         if (extraBootClassPath != null) {
@@ -106,10 +109,11 @@ public class mainForm extends JFrame {
         cmd.add(getBootClassPathFromFolder(classPathDir));
         try {
             OS.exec(cmd.toArray(new String[cmd.size()]));
-        } catch (AndrolibException e) {
-            LOGGER.info(e.getMessage());
-        } catch (BrutException e) {
-            LOGGER.info(e.getMessage());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
     }
 
@@ -124,9 +128,11 @@ public class mainForm extends JFrame {
             flags.put("framework", false);
             flags.put("update", false);
             SmaliBuilder.build(new ExtFile(inDir), dexFile, flags);
-
         } catch (AndrolibException ex) {
-            LOGGER.info(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
     }
 
@@ -140,7 +146,10 @@ public class mainForm extends JFrame {
         try {
             OS.exec(cmd.toArray(new String[cmd.size()]), fileToPack.getParent());
         } catch (BrutException ex) {
-            LOGGER.info(ex.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            ex.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
 
     }
@@ -167,7 +176,10 @@ public class mainForm extends JFrame {
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "deodexed" + File.separatorChar + odexFile.getName() + ".classes"));
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "deodexed" + File.separatorChar + odexFile.getName()));
         } catch (BrutException e) {
-            System.out.println(e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
     }
 
@@ -405,7 +417,10 @@ public class mainForm extends JFrame {
             if (new File(workDir + File.separatorChar + "repos_add.list").exists())
                 readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
         } catch (IOException e) {
-            LOGGER.info("Failed loading language list...");
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
         }
         jmfbInit bbb2 = new jmfbInit();
         bbb2.execute();
@@ -468,8 +483,11 @@ public class mainForm extends JFrame {
                 kAndrolib.installFramework((File) frameworks.get(i), null);
             }
         } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
         pbProgress.setIndeterminate(true);
     }
@@ -492,11 +510,11 @@ public class mainForm extends JFrame {
             if (testReturn) {
                 if (exitVal == 2) return false;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            return false;
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
             return false;
         }
         return true;
@@ -513,8 +531,11 @@ public class mainForm extends JFrame {
         try {
             deleteDirectory(new File(Folder + File.separatorChar + ".git"));
         } catch (BrutException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
         new File(Folder + File.separatorChar + "README").delete();
         pbProgress.setIndeterminate(false);
@@ -533,12 +554,12 @@ public class mainForm extends JFrame {
             decoder.setOutDir(new File(Folder));
             decoder.setApkFile(new File(Apk));
             decoder.decode();
-        } catch (AndrolibException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-        } catch (IOException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
     }
 
@@ -847,19 +868,7 @@ public class mainForm extends JFrame {
             LOGGER.info("======== End of decompiling files ========");
             btnBuild.setEnabled(true);
             bldprop.write();
-        } catch (IOException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
-        } catch (BrutException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
-        } catch (ZipException e) {
+        } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
@@ -1077,18 +1086,6 @@ public class mainForm extends JFrame {
 
             } else deleteDirectory(new File(workDir + File.separatorChar + projectName));
             LOGGER.info("======== Compiling done! ========");
-        } catch (AndrolibException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
-        } catch (IOException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         } catch (Exception e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
@@ -1273,15 +1270,22 @@ public class mainForm extends JFrame {
                     toggleFirmwareChoise(false);
 
                 } catch (IOException e1) {
-                    LOGGER.info(e1.getMessage());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + e1.getMessage());
+                    StringWriter sw = new StringWriter();
+                    PrintWriter pw = new PrintWriter(sw);
+                    e1.printStackTrace(pw);
+                    LOGGER.info(sw.toString());
+                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
                 }
                 btnCompileActionPerformed(null);
             } else {
                 JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
             }
         } catch (Exception e1) {
-            System.out.println(e1.getMessage());
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e1.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
 
     }
@@ -1588,18 +1592,12 @@ public class mainForm extends JFrame {
         }
         try {
             UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (ClassNotFoundException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-        } catch (InstantiationException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-        } catch (IllegalAccessException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-        } catch (UnsupportedLookAndFeelException e) {
-            LOGGER.info(e.getMessage());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
         }
         mainForm mainFrm = new mainForm();
         mainFrm.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -1636,7 +1634,11 @@ public class mainForm extends JFrame {
                             sw.close();
                         }
                     } catch (Exception e) {
-                        System.out.print(e.getMessage());
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new PrintWriter(sw);
+                        e.printStackTrace(pw);
+                        LOGGER.info(sw.toString());
+                        JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
                     }
                     return logRecord.getMessage() + System.getProperty("line.separator");
                 }
