@@ -99,7 +99,9 @@ public class mainForm extends JFrame {
     }
 
     public void extractFolder(String zipFile, String ExtractPath) throws Exception {
-        LOGGER.info(zipFile);
+        pbProgress.setIndeterminate(true);
+        kFrontend.extractFolder(zipFile, ExtractPath);
+       /* LOGGER.info(zipFile);
         int BUFFER = 2048;
         File file = new File(zipFile);
 
@@ -140,7 +142,7 @@ public class mainForm extends JFrame {
                 dest.close();
                 is.close();
             }
-        }
+        }*/
     }
 
     private boolean initMFB(String[] args) {
@@ -267,10 +269,6 @@ public class mainForm extends JFrame {
         }
         new File(Folder + File.separatorChar + "README").delete();
         pbProgress.setIndeterminate(false);
-    }
-
-    private void rebuildFiles(String Apk, String ApkName, String device) throws Exception {
-        kFrontend.rebuildFiles(Apk, ApkName, otaUpdateURL, device);
     }
 
     private void writeAllBPValues(buildPropTools bldprp, boolean onlySafe) throws UnknownHostException {
@@ -485,7 +483,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
+                            kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
                             frm.delete();
                         }
@@ -511,7 +509,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
+                            kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
                             File dectFile = File.createTempFile("KDGDEV", ".kdg");
                             File dctFile = frm;
@@ -543,7 +541,7 @@ public class mainForm extends JFrame {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             kFrontend.decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
-                            rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), bldprop.readProp("ro.product.device"));
+                            kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
                             File dectFile = File.createTempFile("KDGDEV", ".kdg");
                             File dctFile = frm;
@@ -931,22 +929,14 @@ public class mainForm extends JFrame {
                     toggleFirmwareChoise(false);
 
                 } catch (IOException e1) {
-                    StringWriter sw = new StringWriter();
-                    PrintWriter pw = new PrintWriter(sw);
-                    e1.printStackTrace(pw);
-                    LOGGER.info(sw.toString());
-                    JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
+                    setInterfaceState(false);
                 }
                 btnCompileActionPerformed(null);
             } else {
                 JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
             }
         } catch (Exception e1) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e1.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
+            setInterfaceState(false);
         }
 
     }
