@@ -4,6 +4,8 @@ import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.kdgdev.apkengine.utils.*;
 import com.kdgdev.frontend;
+import net.lingala.zip4j.core.ZipFile;
+import net.lingala.zip4j.exception.ZipException;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -28,8 +30,6 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
 
 
 /**
@@ -76,7 +76,6 @@ public class mainForm extends JFrame {
     public static boolean isWindows() {
 
         String os = System.getProperty("os.name").toLowerCase();
-        // windows
         return (os.contains("win"));
 
     }
@@ -84,7 +83,6 @@ public class mainForm extends JFrame {
     public static boolean isUnix() {
 
         String os = System.getProperty("os.name").toLowerCase();
-        // linux or unix
         return (os.contains("nix") || os.contains("nux"));
 
     }
@@ -98,51 +96,19 @@ public class mainForm extends JFrame {
 
     }
 
-    public void extractFolder(String zipFile, String ExtractPath) throws Exception {
+    public void extractFolder(String zipFile, String ExtractPath) throws ZipException {
+        ZipFile FirmwareZip = new ZipFile(zipFile);
+        net.lingala.zip4j.progress.ProgressMonitor progressMonitor = FirmwareZip.getProgressMonitor();
+        FirmwareZip.setRunInThread(true);
+        FirmwareZip.extractAll(ExtractPath);
+        pbProgress.setIndeterminate(false);
+        while (progressMonitor.getState() == net.lingala.zip4j.progress.ProgressMonitor.STATE_BUSY) {
+
+            pbProgress.setValue(progressMonitor.getPercentDone());
+
+        }
         pbProgress.setIndeterminate(true);
-        kFrontend.extractFolder(zipFile, ExtractPath);
-       /* LOGGER.info(zipFile);
-        int BUFFER = 2048;
-        File file = new File(zipFile);
 
-        ZipFile zip = new ZipFile(file);
-        String newPath = ExtractPath;
-
-        new File(newPath).mkdir();
-        Enumeration zipFileEntries = zip.entries();
-
-        // Process each entry
-        while (zipFileEntries.hasMoreElements()) {
-            // grab a zip file entry
-            ZipEntry entry = (ZipEntry) zipFileEntries.nextElement();
-            String currentEntry = entry.getName();
-            File destFile = new File(newPath, currentEntry);
-            File destinationParent = destFile.getParentFile();
-
-            // create the parent directory structure if needed
-            destinationParent.mkdirs();
-
-            if (!entry.isDirectory()) {
-                BufferedInputStream is = new BufferedInputStream(zip
-                        .getInputStream(entry));
-                int currentByte;
-                // establish buffer for writing file
-                byte data[] = new byte[BUFFER];
-
-                // write the current file to disk
-                FileOutputStream fos = new FileOutputStream(destFile);
-                BufferedOutputStream dest = new BufferedOutputStream(fos,
-                        BUFFER);
-
-                // read and write until last byte is encountered
-                while ((currentByte = is.read(data, 0, BUFFER)) != -1) {
-                    dest.write(data, 0, currentByte);
-                }
-                dest.flush();
-                dest.close();
-                is.close();
-            }
-        }*/
     }
 
     private boolean initMFB(String[] args) {
@@ -357,8 +323,8 @@ public class mainForm extends JFrame {
                         lbProgressstate.setText("Deodexing firmware...");
                         LOGGER.info("----- Starting BurgerZ deodex code -----");
                         try {
-                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "app", ".apk");
-                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", "framework", ".jar");
+                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "app", ".apk");
+                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "framework", ".jar");
                             LOGGER.info("----- DONE! -----");
                         } catch (Exception e) {
                             StringWriter sw = new StringWriter();
@@ -382,7 +348,7 @@ public class mainForm extends JFrame {
             LOGGER.info("!----------------------------------------------------!");
 
             kFrontend.
-            installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
+                    installFrameworks(workDir + File.separatorChar + "aApps" + File.separatorChar + "plugs");
             //<editor-fold desc="Downloading precompiled files from git">
             if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
                 lbProgressstate.setText("Getting precompiled files...");
@@ -642,7 +608,7 @@ public class mainForm extends JFrame {
             lbProgressstate.setText("Building framework...");
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" , workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
