@@ -17,7 +17,7 @@
     <file path="$PROJECT_DIR$/src/brut/androlib/res/util/ExtFile.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1350132459765" ignored="false" />
     <file path="/Androlib.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1358157358248" ignored="false" />
     <file path="/ApkDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1358156852005" ignored="false" />
-    <file path="/mainForm.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1359118851966" ignored="false" />
+    <file path="/mainForm.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1359727382373" ignored="false" />
     <file path="/Res9patchStreamDecoder.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1354973610813" ignored="false" />
     <file path="/searchTools.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1356785782147" ignored="false" />
     <file path="/SearchException.java" changelist="5273302d-c4be-4b52-935c-c78201c3f4f4" time="1356785713134" ignored="false" />
@@ -45,7 +45,6 @@
     <disable_hints />
   </component>
   <component name="DebuggerManager">
-    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_any default_suspend_policy="SuspendAll" default_condition_enabled="true">
       <breakpoint>
         <option name="NOTIFY_CAUGHT" value="true" />
@@ -80,6 +79,7 @@
         <option name="LOG_MESSAGE" value="" />
       </breakpoint>
     </breakpoint_any>
+    <ui_properties default_suspend_policy="SuspendAll" default_condition_enabled="true" />
     <breakpoint_rules />
     <ui_properties />
   </component>
@@ -93,7 +93,7 @@
       <file leaf-file-name="mainForm.java" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="83" column="39" selection-start="2454" selection-end="2454" vertical-scroll-proportion="0.9322799">
+            <state line="578" column="232" selection-start="37436" selection-end="37436" vertical-scroll-proportion="0.24357034">
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;class#mainForm#0" expanded="false" />
@@ -117,22 +117,21 @@
                 <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-                <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-                <element signature="e#45563#45728#0" expanded="false" />
+                <element signature="e#45800#45965#0" expanded="false" />
                 <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
                 <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
                 <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
                 <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-                <element signature="e#55411#55448#0" expanded="false" />
+                <element signature="e#55648#55685#0" expanded="false" />
                 <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-                <element signature="class#57737:58203" expanded="false" />
-                <element signature="method#accept#0;class#57737:58203" expanded="false" />
-                <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+                <element signature="class#57974:58440" expanded="false" />
+                <element signature="method#accept#0;class#57974:58440" expanded="false" />
+                <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
                 <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-                <element signature="e#58823#58855#0" expanded="false" />
+                <element signature="e#59060#59092#0" expanded="false" />
                 <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
                 <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
                 <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -141,15 +140,15 @@
                 <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
                 <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-                <element signature="class#70682:71187" expanded="false" />
-                <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-                <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+                <element signature="class#70919:71424" expanded="false" />
+                <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+                <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
                 <element signature="method#main#0;class#mainForm#0" expanded="false" />
-                <element signature="e#73529#73564#0" expanded="false" />
+                <element signature="e#73766#73801#0" expanded="false" />
                 <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
                 <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-                <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-                <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+                <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+                <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
               </folding>
             </state>
           </provider>
@@ -253,20 +252,6 @@
           </PATH>
         </subPane>
       </pane>
-      <pane id="PackagesPane">
-        <subPane>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="jMFB" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
-            </PATH_ELEMENT>
-          </PATH>
-        </subPane>
-      </pane>
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -311,6 +296,20 @@
             <PATH_ELEMENT>
               <option name="myItemId" value="lib" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+        </subPane>
+      </pane>
+      <pane id="PackagesPane">
+        <subPane>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="jMFB" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PackageViewModuleNode" />
             </PATH_ELEMENT>
           </PATH>
         </subPane>
@@ -540,7 +539,7 @@
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3190883" sideWeight="0.5105348" order="8" side_tool="true" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="true" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3105413" sideWeight="0.48379254" order="12" side_tool="false" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.3105413" sideWeight="0.48379254" order="12" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32905984" sideWeight="0.49675325" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.24918832" sideWeight="0.21825963" order="1" side_tool="true" content_ui="tabs" />
       <window_info id="Maven Projects" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.32901135" sideWeight="0.6766382" order="3" side_tool="false" content_ui="tabs" />
@@ -652,22 +651,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -676,15 +674,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -715,22 +713,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -739,15 +736,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -778,22 +775,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -802,15 +798,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -841,22 +837,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -865,15 +860,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -904,22 +899,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -928,15 +922,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -967,22 +961,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -991,15 +984,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1030,22 +1023,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1054,15 +1046,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1093,22 +1085,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1117,15 +1108,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1156,22 +1147,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1180,15 +1170,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1219,22 +1209,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1243,15 +1232,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1282,22 +1271,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1306,15 +1294,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1345,22 +1333,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1369,15 +1356,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1408,22 +1395,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1432,15 +1418,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1471,22 +1457,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1495,15 +1480,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>
@@ -1515,7 +1500,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/kdgdev/jMFB/mainForm.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="83" column="39" selection-start="2454" selection-end="2454" vertical-scroll-proportion="0.9322799">
+        <state line="578" column="232" selection-start="37436" selection-end="37436" vertical-scroll-proportion="0.24357034">
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#mainForm#0" expanded="false" />
@@ -1539,22 +1524,21 @@
             <element signature="class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#DecompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#deleteDirectory#0;class#mainForm#0" expanded="false" />
-            <element signature="method#CompileFrmw#0;class#mainForm#0" expanded="false" />
-            <element signature="e#45563#45728#0" expanded="false" />
+            <element signature="e#45800#45965#0" expanded="false" />
             <element signature="class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#CompileFirmware#0;class#mainForm#0" expanded="false" />
             <element signature="class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#OneClickBuild#0;class#mainForm#0" expanded="false" />
             <element signature="class#jmfbInit#0;class#mainForm#0" expanded="false" />
             <element signature="method#doInBackground#0;class#jmfbInit#0;class#mainForm#0" expanded="false" />
-            <element signature="e#55411#55448#0" expanded="false" />
+            <element signature="e#55648#55685#0" expanded="false" />
             <element signature="method#btnCompileActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#btnBrowseActionPerformed#0;class#mainForm#0" expanded="false" />
-            <element signature="class#57737:58203" expanded="false" />
-            <element signature="method#accept#0;class#57737:58203" expanded="false" />
-            <element signature="method#getDescription#0;class#57737:58203" expanded="false" />
+            <element signature="class#57974:58440" expanded="false" />
+            <element signature="method#accept#0;class#57974:58440" expanded="false" />
+            <element signature="method#getDescription#0;class#57974:58440" expanded="false" />
             <element signature="method#setInterfaceState#0;class#mainForm#0" expanded="false" />
-            <element signature="e#58823#58855#0" expanded="false" />
+            <element signature="e#59060#59092#0" expanded="false" />
             <element signature="method#removeExtension#0;class#mainForm#0" expanded="false" />
             <element signature="method#toggleFirmwareChoise#0;class#mainForm#0" expanded="false" />
             <element signature="method#miOpenProjectActionPerformed#0;class#mainForm#0" expanded="false" />
@@ -1563,15 +1547,15 @@
             <element signature="method#btnBuildActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#oneClickActionPerformed#0;class#mainForm#0" expanded="false" />
             <element signature="method#initComponents#0;class#mainForm#0" expanded="false" />
-            <element signature="class#70682:71187" expanded="false" />
-            <element signature="method#getSize#0;class#70682:71187" expanded="false" />
-            <element signature="method#getElementAt#0;class#70682:71187" expanded="false" />
+            <element signature="class#70919:71424" expanded="false" />
+            <element signature="method#getSize#0;class#70919:71424" expanded="false" />
+            <element signature="method#getElementAt#0;class#70919:71424" expanded="false" />
             <element signature="method#main#0;class#mainForm#0" expanded="false" />
-            <element signature="e#73529#73564#0" expanded="false" />
+            <element signature="e#73766#73801#0" expanded="false" />
             <element signature="method#setupLogging#0;class#mainForm#0" expanded="false" />
             <element signature="class#Verbosity#0;class#mainForm#0" expanded="false" />
-            <marker date="1359204589000" expanded="false" signature="63985:73468" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
-            <marker date="1359204589000" expanded="false" signature="76132:77273" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="64222:73705" placeholder="// JFormDesigner - Component initialization - DO NOT MODIFY" />
+            <marker date="1359727439000" expanded="false" signature="76369:77510" placeholder="// JFormDesigner - Variables declaration - DO NOT MODIFY" />
           </folding>
         </state>
       </provider>

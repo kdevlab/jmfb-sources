@@ -576,7 +576,7 @@ public class mainForm extends JFrame {
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
             kFrontend.setFrameworksFolder(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
             File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
@@ -608,7 +608,7 @@ public class mainForm extends JFrame {
             lbProgressstate.setText("Building framework...");
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
@@ -627,7 +627,7 @@ public class mainForm extends JFrame {
                 lbProgressstate.setText("Building data...");
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"));
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
-                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
                 for (int i = 0; i < buildFiles.size(); i++) {
                     pbProgress.setValue(i);
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
