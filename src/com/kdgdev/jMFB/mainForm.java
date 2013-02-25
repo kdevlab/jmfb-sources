@@ -4,8 +4,8 @@ import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
 import com.kdgdev.apkengine.utils.*;
 import com.kdgdev.frontend;
-import net.lingala.zip4j.core.ZipFile;
-import net.lingala.zip4j.exception.ZipException;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.commons.io.FileUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
@@ -23,13 +23,21 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.net.HttpURLConnection;
 import java.net.InetAddress;
+import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.*;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipException;
+import java.util.zip.ZipFile;
+
+import static com.kdgdev.apkengine.utils.gitTools.deleteDir;
+import static com.kdgdev.apkengine.utils.gitTools.writeFile;
 
 
 /**
@@ -44,6 +52,23 @@ public class mainForm extends JFrame {
 
     public mainForm() {
         initComponents();
+    }
+
+    private String authDialog() {
+        JLabel jText = new JLabel("Please, input you authorised username/password on bitbucket.org to access this repository");
+        JLabel jUserName = new JLabel("User Name");
+        JTextField userName = new JTextField();
+        JLabel jPassword = new JLabel("Password");
+        JTextField password = new JPasswordField();
+        Object[] ob = {jText, jUserName, userName, jPassword, password};
+        int result = JOptionPane.showConfirmDialog(null, ob, "Authorization", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String userNameValue = userName.getText();
+            String passwordValue = password.getText();
+            return userNameValue+":"+passwordValue;
+        }
+        return "none";
     }
 
     private void readLanuagesFile(String fileName, Boolean cleanLangs) throws IOException {
@@ -65,6 +90,16 @@ public class mainForm extends JFrame {
             repos_lang.add(all[2]);
             repos_count++;
             //LOGGER.info("Added language: " + all[0]);
+        }
+    }
+
+    private String getActivationKey(String username, String password) {
+
+        byte[] key = Base64.encodeBase64(DigestUtils.sha256(username + "." + password));
+        try {
+            return new String(key, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return "fail";
         }
     }
 
@@ -96,8 +131,8 @@ public class mainForm extends JFrame {
 
     }
 
-    public void extractFolder(String zipFile, String ExtractPath) throws ZipException {
-        ZipFile FirmwareZip = new ZipFile(zipFile);
+    public void extractFolder(String zipFile, String ExtractPath) throws net.lingala.zip4j.exception.ZipException {
+       net.lingala.zip4j.core.ZipFile FirmwareZip = new net.lingala.zip4j.core.ZipFile(zipFile);
         net.lingala.zip4j.progress.ProgressMonitor progressMonitor = FirmwareZip.getProgressMonitor();
         FirmwareZip.setRunInThread(true);
         FirmwareZip.extractAll(ExtractPath);
@@ -126,7 +161,7 @@ public class mainForm extends JFrame {
         workDir = System.getProperty("user.dir");
         //LOGGER.info("WorkDir = " + workDir);
         aAppsDir = workDir + File.separatorChar + "aApps" + File.separatorChar + getOSDir();
-        binDir = workDir + File.separatorChar + "aApps" + File.separatorChar + "bin";
+        String binDir = workDir + File.separatorChar + "aApps" + File.separatorChar + "bin";
         //LOGGER.info("aAppsDir = " + aAppsDir);
         try {
             if (new File(workDir + File.separatorChar + "repos.list").exists())
@@ -296,6 +331,86 @@ public class mainForm extends JFrame {
         return patchFile.exists();
     }
 
+    public static void unzipFile(String zipFileName, String directoryToExtractTo) {
+        try {
+            ZipFile zipFile = new ZipFile(zipFileName);
+            Enumeration entriesEnum = zipFile.entries();
+
+            File directory = new File(directoryToExtractTo);
+
+            if (!directory.exists()) {
+                new File(directoryToExtractTo).mkdir();
+                LOGGER.info("...Directory Created -" + directoryToExtractTo);
+            }
+
+            LOGGER.info("Extracting sources to local directory...");
+            while (entriesEnum.hasMoreElements()) {
+                try {
+                    ZipEntry entry = (ZipEntry) entriesEnum.nextElement();
+
+                    if (entry.isDirectory()) {
+                        new File(directory + "/" + entry.getName()).mkdir();
+                    } else {
+                        int index = 0;
+                        String name = entry.getName();
+                        index = entry.getName().lastIndexOf("/");
+                        if ((index > 0) && (index != name.length())) {
+                            name = entry.getName().substring(index + 1);
+                        }
+
+                        writeFile(zipFile.getInputStream(entry),
+                                new BufferedOutputStream(
+                                        new FileOutputStream(directory + "/" + entry.getName())));
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+
+            File srcdirOfgit = new File(zipFile.entries().nextElement().getName());
+
+            zipFile.close();
+            File f = new File(zipFileName);
+            f.delete();
+
+            File directoryOfgit = new File(directoryToExtractTo);
+
+            if (directoryOfgit.isDirectory()) {
+                String[] filenames = directoryOfgit.list();
+
+                File destination = new File(directoryToExtractTo);
+                File source = new File(directoryToExtractTo + "/" + srcdirOfgit);
+
+                FileUtils.copyDirectory(source, destination);
+                deleteDir(source);
+            }
+        } catch (Exception e) {
+            LOGGER.info(e.getMessage());
+        }
+    }
+
+    private void getFilesFromBitBucket(String project, String saveFolder, String authString) throws IOException {
+        URL u = new URL("https://bitbucket.org/"+project+"/get/master.zip");
+        HttpURLConnection c = (HttpURLConnection) u.openConnection();
+        c.setRequestProperty("Authorization", "Basic "+ javax.xml.bind.DatatypeConverter.printBase64Binary(authString.getBytes()));
+        //c.setRequestMethod("POST");
+        c.setUseCaches(false);
+        c.setDoOutput(false);
+        c.connect();
+        BufferedInputStream in = new BufferedInputStream(c.getInputStream());
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveFolder+".tmp")));
+        byte[] buf = new byte[1024];
+        int n = 0;
+        while ((n=in.read(buf))>=0) {
+            out.write(buf, 0, n);
+        }
+        out.flush();
+        out.close();
+        c.disconnect();
+        unzipFile(saveFolder+".tmp", saveFolder);
+        new File(saveFolder+".tmp").delete();
+    }
+
     private void DecompileFrmw() {
         try {
             btnBuild.setEnabled(false);
@@ -317,22 +432,22 @@ public class mainForm extends JFrame {
                 if (!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
                 extractFolder(toFile.getAbsolutePath(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
                 extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-                String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
-                if (!cbNotOdex.isSelected()) {
-                    if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
-                        lbProgressstate.setText("Deodexing firmware...");
-                        LOGGER.info("----- Starting BurgerZ deodex code -----");
-                        try {
-                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "app", ".apk");
-                            kFrontend.deodexFirmware(workDir, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "framework", ".jar");
-                            LOGGER.info("----- DONE! -----");
-                        } catch (Exception e) {
-                            StringWriter sw = new StringWriter();
-                            PrintWriter pw = new PrintWriter(sw);
-                            e.printStackTrace(pw);
-                            LOGGER.info(sw.toString());
-                            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
-                        }
+            }
+            String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
+            if (!cbNotOdex.isSelected()) {
+                if (new File(frmDir + "core.odex").exists() || new File(frmDir + "ext.odex").exists() || new File(frmDir + "framework.odex").exists() || new File(frmDir + "android.policy.odex").exists() || new File(frmDir + "services.odex").exists()) {
+                    lbProgressstate.setText("Deodexing firmware...");
+                    LOGGER.info("----- Starting BurgerZ deodex code -----");
+                    try {
+                        kFrontend.deodexFirmware(workDir + File.separatorChar + projectName, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "app", ".apk");
+                        kFrontend.deodexFirmware(workDir + File.separatorChar + projectName, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "framework", ".jar");
+                        LOGGER.info("----- DONE! -----");
+                    } catch (Exception e) {
+                        StringWriter sw = new StringWriter();
+                        PrintWriter pw = new PrintWriter(sw);
+                        e.printStackTrace(pw);
+                        LOGGER.info(sw.toString());
+                        JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
                     }
                 }
             }
@@ -352,12 +467,12 @@ public class mainForm extends JFrame {
             //<editor-fold desc="Downloading precompiled files from git">
             if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
                 lbProgressstate.setText("Getting precompiled files...");
-                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repo_Precompiled);
-                new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
-                new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
-                //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/LatinIME.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "LatinIME.apk", "ics");
-                //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/lib/libjni_latinime.so", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "system" + File.separatorChar + "lib" + File.separatorChar + "libjni_latinime.so", "ics");
-                new gitTools().downloadFileFromGit(repo_Bootanimation, "system/media/bootanimation.zip", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "bootanimation.zip");
+                if (lstRepos.isSelectedIndex(0) || lstRepos.isSelectedIndex(1))
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(0));
+                else
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(2));
+                //new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
+                //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
                 lbProgressstate.setText("Updating files...");
                 File src = new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar);
                 File dsc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar);
@@ -382,9 +497,20 @@ public class mainForm extends JFrame {
             //<editor-fold desc="Downloading translation files from git">
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git"));
 
+
+
             for (int i = 0; i < repos_count; i++) {
                 if (lstRepos.isSelectedIndex(i)) {
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
+                    if(repos_git.get(i).startsWith("BB:")) {
+                        if(authstring.equals("none")) authstring = authDialog();
+                        if(!authstring.equals("none")) {
+                            getFilesFromBitBucket(repos_git.get(i).split(":")[1], workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), authstring);
+                        } else {
+                            continue;
+                        }
+                    } else {
+                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
+                    }
                     File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
                     File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     FileUtils.copyDirectory(source, desc);
@@ -425,8 +551,7 @@ public class mainForm extends JFrame {
             Boolean molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists();
             if (!molp)
                 molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists();
-            if (!molp)
-                molp = !new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists();
+            else molp=!(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists());
 
             if (molp) {
                 try {
@@ -576,7 +701,7 @@ public class mainForm extends JFrame {
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
             kFrontend.setFrameworksFolder(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
             File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
+            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
@@ -608,7 +733,7 @@ public class mainForm extends JFrame {
             lbProgressstate.setText("Building framework...");
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
+            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
@@ -627,7 +752,7 @@ public class mainForm extends JFrame {
                 lbProgressstate.setText("Building data...");
                 deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled"));
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
-                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar+ "aApps" + File.separatorChar + "patcher.config");
+                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
                 for (int i = 0; i < buildFiles.size(); i++) {
                     pbProgress.setValue(i);
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
@@ -699,6 +824,7 @@ public class mainForm extends JFrame {
             pbProgress.setMaximum(100);
             pbProgress.setValue(100);
             lbProgressstate.setText("Done!");
+            boolean cmd = false;
             if (!cmd) {
                 JTextArea textArea = new JTextArea();
                 textArea.setText("Firmware builded successfully!\nYou firmware available: <" + Branding + "_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using " + Branding);
@@ -748,6 +874,7 @@ public class mainForm extends JFrame {
         @Override
         protected Object doInBackground() {
             //<editor-fold desc="Read timezones">
+            //LOGGER.info("Active key: "+getActivationKey("KOJAN", "123"));
             DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
             factory.setValidating(false);
             factory.setIgnoringElementContentWhitespace(true);
@@ -1267,6 +1394,11 @@ public class mainForm extends JFrame {
         NORMAL, VERBOSE, QUIET;
     }
 
+    private boolean activated() {
+
+        return false;
+    }
+
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar mbMainBar;
     private JMenu fileMenu;
@@ -1301,17 +1433,16 @@ public class mainForm extends JFrame {
     // JFormDesigner - End of variables declaration  //GEN-END:variables
     private String workDir;
     private String aAppsDir = "";
-    private String binDir = "";
     private String projectName = null;
     private String titleProjName = null;
-    private static boolean cmd = false;
     private String[] langs = {"ru", "uk", "en"};
     private String[] regions = {"RU", "UK", "US"};
     private List<String> timeZones = new ArrayList<String>();
-    private int repos_count = 4;
-    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
-    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
-    private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian", "Russian", "Russian"));
+    private int repos_count = 6;
+    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
+    private List<String> repos_git = new ArrayList<String>(Arrays.asList("BB:kdevgroup/miui-v5-russian-translation-for-miuiandroid", "BB:kdevgroup/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian", "Russian", "Ukrainian", "Russian", "Russian"));
+    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
     private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
     private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
@@ -1322,6 +1453,7 @@ public class mainForm extends JFrame {
     private Boolean writeBProp = true;
     private String Branding = "Translating Tool";
     private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
+    private String authstring = "none";
     //private Boolean isJB = false;
     //private Boolean fullLog=false;
     private Boolean devversion = false;
