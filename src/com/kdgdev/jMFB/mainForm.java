@@ -201,9 +201,9 @@ public class mainForm extends JFrame {
                 writeProp.load(in);
             }
             //LOGGER.info("Properties loaded:");
-            repo_Precompiled = writeProp.getProperty("repo_Precompiled", repo_Precompiled);
+            //repo_Precompiled = writeProp.getProperty("repo_Precompiled", repo_Precompiled);
             //LOGGER.info(" - repo_Precompiled = " + repo_Precompiled);
-            repo_Bootanimation = writeProp.getProperty("repo_Bootanimation", repo_Bootanimation);
+            //repo_Bootanimation = writeProp.getProperty("repo_Bootanimation", repo_Bootanimation);
             //LOGGER.info(" - repo_Bootanimation = " + repo_Bootanimation);
             repo_Overlay = writeProp.getProperty("repo_Overlay", repo_Overlay);
             //LOGGER.info(" - repo_Overlay = " + repo_Overlay);
@@ -470,7 +470,7 @@ public class mainForm extends JFrame {
                 if (lstRepos.isSelectedIndex(0) || lstRepos.isSelectedIndex(1))
                     getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(0));
                 else
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(2));
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(1));
                 //new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
                 //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
                 lbProgressstate.setText("Updating files...");
@@ -1440,12 +1440,12 @@ public class mainForm extends JFrame {
     private List<String> timeZones = new ArrayList<String>();
     private int repos_count = 6;
     private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
-    private List<String> repos_git = new ArrayList<String>(Arrays.asList("BB:kdevgroup/miui-v5-russian-translation-for-miuiandroid", "BB:kdevgroup/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
     private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian", "Russian", "Ukrainian", "Russian", "Russian"));
-    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled", "KDGDev/jmfb2-precompiled"));
+    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
-    private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
-    private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
+    //private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
+    //private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
     private String repo_Overlay = "KDGDev/jmfb-additional";
     private String repo_Patches = "KDGDev/jmfb-patches";
     private Boolean HWUpdate = false;
