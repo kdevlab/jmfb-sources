@@ -4,6 +4,12 @@
 -libraryjars /System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents/Home/lib/rt.jar
 
 -skipnonpubliclibraryclasses
+
+-optimizationpasses 3
+-overloadaggressively
+-repackageclasses ''
+-allowaccessmodification
+
 -dontnote
 -dontwarn
 
