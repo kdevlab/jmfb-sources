@@ -33,7 +33,6 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.*;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipException;
 import java.util.zip.ZipFile;
 
 import static com.kdgdev.apkengine.utils.gitTools.deleteDir;
@@ -66,31 +65,9 @@ public class mainForm extends JFrame {
         if (result == JOptionPane.OK_OPTION) {
             String userNameValue = userName.getText();
             String passwordValue = password.getText();
-            return userNameValue+":"+passwordValue;
+            return userNameValue + ":" + passwordValue;
         }
         return "none";
-    }
-
-    private void readLanuagesFile(String fileName, Boolean cleanLangs) throws IOException {
-        if (cleanLangs) {
-            repos_names.clear();
-            repos_git.clear();
-            repos_lang.clear();
-            repos_count = 0;
-        }
-        //String sPattern = "(.*)=(.*)=(.*)";
-        //Pattern p = Pattern.compile(sPattern);
-        File file = new File(fileName);
-        List<String> contents = FileUtils.readLines(file);
-        for (String line : contents) {
-            //Matcher m = p.matcher(line);
-            String[] all = line.split("=");
-            repos_names.add(all[0]);
-            repos_git.add(all[1]);
-            repos_lang.add(all[2]);
-            repos_count++;
-            //LOGGER.info("Added language: " + all[0]);
-        }
     }
 
     private String getActivationKey(String username, String password) {
@@ -132,7 +109,7 @@ public class mainForm extends JFrame {
     }
 
     public void extractFolder(String zipFile, String ExtractPath) throws net.lingala.zip4j.exception.ZipException {
-       net.lingala.zip4j.core.ZipFile FirmwareZip = new net.lingala.zip4j.core.ZipFile(zipFile);
+        net.lingala.zip4j.core.ZipFile FirmwareZip = new net.lingala.zip4j.core.ZipFile(zipFile);
         net.lingala.zip4j.progress.ProgressMonitor progressMonitor = FirmwareZip.getProgressMonitor();
         FirmwareZip.setRunInThread(true);
         FirmwareZip.extractAll(ExtractPath);
@@ -163,17 +140,6 @@ public class mainForm extends JFrame {
         aAppsDir = workDir + File.separatorChar + "aApps" + File.separatorChar + getOSDir();
         String binDir = workDir + File.separatorChar + "aApps" + File.separatorChar + "bin";
         //LOGGER.info("aAppsDir = " + aAppsDir);
-        try {
-            if (new File(workDir + File.separatorChar + "repos.list").exists())
-                readLanuagesFile(workDir + File.separatorChar + "repos.list", true);
-            if (new File(workDir + File.separatorChar + "repos_add.list").exists())
-                readLanuagesFile(workDir + File.separatorChar + "repos_add.list", false);
-        } catch (IOException e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-        }
         jmfbInit bbb2 = new jmfbInit();
         bbb2.execute();
 
@@ -261,7 +227,7 @@ public class mainForm extends JFrame {
         //execFile(true, "git", "clone", Git, Folder);
         try {
             deleteDirectory(new File(Folder + File.separatorChar + ".git"));
-        } catch (Exception e) {
+        } catch (Throwable e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
@@ -326,9 +292,14 @@ public class mainForm extends JFrame {
         }
     }
 
-    private boolean isSmaliPatch(String fileName, String translationDir) {
-        File patchFile = new File(translationDir + File.separatorChar + fileName + File.separatorChar + "smali");
-        return patchFile.exists();
+    private boolean isSmaliPatch(String FileName, final List<String> langlist, String GitPath, String device) {
+
+        boolean found = false;
+        for (String language : langlist) {
+            found = found || (new File(GitPath + File.separatorChar + language + File.separatorChar + "main" + File.separatorChar + FileName + File.separatorChar + "smali").exists() || new File(GitPath + File.separatorChar + language + File.separatorChar + "device" + File.separatorChar + device + File.separatorChar + FileName + File.separatorChar + "smali").exists());
+        }
+        //File patchFile = new File(translationDir + File.separatorChar + fileName + File.separatorChar + "smali");
+        return found;
     }
 
     public static void unzipFile(String zipFileName, String directoryToExtractTo) {
@@ -390,25 +361,50 @@ public class mainForm extends JFrame {
     }
 
     private void getFilesFromBitBucket(String project, String saveFolder, String authString) throws IOException {
-        URL u = new URL("https://bitbucket.org/"+project+"/get/master.zip");
+        URL u = new URL("https://bitbucket.org/" + project + "/get/master.zip");
         HttpURLConnection c = (HttpURLConnection) u.openConnection();
-        c.setRequestProperty("Authorization", "Basic "+ javax.xml.bind.DatatypeConverter.printBase64Binary(authString.getBytes()));
+        c.setRequestProperty("Authorization", "Basic " + javax.xml.bind.DatatypeConverter.printBase64Binary(authString.getBytes()));
         //c.setRequestMethod("POST");
         c.setUseCaches(false);
         c.setDoOutput(false);
         c.connect();
         BufferedInputStream in = new BufferedInputStream(c.getInputStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveFolder+".tmp")));
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveFolder + ".tmp")));
         byte[] buf = new byte[1024];
         int n = 0;
-        while ((n=in.read(buf))>=0) {
+        while ((n = in.read(buf)) >= 0) {
             out.write(buf, 0, n);
         }
         out.flush();
         out.close();
         c.disconnect();
-        unzipFile(saveFolder+".tmp", saveFolder);
-        new File(saveFolder+".tmp").delete();
+        unzipFile(saveFolder + ".tmp", saveFolder);
+        new File(saveFolder + ".tmp").delete();
+    }
+
+    private boolean isTranslationExists(final String GitPath, final List<String> langlist, final String FileName, final String device) {
+
+        //new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists()
+        // OR
+        //new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists()
+        boolean found = false;
+
+        for (String language : langlist) {
+            found = found || (new File(GitPath + File.separatorChar + language + File.separatorChar + "main" + File.separatorChar + FileName).exists() || new File(GitPath + File.separatorChar + language + File.separatorChar + "device" + File.separatorChar + device + File.separatorChar + FileName).exists());
+        }
+
+        return found;
+    }
+
+    private void copyTranslation(final String GitPath, final List<String> langlist, final String FileName, final String device, final File sourceDir) throws IOException {
+        for (String language : langlist) {
+            if (new File(GitPath + File.separatorChar + language + File.separatorChar + "main" + File.separatorChar + FileName).exists()) {
+                FileUtils.copyDirectory(new File(GitPath + File.separatorChar + language + File.separatorChar + "main" + File.separatorChar + FileName), sourceDir);
+            }
+            if (new File(GitPath + File.separatorChar + language + File.separatorChar + "device" + File.separatorChar + device + File.separatorChar + FileName).exists()) {
+                FileUtils.copyDirectory(new File(GitPath + File.separatorChar + language + File.separatorChar + "device" + File.separatorChar + device + File.separatorChar + FileName), sourceDir);
+            }
+        }
     }
 
     private void DecompileFrmw() {
@@ -442,7 +438,7 @@ public class mainForm extends JFrame {
                         kFrontend.deodexFirmware(workDir + File.separatorChar + projectName, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "app", ".apk");
                         kFrontend.deodexFirmware(workDir + File.separatorChar + projectName, workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", 16, "framework", ".jar");
                         LOGGER.info("----- DONE! -----");
-                    } catch (Exception e) {
+                    } catch (Throwable e) {
                         StringWriter sw = new StringWriter();
                         PrintWriter pw = new PrintWriter(sw);
                         e.printStackTrace(pw);
@@ -498,49 +494,73 @@ public class mainForm extends JFrame {
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git"));
 
 
-
             for (int i = 0; i < repos_count; i++) {
                 if (lstRepos.isSelectedIndex(i)) {
-                    if(repos_git.get(i).startsWith("BB:")) {
-                        if(authstring.equals("none")) authstring = authDialog();
-                        if(!authstring.equals("none")) {
-                            getFilesFromBitBucket(repos_git.get(i).split(":")[1], workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), authstring);
+                    if (repos_git.get(i).startsWith("BB:")) {
+                        if (authstring.equals("none")) authstring = authDialog();
+                        if (!authstring.equals("none")) {
+                            getFilesFromBitBucket(repos_git.get(i).split(":")[1], workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", authstring);
                         } else {
                             continue;
                         }
                     } else {
-                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString(), repos_git.get(i));
+                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_git.get(i));
                     }
-                    File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
-                    File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                    FileUtils.copyDirectory(source, desc);
+                    //File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
+                    //File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                    //FileUtils.copyDirectory(source, desc);
                 }
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString()));
+                //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString()));
             }
 
-            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Eng"));
-            getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Overlay);
-            File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-            File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-            FileUtils.copyDirectory(source, desc);
-            deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
+            getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "Assets", repo_Overlay);
+            //File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+            //File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "Assets");
+            //FileUtils.copyDirectory(source, desc);
+            //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
             if (!sets.getProperty("Patches", "no").contains("downloaded")) {
-                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Additional", repo_Patches);
-                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
-                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
-                FileUtils.copyDirectory(source, desc);
-                deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
+                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "Assets", repo_Patches);
+                //source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional");
+                //desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
+                //FileUtils.copyDirectory(source, desc);
+                //deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Additional"));
                 sets.setProperty("Patches", "downloaded");
             }
+            File source;
+            File desc;
             if (new File(workDir + File.separatorChar + "Language_Overlay").exists()) {
                 source = new File(workDir + File.separatorChar + "Language_Overlay");
                 desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                 FileUtils.copyDirectory(source, desc);
             }
             //</editor-fold>
-            source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
-            desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-            FileUtils.copyDirectory(source, desc);
+
+            repos_lang.clear();
+
+            File lng[] = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git").listFiles();
+            for (File aLng : lng) {
+                if (aLng.isDirectory()) {
+                    repos_lang.add(aLng.getName());
+                }
+            }
+
+            LOGGER.info(repos_lang.toString());
+
+            if (repos_lang.isEmpty()) {
+                throw new Exception("There no language files");
+            }
+
+            for (String language : repos_lang) {
+
+                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language + File.separatorChar + "extras" + File.separatorChar + "lockscreen");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                if (source.exists()) {
+                    FileUtils.copyDirectory(source, desc);
+                    //LOGGER.info("Copying " + source.toString());
+                }
+
+            }
+
             //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
             setTitle(Branding + " - " + titleProjName + " (" + bldprop.readProp("ro.product.device") + ")");
             writeAllBPValues(bldprop, bldprop.readProp("ro.product.device").contains("H958"));
@@ -551,7 +571,8 @@ public class mainForm extends JFrame {
             Boolean molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists();
             if (!molp)
                 molp = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps").exists();
-            else molp=!(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists());
+            else
+                molp = !(new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists());
 
             if (molp) {
                 try {
@@ -570,16 +591,16 @@ public class mainForm extends JFrame {
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
                         File frm = new File(apkFiles.get(i).toString());
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                        if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                            kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")));
+                            kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), repos_lang, workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", bldprop.readProp("ro.product.device")));
                             kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
                             frm.delete();
                         }
                     }
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     LOGGER.info(e.getMessage());
                 }
             }
@@ -596,10 +617,10 @@ public class mainForm extends JFrame {
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
                         File frm = new File(apkFiles.get(i).toString());
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                        if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
-                            kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main") || isSmaliPatch(frm.getName(), workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
+                            kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), repos_lang, workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", bldprop.readProp("ro.product.device")) || frm.getName().equalsIgnoreCase("updater.apk") || frm.getName().equalsIgnoreCase("mms.apk") || frm.getName().equalsIgnoreCase("miuihome.apk"));
                             kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
                             File dectFile = File.createTempFile("KDGDEV", ".kdg");
@@ -612,7 +633,7 @@ public class mainForm extends JFrame {
                             dectFile.delete();
                         }
                     }
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     LOGGER.info(e.getMessage());
                 }
             }
@@ -628,7 +649,7 @@ public class mainForm extends JFrame {
                     pbProgress.setValue(0);
                     for (int i = 0; i < frmFiles.size(); i++) {
                         File frm = new File(frmFiles.get(i).toString());
-                        if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists() || new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + frm.getName()).exists() || decompAll.isSelected()) {
+                        if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
                             LOGGER.info("======== Decompiling " + frm.getName() + " ========");
                             kFrontend.decompileFile(frmFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources" + File.separatorChar + frm.getName(), false);
@@ -644,7 +665,7 @@ public class mainForm extends JFrame {
                             dectFile.delete();
                         }
                     }
-                } catch (Exception e) {
+                } catch (Throwable e) {
                     LOGGER.info(e.getMessage());
                 }
             }
@@ -663,7 +684,7 @@ public class mainForm extends JFrame {
             LOGGER.info("======== End of decompiling files ========");
             btnBuild.setEnabled(true);
             bldprop.write();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
@@ -677,13 +698,17 @@ public class mainForm extends JFrame {
         @Override
         protected Object doInBackground() {
             oneClick.setEnabled(false);
-            DecompileFrmw();
+            try {
+                DecompileFrmw();
+            } catch (Throwable throwable) {
+                System.out.println(throwable.getMessage());
+            }
             //return 1;
             return null;
         }
     }
 
-    private void deleteDirectory(File Dir) throws Exception {
+    private void deleteDirectory(File Dir) throws Throwable {
         kFrontend.deleteDirectory(Dir);
     }
 
@@ -700,17 +725,26 @@ public class mainForm extends JFrame {
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled"));
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "AppsCompiled").mkdirs();
             kFrontend.setFrameworksFolder(workDir + File.separatorChar + projectName + File.separatorChar + "MFB_Core");
-            File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
+
+            repos_lang.clear();
+
+            File lng[] = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git").listFiles();
+            for (File aLng : lng) {
+                if (aLng.isDirectory()) {
+                    repos_lang.add(aLng.getName());
+                }
+            }
+
+            LOGGER.info(repos_lang.toString());
+
+            //File fXml = new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt");
+            for (String language : repos_lang) {
+                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language, workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
+            }
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                }
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                }
+                copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
                 if (buildFiles.get(i).toString().contains("Settings.apk")) {
                     if (new File(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png").exists()) {
                         watermarkImage(sourceDir.getAbsolutePath() + File.separatorChar + "res" + File.separatorChar + "drawable-ru-hdpi" + File.separatorChar + "miui_logo.9.png");
@@ -733,16 +767,14 @@ public class mainForm extends JFrame {
             lbProgressstate.setText("Building framework...");
             deleteDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled"));
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled").mkdirs();
-            kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
+            for (String language : repos_lang) {
+                kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language, workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
+            }
+            //kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                }
-                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                    FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                }
+                copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
                 kFrontend.buildFile(buildFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkCompiled");
             }
             if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources").exists()) {
@@ -762,12 +794,7 @@ public class mainForm extends JFrame {
                     File signFile = File.createTempFile("KDGDEV", ".kdg");
                     //String FileName = (new File(buildFiles.get(i).toString()).getName());
                     File dctFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName()));
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                    }
-                    if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())).exists()) {
-                        FileUtils.copyDirectory(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "device" + File.separatorChar + bldprop.readProp("ro.product.device") + File.separatorChar + (new File(buildFiles.get(i).toString()).getName())), sourceDir);
-                    }
+                    copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
                     //ApkFileSign signerData = new ApkFileSign(new File(workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "apkcerts.txt"));
 
                     //kAndrolib.build(sourceDir, dectFile, true, false, true);
@@ -837,7 +864,7 @@ public class mainForm extends JFrame {
 
             } else deleteDirectory(new File(workDir + File.separatorChar + projectName));
             LOGGER.info("======== Compiling done! ========");
-        } catch (Exception e) {
+        } catch (Throwable e) {
             StringWriter sw = new StringWriter();
             PrintWriter pw = new PrintWriter(sw);
             e.printStackTrace(pw);
@@ -1376,6 +1403,10 @@ public class mainForm extends JFrame {
                             sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Logging.txt", true);
                             sw.write("[" + formatter.format(now) + "] " + logRecord.getMessage() + System.getProperty("line.separator"));
                             sw.close();
+                        } else {
+                            sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Warnings.txt", true);
+                            sw.write(logRecord.getMessage().replaceAll("aapt: warning: string ", "").replaceAll("'", "").replaceAll(workDir + File.separatorChar, "").replaceAll("has no default translation in ", "").replaceAll(" ", "|") + System.getProperty("line.separator"));
+                            sw.close();
                         }
                     } catch (Exception e) {
                         StringWriter sw = new StringWriter();
@@ -1441,7 +1472,7 @@ public class mainForm extends JFrame {
     private int repos_count = 6;
     private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
     private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
-    private List<String> repos_lang = new ArrayList<String>(Arrays.asList("Russian", "Ukrainian", "Russian", "Ukrainian", "Russian", "Russian"));
+    private List<String> repos_lang = new ArrayList<String>();
     private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled"));
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
     //private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
