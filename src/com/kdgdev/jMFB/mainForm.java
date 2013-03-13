@@ -23,20 +23,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.HttpURLConnection;
 import java.net.InetAddress;
-import java.net.URL;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.*;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipFile;
-
-import static com.kdgdev.apkengine.utils.gitTools.deleteDir;
-import static com.kdgdev.apkengine.utils.gitTools.writeFile;
 
 
 /**
@@ -46,38 +39,91 @@ import static com.kdgdev.apkengine.utils.gitTools.writeFile;
 public class mainForm extends JFrame {
 
     private final static frontend kFrontend = new frontend(System.getProperty("user.dir") + File.separatorChar + "aApps");
-
     private final static Logger LOGGER = Logger.getLogger(frontend.class.getName());
+    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
+    private JMenuBar mbMainBar;
+    private JMenu fileMenu;
+    private JMenuItem miNewProject;
+    private JMenuItem miOpenProject;
+    private JLabel headerLogo;
+    private JLabel lblFirmwareHelp;
+    private JPanel pOpenFirmware;
+    private JTextField edtFirmwareFile;
+    private JButton btnBrowse;
+    private JSeparator spSeparator1;
+    private JLabel lbAdditionalSets;
+    private JPanel pAddons;
+    private JLabel lbTimezone;
+    private JComboBox cbTimeZone;
+
+    /*private void getFilesFromBitBucket(String project, String saveFolder, String authString) throws IOException {
+        URL u = new URL("https://bitbucket.org/" + project + "/get/master.zip");
+        HttpURLConnection c = (HttpURLConnection) u.openConnection();
+        c.setRequestProperty("Authorization", "Basic " + authString);
+        //c.setRequestMethod("POST");
+        c.setUseCaches(false);
+        c.setDoOutput(false);
+        c.connect();
+        BufferedInputStream in = new BufferedInputStream(c.getInputStream());
+        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveFolder + ".tmp")));
+        byte[] buf = new byte[1024];
+        int n = 0;
+        while ((n = in.read(buf)) >= 0) {
+            out.write(buf, 0, n);
+        }
+        out.flush();
+        out.close();
+        c.disconnect();
+        unzipFile(saveFolder + ".tmp", saveFolder);
+        new File(saveFolder + ".tmp").delete();
+    }*/
+    private JLabel lbLang;
+    private JComboBox cbLang;
+    private JCheckBox decompAll;
+    private JCheckBox cbNotOdex;
+    private JSeparator spSeparator2;
+    private JLabel lbTranslRepo;
+    private JPanel pRepos;
+    private JScrollPane spRepos;
+    private JList lstRepos;
+    private JSeparator spSeparator3;
+    private JLabel lbProgressstate;
+    private JProgressBar pbProgress;
+    private JPanel pCmdButtons;
+    private JButton btnDeCompile;
+    private JButton oneClick;
+    private JButton btnBuild;
+    // JFormDesigner - End of variables declaration  //GEN-END:variables
+    private String workDir;
+    private String aAppsDir = "";
+    private String projectName = null;
+    private String titleProjName = null;
+    private String[] langs = {"ru", "uk", "en"};
+    private String[] regions = {"RU", "UK", "US"};
+    private List<String> timeZones = new ArrayList<String>();
+    private int repos_count = 6;
+    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
+    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    //private List<String> repos_git = new ArrayList<String>(Arrays.asList("BB:kdevgroup/miui-v5-russian-translation-for-miuiandroid", "BB:kdevgroup/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    private List<String> repos_lang = new ArrayList<String>();
+    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled"));
+    //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
+    //private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
+    //private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
+    private String repo_Overlay = "KDGDev/jmfb-additional";
+    private String repo_Patches = "KDGDev/jmfb-patches";
+    private Boolean HWUpdate = false;
+    private Boolean UpdateFromFolder = false;
+    private Boolean writeBProp = true;
+    private String Branding = "Translating Tool";
+    private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
+    private String authstring = "none";
+    //private Boolean isJB = false;
+    //private Boolean fullLog = false;
+    private Boolean devversion = false;
 
     public mainForm() {
         initComponents();
-    }
-
-    private String authDialog() {
-        JLabel jText = new JLabel("Please, input you authorised username/password on bitbucket.org to access this repository");
-        JLabel jUserName = new JLabel("User Name");
-        JTextField userName = new JTextField();
-        JLabel jPassword = new JLabel("Password");
-        JTextField password = new JPasswordField();
-        Object[] ob = {jText, jUserName, userName, jPassword, password};
-        int result = JOptionPane.showConfirmDialog(null, ob, "Authorization", JOptionPane.OK_CANCEL_OPTION);
-
-        if (result == JOptionPane.OK_OPTION) {
-            String userNameValue = userName.getText();
-            String passwordValue = password.getText();
-            return userNameValue + ":" + passwordValue;
-        }
-        return "none";
-    }
-
-    private String getActivationKey(String username, String password) {
-
-        byte[] key = Base64.encodeBase64(DigestUtils.sha256(username + "." + password));
-        try {
-            return new String(key, "UTF-8");
-        } catch (UnsupportedEncodingException e) {
-            return "fail";
-        }
     }
 
     public static boolean isOSX() {
@@ -106,6 +152,74 @@ public class mainForm extends JFrame {
         if (isUnix()) return "nix";
         return null;
 
+    }
+
+    public static String removeExtension(String s) {
+
+        String separator = System.getProperty("file.separator");
+        String filename;
+
+        // Remove the path upto the filename.
+        int lastSeparatorIndex = s.lastIndexOf(separator);
+        if (lastSeparatorIndex == -1) {
+            filename = s;
+        } else {
+            filename = s.substring(lastSeparatorIndex + 1);
+        }
+
+        // Remove the extension.
+        int extensionIndex = filename.lastIndexOf(".");
+        if (extensionIndex == -1)
+            return filename;
+
+        return filename.substring(0, extensionIndex);
+    }
+
+    public static void main(String[] args) {
+        //<editor-fold desc="Init mainFrm">
+        if (isOSX()) {
+            System.setProperty("apple.laf.useScreenMenuBar", "true");
+        }
+        try {
+            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+        } catch (Exception e) {
+            StringWriter sw = new StringWriter();
+            PrintWriter pw = new PrintWriter(sw);
+            e.printStackTrace(pw);
+            LOGGER.info(sw.toString());
+            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
+        }
+        mainForm mainFrm = new mainForm();
+        mainFrm.setDefaultCloseOperation(EXIT_ON_CLOSE);
+        mainFrm.setVisible(mainFrm.initMFB(args));
+        //</editor-fold>
+    }
+
+    private String authDialog() {
+        JLabel jText = new JLabel("Please, input you authorised username/password on bitbucket.org to access this repository");
+        JLabel jUserName = new JLabel("User Name");
+        JTextField userName = new JTextField();
+        JLabel jPassword = new JLabel("Password");
+        JTextField password = new JPasswordField();
+        Object[] ob = {jText, jUserName, userName, jPassword, password};
+        int result = JOptionPane.showConfirmDialog(null, ob, "Authorization", JOptionPane.OK_CANCEL_OPTION);
+
+        if (result == JOptionPane.OK_OPTION) {
+            String userNameValue = userName.getText();
+            String passwordValue = password.getText();
+            return javax.xml.bind.DatatypeConverter.printBase64Binary((userNameValue + ":" + passwordValue).getBytes());
+        }
+        return "none";
+    }
+
+    private String getActivationKey(String username, String password) {
+
+        byte[] key = Base64.encodeBase64(DigestUtils.sha256(username + "." + password));
+        try {
+            return new String(key, "UTF-8");
+        } catch (UnsupportedEncodingException e) {
+            return "fail";
+        }
     }
 
     public void extractFolder(String zipFile, String ExtractPath) throws net.lingala.zip4j.exception.ZipException {
@@ -302,86 +416,6 @@ public class mainForm extends JFrame {
         return found;
     }
 
-    public static void unzipFile(String zipFileName, String directoryToExtractTo) {
-        try {
-            ZipFile zipFile = new ZipFile(zipFileName);
-            Enumeration entriesEnum = zipFile.entries();
-
-            File directory = new File(directoryToExtractTo);
-
-            if (!directory.exists()) {
-                new File(directoryToExtractTo).mkdir();
-                LOGGER.info("...Directory Created -" + directoryToExtractTo);
-            }
-
-            LOGGER.info("Extracting sources to local directory...");
-            while (entriesEnum.hasMoreElements()) {
-                try {
-                    ZipEntry entry = (ZipEntry) entriesEnum.nextElement();
-
-                    if (entry.isDirectory()) {
-                        new File(directory + "/" + entry.getName()).mkdir();
-                    } else {
-                        int index = 0;
-                        String name = entry.getName();
-                        index = entry.getName().lastIndexOf("/");
-                        if ((index > 0) && (index != name.length())) {
-                            name = entry.getName().substring(index + 1);
-                        }
-
-                        writeFile(zipFile.getInputStream(entry),
-                                new BufferedOutputStream(
-                                        new FileOutputStream(directory + "/" + entry.getName())));
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-            File srcdirOfgit = new File(zipFile.entries().nextElement().getName());
-
-            zipFile.close();
-            File f = new File(zipFileName);
-            f.delete();
-
-            File directoryOfgit = new File(directoryToExtractTo);
-
-            if (directoryOfgit.isDirectory()) {
-                String[] filenames = directoryOfgit.list();
-
-                File destination = new File(directoryToExtractTo);
-                File source = new File(directoryToExtractTo + "/" + srcdirOfgit);
-
-                FileUtils.copyDirectory(source, destination);
-                deleteDir(source);
-            }
-        } catch (Exception e) {
-            LOGGER.info(e.getMessage());
-        }
-    }
-
-    private void getFilesFromBitBucket(String project, String saveFolder, String authString) throws IOException {
-        URL u = new URL("https://bitbucket.org/" + project + "/get/master.zip");
-        HttpURLConnection c = (HttpURLConnection) u.openConnection();
-        c.setRequestProperty("Authorization", "Basic " + javax.xml.bind.DatatypeConverter.printBase64Binary(authString.getBytes()));
-        //c.setRequestMethod("POST");
-        c.setUseCaches(false);
-        c.setDoOutput(false);
-        c.connect();
-        BufferedInputStream in = new BufferedInputStream(c.getInputStream());
-        OutputStream out = new BufferedOutputStream(new FileOutputStream(new File(saveFolder + ".tmp")));
-        byte[] buf = new byte[1024];
-        int n = 0;
-        while ((n = in.read(buf)) >= 0) {
-            out.write(buf, 0, n);
-        }
-        out.flush();
-        out.close();
-        c.disconnect();
-        unzipFile(saveFolder + ".tmp", saveFolder);
-        new File(saveFolder + ".tmp").delete();
-    }
-
     private boolean isTranslationExists(final String GitPath, final List<String> langlist, final String FileName, final String device) {
 
         //new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + "main" + File.separatorChar + frm.getName()).exists()
@@ -496,16 +530,17 @@ public class mainForm extends JFrame {
 
             for (int i = 0; i < repos_count; i++) {
                 if (lstRepos.isSelectedIndex(i)) {
-                    if (repos_git.get(i).startsWith("BB:")) {
+                    /*if (repos_git.get(i).startsWith("BB:")) {
                         if (authstring.equals("none")) authstring = authDialog();
                         if (!authstring.equals("none")) {
                             getFilesFromBitBucket(repos_git.get(i).split(":")[1], workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", authstring);
+                            sets.setProperty("authstring", authstring);
                         } else {
                             continue;
                         }
-                    } else {
-                        getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_git.get(i));
-                    }
+                    } else {*/
+                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_git.get(i));
+                    //}
                     //File source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language" + ((Integer) i).toString() + File.separatorChar + repos_lang.get(i));
                     //File desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git");
                     //FileUtils.copyDirectory(source, desc);
@@ -693,21 +728,6 @@ public class mainForm extends JFrame {
         }
     }
 
-    private class DecompileFirmware extends SwingWorker {
-
-        @Override
-        protected Object doInBackground() {
-            oneClick.setEnabled(false);
-            try {
-                DecompileFrmw();
-            } catch (Throwable throwable) {
-                System.out.println(throwable.getMessage());
-            }
-            //return 1;
-            return null;
-        }
-    }
-
     private void deleteDirectory(File Dir) throws Throwable {
         kFrontend.deleteDirectory(Dir);
     }
@@ -875,76 +895,6 @@ public class mainForm extends JFrame {
 
     }
 
-    private class CompileFirmware extends SwingWorker {
-        @Override
-        protected Object doInBackground() {
-            oneClick.setEnabled(false);
-            CompileFrmw();
-            return null;
-        }
-    }
-
-    private class OneClickBuild extends SwingWorker {
-
-        @Override
-        protected Object doInBackground() {
-            oneClick.setEnabled(false);
-            DecompileFrmw();
-            CompileFrmw();
-            oneClick.setEnabled(true);
-            return null;
-        }
-    }
-
-    private class jmfbInit extends SwingWorker {
-
-        @Override
-        protected Object doInBackground() {
-            //<editor-fold desc="Read timezones">
-            //LOGGER.info("Active key: "+getActivationKey("KOJAN", "123"));
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            factory.setValidating(false);
-            factory.setIgnoringElementContentWhitespace(true);
-            factory.setIgnoringComments(true);
-            DocumentBuilder builder = null;
-            try {
-                builder = factory.newDocumentBuilder();
-                builder.setErrorHandler(null);
-            } catch (ParserConfigurationException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
-            Document domDocument = null;
-            try {
-                domDocument = builder.parse(this.getClass().getResource("/com/kdgdev/jMFB/resources/timezones.xml").openStream());
-            } catch (SAXException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            } catch (IOException e) {
-                LOGGER.info(e.getMessage());
-                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
-            }
-            NodeList nodeList = domDocument.getElementsByTagName("timezone");
-            for (int i = 0; i < nodeList.getLength(); i++) {
-                Node node = nodeList.item(i);
-                cbTimeZone.addItem(node.getTextContent());
-                timeZones.add(node.getAttributes().getNamedItem("id").getTextContent());
-                //LOGGER.info("Adding timezone: " + node.getAttributes().getNamedItem("id").getTextContent());
-            }
-
-            DefaultListModel listModel = new DefaultListModel();
-            lstRepos.setModel(listModel);
-            for (int i = 0; i < repos_count; i++) {
-                listModel.addElement(repos_names.get(i));
-            }
-
-            cbTimeZone.setSelectedIndex(76);
-            //</editor-fold>
-
-            return null;
-        }
-    }
-
     private void btnCompileActionPerformed(ActionEvent e) {
         DecompileFirmware bbb1 = new DecompileFirmware();
         bbb1.execute();
@@ -982,27 +932,6 @@ public class mainForm extends JFrame {
         //btnDeCompile.setEnabled(State);
     }
 
-    public static String removeExtension(String s) {
-
-        String separator = System.getProperty("file.separator");
-        String filename;
-
-        // Remove the path upto the filename.
-        int lastSeparatorIndex = s.lastIndexOf(separator);
-        if (lastSeparatorIndex == -1) {
-            filename = s;
-        } else {
-            filename = s.substring(lastSeparatorIndex + 1);
-        }
-
-        // Remove the extension.
-        int extensionIndex = filename.lastIndexOf(".");
-        if (extensionIndex == -1)
-            return filename;
-
-        return filename.substring(0, extensionIndex);
-    }
-
     private void toggleFirmwareChoise(boolean choise) {
         lblFirmwareHelp.setVisible(choise);
         pOpenFirmware.setVisible(choise);
@@ -1035,6 +964,7 @@ public class mainForm extends JFrame {
                 try {
                     sets.load(new FileInputStream(workDir + File.separatorChar + projectName + File.separatorChar + "jmfb.prop"));
                     edtFirmwareFile.setText(sets.getProperty("FirmwareFile"));
+                    authstring = sets.getProperty("authstring", authstring);
                     int[] sel = new int[repos_count];
                     for (int i = 0; i < repos_count; i++) {
                         try {
@@ -1356,26 +1286,6 @@ public class mainForm extends JFrame {
         // JFormDesigner - End of component initialization  //GEN-END:initComponents
     }
 
-    public static void main(String[] args) {
-        //<editor-fold desc="Init mainFrm">
-        if (isOSX()) {
-            System.setProperty("apple.laf.useScreenMenuBar", "true");
-        }
-        try {
-            UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
-        } catch (Exception e) {
-            StringWriter sw = new StringWriter();
-            PrintWriter pw = new PrintWriter(sw);
-            e.printStackTrace(pw);
-            LOGGER.info(sw.toString());
-            JOptionPane.showMessageDialog(null, "<html><table width=300>" + sw.toString());
-        }
-        mainForm mainFrm = new mainForm();
-        mainFrm.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        mainFrm.setVisible(mainFrm.initMFB(args));
-        //</editor-fold>
-    }
-
     private void setupLogging(Verbosity verbosity) {
         Logger logger = Logger.getLogger("");
         for (Handler handler : logger.getHandlers()) {
@@ -1405,7 +1315,7 @@ public class mainForm extends JFrame {
                             sw.close();
                         } else {
                             sw = new FileWriter(System.getProperty("user.dir") + File.separatorChar + "Warnings.txt", true);
-                            sw.write(logRecord.getMessage().replaceAll("aapt: warning: string ", "").replaceAll("'", "").replaceAll(workDir + File.separatorChar, "").replaceAll("has no default translation in ", "").replaceAll(" ", "|") + System.getProperty("line.separator"));
+                            sw.write(logRecord.getMessage() + System.getProperty("line.separator"));
                             sw.close();
                         }
                     } catch (Exception e) {
@@ -1421,71 +1331,97 @@ public class mainForm extends JFrame {
         }
     }
 
-    private static enum Verbosity {
-        NORMAL, VERBOSE, QUIET;
-    }
-
     private boolean activated() {
 
         return false;
     }
 
-    // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
-    private JMenuBar mbMainBar;
-    private JMenu fileMenu;
-    private JMenuItem miNewProject;
-    private JMenuItem miOpenProject;
-    private JLabel headerLogo;
-    private JLabel lblFirmwareHelp;
-    private JPanel pOpenFirmware;
-    private JTextField edtFirmwareFile;
-    private JButton btnBrowse;
-    private JSeparator spSeparator1;
-    private JLabel lbAdditionalSets;
-    private JPanel pAddons;
-    private JLabel lbTimezone;
-    private JComboBox cbTimeZone;
-    private JLabel lbLang;
-    private JComboBox cbLang;
-    private JCheckBox decompAll;
-    private JCheckBox cbNotOdex;
-    private JSeparator spSeparator2;
-    private JLabel lbTranslRepo;
-    private JPanel pRepos;
-    private JScrollPane spRepos;
-    private JList lstRepos;
-    private JSeparator spSeparator3;
-    private JLabel lbProgressstate;
-    private JProgressBar pbProgress;
-    private JPanel pCmdButtons;
-    private JButton btnDeCompile;
-    private JButton oneClick;
-    private JButton btnBuild;
-    // JFormDesigner - End of variables declaration  //GEN-END:variables
-    private String workDir;
-    private String aAppsDir = "";
-    private String projectName = null;
-    private String titleProjName = null;
-    private String[] langs = {"ru", "uk", "en"};
-    private String[] regions = {"RU", "UK", "US"};
-    private List<String> timeZones = new ArrayList<String>();
-    private int repos_count = 6;
-    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
-    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
-    private List<String> repos_lang = new ArrayList<String>();
-    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled"));
-    //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
-    //private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
-    //private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
-    private String repo_Overlay = "KDGDev/jmfb-additional";
-    private String repo_Patches = "KDGDev/jmfb-patches";
-    private Boolean HWUpdate = false;
-    private Boolean UpdateFromFolder = false;
-    private Boolean writeBProp = true;
-    private String Branding = "Translating Tool";
-    private String otaUpdateURL = "http://ota.romz.bz/update-v4.php";
-    private String authstring = "none";
-    //private Boolean isJB = false;
-    //private Boolean fullLog=false;
-    private Boolean devversion = false;
+    private static enum Verbosity {
+        NORMAL, VERBOSE, QUIET;
+    }
+
+    private class DecompileFirmware extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            try {
+                DecompileFrmw();
+            } catch (Throwable throwable) {
+                System.out.println(throwable.getMessage());
+            }
+            //return 1;
+            return null;
+        }
+    }
+
+    private class CompileFirmware extends SwingWorker {
+        @Override
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            CompileFrmw();
+            return null;
+        }
+    }
+
+    private class OneClickBuild extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() {
+            oneClick.setEnabled(false);
+            DecompileFrmw();
+            CompileFrmw();
+            oneClick.setEnabled(true);
+            return null;
+        }
+    }
+
+    private class jmfbInit extends SwingWorker {
+
+        @Override
+        protected Object doInBackground() {
+            //<editor-fold desc="Read timezones">
+            //LOGGER.info("Active key: "+getActivationKey("KOJAN", "123"));
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            factory.setValidating(false);
+            factory.setIgnoringElementContentWhitespace(true);
+            factory.setIgnoringComments(true);
+            DocumentBuilder builder = null;
+            try {
+                builder = factory.newDocumentBuilder();
+                builder.setErrorHandler(null);
+            } catch (ParserConfigurationException e) {
+                LOGGER.info(e.getMessage());
+                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            }
+            Document domDocument = null;
+            try {
+                domDocument = builder.parse(this.getClass().getResource("/com/kdgdev/jMFB/resources/timezones.xml").openStream());
+            } catch (SAXException e) {
+                LOGGER.info(e.getMessage());
+                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            } catch (IOException e) {
+                LOGGER.info(e.getMessage());
+                JOptionPane.showMessageDialog(null, "<html><table width=300>" + e.getMessage());
+            }
+            NodeList nodeList = domDocument.getElementsByTagName("timezone");
+            for (int i = 0; i < nodeList.getLength(); i++) {
+                Node node = nodeList.item(i);
+                cbTimeZone.addItem(node.getTextContent());
+                timeZones.add(node.getAttributes().getNamedItem("id").getTextContent());
+                //LOGGER.info("Adding timezone: " + node.getAttributes().getNamedItem("id").getTextContent());
+            }
+
+            DefaultListModel listModel = new DefaultListModel();
+            lstRepos.setModel(listModel);
+            for (int i = 0; i < repos_count; i++) {
+                listModel.addElement(repos_names.get(i));
+            }
+
+            cbTimeZone.setSelectedIndex(76);
+            //</editor-fold>
+
+            return null;
+        }
+    }
 }
