@@ -30,6 +30,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.List;
 import java.util.logging.*;
+import java.util.zip.CRC32;
+import java.util.zip.CheckedInputStream;
 
 
 /**
@@ -102,6 +104,8 @@ public class mainForm extends JFrame {
     private String[] regions = {"RU", "UK", "US"};
     private List<String> timeZones = new ArrayList<String>();
     private int repos_count = 6;
+    //private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (SU)", "Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
+    //private List<String> repos_git = new ArrayList<String>(Arrays.asList("miuisu/MIUI.SUv5-translation-v4.x.x", "KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
     private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
     private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
     //private List<String> repos_git = new ArrayList<String>(Arrays.asList("BB:kdevgroup/miui-v5-russian-translation-for-miuiandroid", "BB:kdevgroup/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
@@ -124,6 +128,105 @@ public class mainForm extends JFrame {
 
     public mainForm() {
         initComponents();
+    }
+
+    /**
+     * break a path down into individual elements and add to a list.
+     * example : if a path is /a/b/c/d.txt, the breakdown will be [d.txt,c,b,a]
+     * @param f input file
+     * @return a List collection with the individual elements of the path in
+    reverse order
+     */
+    private static List getPathList(File f) {
+        List l = new ArrayList();
+        File r;
+        try {
+            r = f.getCanonicalFile();
+            while(r != null) {
+                l.add(r.getName());
+                r = r.getParentFile();
+            }
+        }
+        catch (IOException e) {
+            e.printStackTrace();
+            l = null;
+        }
+        return l;
+    }
+
+    /**
+     * figure out a string representing the relative path of
+     * 'f' with respect to 'r'
+     * @param r home path
+     * @param f path of file
+     */
+    private static String matchPathLists(List r,List f) {
+        int i;
+        int j;
+        String s;
+        // start at the beginning of the lists
+        // iterate while both lists are equal
+        s = "";
+        i = r.size()-1;
+        j = f.size()-1;
+
+        // first eliminate common root
+        while((i >= 0)&&(j >= 0)&&(r.get(i).equals(f.get(j)))) {
+            i--;
+            j--;
+        }
+
+        // for each remaining level in the home path, add a ..
+        for(;i>=0;i--) {
+            s += ".." + File.separator;
+        }
+
+        // for each level in the file path, add the path
+        for(;j>=1;j--) {
+            s += f.get(j) + File.separator;
+        }
+
+        // file name
+        s += f.get(j);
+        return s;
+    }
+
+    /**
+     * get relative path of File 'f' with respect to 'home' directory
+     * example : home = /a/b/c
+     *           f    = /a/d/e/x.txt
+     *           s = getRelativePath(home,f) = ../../d/e/x.txt
+     * @param home base path, should be a directory, not a file, or it doesn't
+    make sense
+     * @param f file to generate path for
+     * @return path from home to f as a string
+     */
+    public static String getRelativePath(File home,File f){
+        File r;
+        List homelist;
+        List filelist;
+        String s;
+
+        homelist = getPathList(home);
+        filelist = getPathList(f);
+        s = matchPathLists(homelist,filelist);
+
+        return s;
+    }
+
+    public static long checksumRandomAccessFile(String filename) throws IOException
+    {
+        RandomAccessFile file = new RandomAccessFile(filename, "r");
+        long length = file.length();
+        CRC32 crc = new CRC32();
+
+        for (long p = 0; p < length; p++)
+        {
+            file.seek(p);
+            int c = file.readByte();
+            crc.update(c);
+        }
+        return crc.getValue();
     }
 
     public static boolean isOSX() {
@@ -865,7 +968,11 @@ public class mainForm extends JFrame {
             String phoneModel = bldprop.readProp("ro.product.device");
             lbProgressstate.setText("Signing firmware file...");
             LOGGER.info("Signing firmware file...");
-            new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
+            //new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
+            new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.signed.zip");
+            File signedFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.signed.zip");
+            File finalFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_"+ phoneModel + "_"+ firmwareVersion + /*"_" +Long.toHexString(checksumRandomAccessFile(signedFile.getAbsolutePath()))+*/".zip");
+            signedFile.renameTo(finalFile);
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip").delete();
             pbProgress.setIndeterminate(false);
             pbProgress.setMaximum(100);
@@ -874,7 +981,7 @@ public class mainForm extends JFrame {
             boolean cmd = false;
             if (!cmd) {
                 JTextArea textArea = new JTextArea();
-                textArea.setText("Firmware builded successfully!\nYou firmware available: <" + Branding + "_Folder>" + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip\nMD5: " + MD5Checksum.getMD5Checksum(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip") + "\nThanks for using " + Branding);
+                textArea.setText("Firmware builded successfully!\nYou firmware available: <" + Branding + "_Folder>" + File.separatorChar + getRelativePath(new File(workDir), finalFile) + "\nThanks for using " + Branding);
                 textArea.setSize(300, Short.MAX_VALUE);
                 textArea.setWrapStyleWord(true);
                 textArea.setLineWrap(true);
