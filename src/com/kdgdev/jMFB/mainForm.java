@@ -2,6 +2,8 @@ package com.kdgdev.jMFB;
 
 import com.jgoodies.forms.factories.CC;
 import com.jgoodies.forms.layout.FormLayout;
+import com.kdgdev.apkengine.listeners.deodexListener;
+import com.kdgdev.apkengine.listeners.gitListener;
 import com.kdgdev.apkengine.utils.*;
 import com.kdgdev.frontend;
 import org.apache.commons.codec.binary.Base64;
@@ -23,6 +25,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.*;
+import java.math.BigDecimal;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.text.DateFormat;
@@ -38,10 +41,11 @@ import java.util.zip.CheckedInputStream;
  * @author Kirill
  */
 
-public class mainForm extends JFrame {
+public class mainForm extends JFrame implements gitListener, deodexListener {
 
     private final static frontend kFrontend = new frontend(System.getProperty("user.dir") + File.separatorChar + "aApps");
     private final static Logger LOGGER = Logger.getLogger(frontend.class.getName());
+   // private final static gitTools gitter = new gitTools();
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar mbMainBar;
     private JMenu fileMenu;
@@ -125,6 +129,8 @@ public class mainForm extends JFrame {
     //private Boolean isJB = false;
     //private Boolean fullLog = false;
     private Boolean devversion = false;
+
+
 
     public mainForm() {
         initComponents();
@@ -343,6 +349,8 @@ public class mainForm extends JFrame {
     private boolean initMFB(String[] args) {
         setupLogging(Verbosity.NORMAL);
         Date now = new Date();
+        //gitter.addListener(this);
+        kFrontend.addListener(this);
         SimpleDateFormat formatter = new SimpleDateFormat("dd.MM.yyyy");
         LOGGER.info("[Program log started at " + formatter.format(now) + "]");
         LOGGER.info("");
@@ -436,11 +444,14 @@ public class mainForm extends JFrame {
 
     private void getFilesFromGit(String Folder, String Git) throws IOException {
         getFilesFromGit(Folder, Git, "master");
+        LOGGER.info("getFilesFromGit(3):" + Folder + ", " + Git + ", master");
     }
 
     private void getFilesFromGit(String Folder, String Git, String branch) throws IOException {
         pbProgress.setIndeterminate(true);
-        new gitTools().downloadFromGit(Git, Folder, branch);
+        gitTools gt = new gitTools();
+        gt.addListener(this);
+        gt.downloadFromGit(Git, Folder, branch);
         //execFile(true, "git", "clone", Git, Folder);
         try {
             deleteDirectory(new File(Folder + File.separatorChar + ".git"));
@@ -728,6 +739,7 @@ public class mainForm extends JFrame {
                     pbProgress.setMaximum(apkFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
+                        lbProgressstate.setText("Building new workspace - Decompiling data apps ("+ (i+1) +" of "+ apkFiles.size() +")...");
                         File frm = new File(apkFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -738,7 +750,7 @@ public class mainForm extends JFrame {
                             frm.delete();
                         }
                     }
-                } catch (Throwable e) {
+                } catch (Exception e) {
                     LOGGER.info(e.getMessage());
                 }
             }
@@ -754,6 +766,7 @@ public class mainForm extends JFrame {
                     pbProgress.setMaximum(apkFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
+                        lbProgressstate.setText("Building new workspace - Decompiling apps ("+ (i+1) +" of "+ apkFiles.size() +")...");
                         File frm = new File(apkFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -786,6 +799,7 @@ public class mainForm extends JFrame {
                     pbProgress.setMaximum(frmFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < frmFiles.size(); i++) {
+                        lbProgressstate.setText("Building new workspace - Decompiling frameworks ("+ (i+1) +" of "+ frmFiles.size() +")...");
                         File frm = new File(frmFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -865,6 +879,7 @@ public class mainForm extends JFrame {
                 kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language, workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             }
             for (int i = 0; i < buildFiles.size(); i++) {
+                lbProgressstate.setText("Building apps ("+ (i+1) +" of "+ buildFiles.size() +")...");
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
                 copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
@@ -895,6 +910,7 @@ public class mainForm extends JFrame {
             }
             //kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
+                lbProgressstate.setText("Building framework ("+ (i+1) +" of "+ buildFiles.size() +")...");
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
                 copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
@@ -909,6 +925,7 @@ public class mainForm extends JFrame {
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
                 kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
                 for (int i = 0; i < buildFiles.size(); i++) {
+                    lbProgressstate.setText("Building data ("+ (i+1) +" of "+ buildFiles.size() +")...");
                     pbProgress.setValue(i);
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                     File sourceDir = new File(buildFiles.get(i).toString());
@@ -958,11 +975,13 @@ public class mainForm extends JFrame {
                 parameters.setIncludeRootFolder(false);
                 parameters.setRootFolderInZip("/");
                 LockscreenZip.addFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", parameters);*/
-            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists())
-                new gitTools().downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "customize").exists()) {
+                gitTools gt = new gitTools();
+                gt.addListener(this);
+                gt.downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
+            }
             zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
             bldprop.write();
-
             zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
             String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
             String phoneModel = bldprop.readProp("ro.product.device");
@@ -1092,7 +1111,7 @@ public class mainForm extends JFrame {
             } else {
                 JOptionPane.showMessageDialog(null, "Project does not exist!\nPlease open exist project or create new.");
             }
-        } catch (Exception e1) {
+        } catch (Throwable e1) {
             setInterfaceState(false);
         }
 
@@ -1530,5 +1549,72 @@ public class mainForm extends JFrame {
 
             return null;
         }
+    }
+
+    public void onGitDownloadStart() {
+        //обновляем интерфейс программы
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                pbProgress.setMaximum(100);
+                lbProgressstate.setText("Preparing to download from git...");
+                pbProgress.setIndeterminate(false);
+            }
+        });
+    }
+
+    public void onGitDownloadProgressChange(long total, long size) {
+        final double ftotal = total;
+        final double fsize = size;
+        final BigDecimal fSize = new BigDecimal(((fsize / 1024.0) / 1024.0));
+        final BigDecimal fTotal = new BigDecimal(((ftotal / 1024.0) / 1024.0));
+        //обновляем интерфейс программы
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                lbProgressstate.setText("Getting files from git ("+fSize.setScale(2, BigDecimal.ROUND_HALF_DOWN)+"MB of "+fTotal.setScale(2, BigDecimal.ROUND_HALF_DOWN)+"MB downloaded)...");
+                pbProgress.setValue((int) Math.round((fsize / ftotal)*100));
+            }
+        });
+    }
+
+    public void onGitDownloadEnd() {
+        //обновляем интерфейс программы
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                pbProgress.setMaximum(100);
+                pbProgress.setIndeterminate(true);
+            }
+        });
+    }
+
+    public void onDeodexStart(){
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                pbProgress.setMaximum(100);
+                lbProgressstate.setText("Preparing to deodex...");
+                pbProgress.setIndeterminate(false);
+            }
+        });
+    }
+
+    public void onDeodexProgressChange(long total, long size){
+        final double ftotal = total;
+        final double fsize = size;
+        //обновляем интерфейс программы
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                lbProgressstate.setText("Deodexing ("+ (int)fsize +" of "+ (int)ftotal +" done)...");
+                pbProgress.setValue((int) Math.round((fsize / ftotal)*100));
+            }
+        });
+    }
+
+    public void onDeodexEnd(){
+        //обновляем интерфейс программы
+        SwingUtilities.invokeLater(new Runnable() {
+            public void run() {
+                pbProgress.setMaximum(100);
+                pbProgress.setIndeterminate(true);
+            }
+        });
     }
 }

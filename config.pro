@@ -17,6 +17,16 @@
 
 # Keep - Applications. Keep all application classes, along with their 'main'
 # methods.
+
+-keepclasseswithmembers public class * {
+    public void onGitDownloadStart();
+    public void onGitDownloadProgressChange(long, long);
+    public void onGitDownloadEnd();
+    public void onDeodexStart();
+    public void onDeodexProgressChange(long, long);
+    public void onDeodexEnd();
+}
+
 -keepclasseswithmembers public class * {
     public static void main(java.lang.String[]);
 }
@@ -27,6 +37,8 @@
     public static **[] values();
     public static ** valueOf(java.lang.String);
 }
+
+
 
 # Also keep - Database drivers. Keep all implementations of java.sql.Driver.
 -keep class * extends java.sql.Driver
