@@ -1237,7 +1237,22 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
         setJMenuBar(mbMainBar);
 
         //---- headerLogo ----
-        headerLogo.setIcon(new ImageIcon(getClass().getResource("/com/kdgdev/jMFB/resources/header.png")));
+        try {
+            BufferedImage img = ImageIO.read(getClass().getResource("/com/kdgdev/jMFB/resources/header.png"));
+            Graphics g = img.getGraphics();
+            g.setColor(Color.BLACK);
+            String str = "KDevLib v" + kFrontend.getVersion();
+            int h = img.getHeight();
+            int w = img.getWidth();
+            g.setFont(new Font("Arial", Font.PLAIN, 11));
+            g.drawChars(str.toCharArray(), 0, str.length(), (w - (str.length() * 6) + 8), h - 5);
+            g.dispose();
+            headerLogo.setIcon(new ImageIcon(img));
+
+        } catch (IOException e) {
+            headerLogo.setIcon(new ImageIcon(getClass().getResource("/com/kdgdev/jMFB/resources/header.png")));
+        }
+        //headerLogo.setIcon(new ImageIcon(getClass().getResource("/com/kdgdev/jMFB/resources/header.png")));
         contentPane.add(headerLogo, CC.xywh(1, 1, 4, 1, CC.CENTER, CC.DEFAULT));
 
         //---- lblFirmwareHelp ----
