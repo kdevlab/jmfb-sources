@@ -202,8 +202,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
      * example : home = /a/b/c
      *           f    = /a/d/e/x.txt
      *           s = getRelativePath(home,f) = ../../d/e/x.txt
-     * @param home base path, should be a directory, not a file, or it doesn't
-    make sense
+     * @param home base path, should be a directory, not a file, or it doesn't make sense
      * @param f file to generate path for
      * @return path from home to f as a string
      */
@@ -575,7 +574,10 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
 
                 if (!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
                 extractFolder(toFile.getAbsolutePath(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
+                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").exists())
                 extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen").exists())
+                extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen");
             }
             String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
             if (!cbNotOdex.isSelected()) {
@@ -707,7 +709,12 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                     FileUtils.copyDirectory(source, desc);
                     //LOGGER.info("Copying " + source.toString());
                 }
-
+                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language + File.separatorChar + "extras" + File.separatorChar + "alarmscreen");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen");
+                if (source.exists()) {
+                    FileUtils.copyDirectory(source, desc);
+                    //LOGGER.info("Copying " + source.toString());
+                }
             }
 
             //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
@@ -747,7 +754,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                             kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), repos_lang, workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", bldprop.readProp("ro.product.device")));
                             kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
-                            frm.delete();
+                            if(!frm.getName().contains("Google")) frm.delete();
                         }
                     }
                 } catch (Exception e) {
@@ -980,7 +987,10 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                 gt.addListener(this);
                 gt.downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
             }
+            if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen").exists())
             zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
+            if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen").exists())
+            zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", true);
             bldprop.write();
             zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
             String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
