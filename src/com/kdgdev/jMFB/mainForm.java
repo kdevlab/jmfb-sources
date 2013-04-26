@@ -34,7 +34,6 @@ import java.util.*;
 import java.util.List;
 import java.util.logging.*;
 import java.util.zip.CRC32;
-import java.util.zip.CheckedInputStream;
 
 
 /**
@@ -45,7 +44,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
 
     private final static frontend kFrontend = new frontend(System.getProperty("user.dir") + File.separatorChar + "aApps");
     private final static Logger LOGGER = Logger.getLogger(frontend.class.getName());
-   // private final static gitTools gitter = new gitTools();
+    // private final static gitTools gitter = new gitTools();
     // JFormDesigner - Variables declaration - DO NOT MODIFY  //GEN-BEGIN:variables
     private JMenuBar mbMainBar;
     private JMenu fileMenu;
@@ -107,14 +106,14 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
     private String[] langs = {"ru", "uk", "en"};
     private String[] regions = {"RU", "UK", "US"};
     private List<String> timeZones = new ArrayList<String>();
-    private int repos_count = 6;
+    private int repos_count = 4;
     //private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (SU)", "Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
     //private List<String> repos_git = new ArrayList<String>(Arrays.asList("miuisu/MIUI.SUv5-translation-v4.x.x", "KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
-    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI v5 based on Android 4.x (BurgerZ)", "Russian translation for MIUI based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI based on Android 4.x (KDGDev)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)", "Russian translation for MIUI based on Android 4.x (BurgerZ)"));
-    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "BurgerZ/MIUI-v5-Translation", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
+    private List<String> repos_names = new ArrayList<String>(Arrays.asList("Russian translation for MIUI v5 based on Android 4.x (KDGDev)", "Ukrainian translation for MIUI v5 based on Android 4.x (KDGDev)", "Russian translation for MIUI v5 based on Android 4.x (BurgerZ)", "Russian translation for MIUI based on Android 4.x (malchik-solnce)"));
+    private List<String> repos_git = new ArrayList<String>(Arrays.asList("KDGDev/miui-v5-russian-translation-for-miuiandroid", "KDGDev/miui-v5-ukrainian-translation-for-miuiandroid", "BurgerZ/MIUI-v5-Translation", "malchik-solnce/miui-v5-ms"));
     //private List<String> repos_git = new ArrayList<String>(Arrays.asList("BB:kdevgroup/miui-v5-russian-translation-for-miuiandroid", "BB:kdevgroup/miui-v5-ukrainian-translation-for-miuiandroid", "KDGDev/miui-v4-russian-translation-for-miuiandroid", "KDGDev/miui-v4-ukrainian-translation-for-miuiandroid", "malchik-solnce/miui-v4-ms", "BurgerZ/MIUI-v4-Translation"));
     private List<String> repos_lang = new ArrayList<String>();
-    private List<String> repos_precomp = new ArrayList<String>(Arrays.asList("KDGDev/jmfb2-precompiled-v5", "KDGDev/jmfb2-precompiled"));
+    private String repos_precomp = "KDGDev/jmfb2-precompiled-v5";
     //private List<String> repos_branches = new ArrayList<String>(Arrays.asList("master", "master"));
     //private String repo_Precompiled = "KDGDev/jmfb2-precompiled";
     //private String repo_Bootanimation = "KDGDev/jmfb-bootanimation";
@@ -131,7 +130,6 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
     private Boolean devversion = false;
 
 
-
     public mainForm() {
         initComponents();
     }
@@ -139,21 +137,21 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
     /**
      * break a path down into individual elements and add to a list.
      * example : if a path is /a/b/c/d.txt, the breakdown will be [d.txt,c,b,a]
+     *
      * @param f input file
      * @return a List collection with the individual elements of the path in
-    reverse order
+     *         reverse order
      */
     private static List getPathList(File f) {
         List l = new ArrayList();
         File r;
         try {
             r = f.getCanonicalFile();
-            while(r != null) {
+            while (r != null) {
                 l.add(r.getName());
                 r = r.getParentFile();
             }
-        }
-        catch (IOException e) {
+        } catch (IOException e) {
             e.printStackTrace();
             l = null;
         }
@@ -163,32 +161,33 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
     /**
      * figure out a string representing the relative path of
      * 'f' with respect to 'r'
+     *
      * @param r home path
      * @param f path of file
      */
-    private static String matchPathLists(List r,List f) {
+    private static String matchPathLists(List r, List f) {
         int i;
         int j;
         String s;
         // start at the beginning of the lists
         // iterate while both lists are equal
         s = "";
-        i = r.size()-1;
-        j = f.size()-1;
+        i = r.size() - 1;
+        j = f.size() - 1;
 
         // first eliminate common root
-        while((i >= 0)&&(j >= 0)&&(r.get(i).equals(f.get(j)))) {
+        while ((i >= 0) && (j >= 0) && (r.get(i).equals(f.get(j)))) {
             i--;
             j--;
         }
 
         // for each remaining level in the home path, add a ..
-        for(;i>=0;i--) {
+        for (; i >= 0; i--) {
             s += ".." + File.separator;
         }
 
         // for each level in the file path, add the path
-        for(;j>=1;j--) {
+        for (; j >= 1; j--) {
             s += f.get(j) + File.separator;
         }
 
@@ -200,13 +199,14 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
     /**
      * get relative path of File 'f' with respect to 'home' directory
      * example : home = /a/b/c
-     *           f    = /a/d/e/x.txt
-     *           s = getRelativePath(home,f) = ../../d/e/x.txt
+     * f    = /a/d/e/x.txt
+     * s = getRelativePath(home,f) = ../../d/e/x.txt
+     *
      * @param home base path, should be a directory, not a file, or it doesn't make sense
-     * @param f file to generate path for
+     * @param f    file to generate path for
      * @return path from home to f as a string
      */
-    public static String getRelativePath(File home,File f){
+    public static String getRelativePath(File home, File f) {
         File r;
         List homelist;
         List filelist;
@@ -214,19 +214,17 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
 
         homelist = getPathList(home);
         filelist = getPathList(f);
-        s = matchPathLists(homelist,filelist);
+        s = matchPathLists(homelist, filelist);
 
         return s;
     }
 
-    public static long checksumRandomAccessFile(String filename) throws IOException
-    {
+    public static long checksumRandomAccessFile(String filename) throws IOException {
         RandomAccessFile file = new RandomAccessFile(filename, "r");
         long length = file.length();
         CRC32 crc = new CRC32();
 
-        for (long p = 0; p < length; p++)
-        {
+        for (long p = 0; p < length; p++) {
             file.seek(p);
             int c = file.readByte();
             crc.update(c);
@@ -574,10 +572,12 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
 
                 if (!toFile.exists()) FileUtils.copyFile(fromFile, toFile);
                 extractFolder(toFile.getAbsolutePath(), workDir + File.separatorChar + projectName + File.separatorChar + "Firmware");
-                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").exists())
-                extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
-                if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen").exists())
-                extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen");
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen").exists())
+                    extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen");
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen").exists())
+                    extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen");
+                if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "icons").exists())
+                    extractFolder(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "icons", workDir + File.separatorChar + projectName + File.separatorChar + "Icons");
             }
             String frmDir = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "framework" + File.separatorChar;
             if (!cbNotOdex.isSelected()) {
@@ -613,10 +613,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
             //<editor-fold desc="Downloading precompiled files from git">
             if (!new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles").exists()) {
                 lbProgressstate.setText("Getting precompiled files...");
-                if (lstRepos.isSelectedIndex(0) || lstRepos.isSelectedIndex(1) || lstRepos.isSelectedIndex(2))
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(0));
-                else
-                    getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp.get(1));
+                getFilesFromGit(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles", repos_precomp);
                 //new File(workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app").mkdirs();
                 //new gitTools().downloadFileFromGit("MiCode/patchrom_miui", "system/app/Updater.apk", workDir + File.separatorChar + projectName + File.separatorChar + "PrecompiledFiles" + File.separatorChar + "main" + File.separatorChar + "system" + File.separatorChar + "app" + File.separatorChar + "Updater.apk", "ics");
                 lbProgressstate.setText("Updating files...");
@@ -715,6 +712,12 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                     FileUtils.copyDirectory(source, desc);
                     //LOGGER.info("Copying " + source.toString());
                 }
+                source = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language + File.separatorChar + "extras" + File.separatorChar + "icons");
+                desc = new File(workDir + File.separatorChar + projectName + File.separatorChar + "Icons");
+                if (source.exists()) {
+                    FileUtils.copyDirectory(source, desc);
+                    //LOGGER.info("Copying " + source.toString());
+                }
             }
 
             //String buildPropPath = workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "build.prop";
@@ -746,7 +749,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                     pbProgress.setMaximum(apkFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
-                        lbProgressstate.setText("Building new workspace - Decompiling data apps ("+ (i+1) +" of "+ apkFiles.size() +")...");
+                        lbProgressstate.setText("Building new workspace - Decompiling data apps (" + (i + 1) + " of " + apkFiles.size() + ")...");
                         File frm = new File(apkFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -754,7 +757,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                             kFrontend.decompileFile(apkFiles.get(i).toString(), workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), isSmaliPatch(frm.getName(), repos_lang, workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", bldprop.readProp("ro.product.device")));
                             kFrontend.rebuildFiles(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources" + File.separatorChar + frm.getName(), frm.getName().toLowerCase(), otaUpdateURL, bldprop.readProp("ro.product.device"));
                         } else {
-                            if(!frm.getName().contains("Google")) frm.delete();
+                            if (!frm.getName().contains("Google")) frm.delete();
                         }
                     }
                 } catch (Exception e) {
@@ -773,7 +776,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                     pbProgress.setMaximum(apkFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < apkFiles.size(); i++) {
-                        lbProgressstate.setText("Building new workspace - Decompiling apps ("+ (i+1) +" of "+ apkFiles.size() +")...");
+                        lbProgressstate.setText("Building new workspace - Decompiling apps (" + (i + 1) + " of " + apkFiles.size() + ")...");
                         File frm = new File(apkFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -806,7 +809,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                     pbProgress.setMaximum(frmFiles.size());
                     pbProgress.setValue(0);
                     for (int i = 0; i < frmFiles.size(); i++) {
-                        lbProgressstate.setText("Building new workspace - Decompiling frameworks ("+ (i+1) +" of "+ frmFiles.size() +")...");
+                        lbProgressstate.setText("Building new workspace - Decompiling frameworks (" + (i + 1) + " of " + frmFiles.size() + ")...");
                         File frm = new File(frmFiles.get(i).toString());
                         if (isTranslationExists(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar, repos_lang, frm.getName(), bldprop.readProp("ro.product.device")) || decompAll.isSelected()) {
                             pbProgress.setValue(i);
@@ -886,7 +889,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                 kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "AppsSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git" + File.separatorChar + language, workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             }
             for (int i = 0; i < buildFiles.size(); i++) {
-                lbProgressstate.setText("Building apps ("+ (i+1) +" of "+ buildFiles.size() +")...");
+                lbProgressstate.setText("Building apps (" + (i + 1) + " of " + buildFiles.size() + ")...");
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
                 copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
@@ -917,7 +920,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
             }
             //kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "FrameworkSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
             for (int i = 0; i < buildFiles.size(); i++) {
-                lbProgressstate.setText("Building framework ("+ (i+1) +" of "+ buildFiles.size() +")...");
+                lbProgressstate.setText("Building framework (" + (i + 1) + " of " + buildFiles.size() + ")...");
                 pbProgress.setValue(i);
                 File sourceDir = new File(buildFiles.get(i).toString());
                 copyTranslation(workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", repos_lang, new File(buildFiles.get(i).toString()).getName(), bldprop.readProp("ro.product.device"), sourceDir);
@@ -932,7 +935,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                 new File(workDir + File.separatorChar + projectName + File.separatorChar + "DataCompiled").mkdirs();
                 kFrontend.patchXMLs(workDir + File.separatorChar + projectName + File.separatorChar + "DataSources", workDir + File.separatorChar + projectName + File.separatorChar + "Language_Git", workDir + File.separatorChar + "aApps" + File.separatorChar + "patcher.config");
                 for (int i = 0; i < buildFiles.size(); i++) {
-                    lbProgressstate.setText("Building data ("+ (i+1) +" of "+ buildFiles.size() +")...");
+                    lbProgressstate.setText("Building data (" + (i + 1) + " of " + buildFiles.size() + ")...");
                     pbProgress.setValue(i);
                     LOGGER.info("======== Compiling " + new File(buildFiles.get(i).toString()).getName() + " ========");
                     File sourceDir = new File(buildFiles.get(i).toString());
@@ -987,10 +990,12 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
                 gt.addListener(this);
                 gt.downloadFileFromGit("BurgerZ/MIUI-v4-extra", "device/pyramid/system/app/HTC_IME_fix.apk", (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps").exists()) ? workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "media" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk" : workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "data" + File.separatorChar + "preinstall_apps" + File.separatorChar + "HTC_IME_fix.apk");
             }
-            if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen").exists())
-            zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
-            if(new File(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen").exists())
-            zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", true);
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen").exists())
+                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Lockscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "lockscreen", true);
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen").exists())
+                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Alarmscreen", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "alarmscreen", true);
+            if (new File(workDir + File.separatorChar + projectName + File.separatorChar + "Icons").exists())
+                zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Icons", workDir + File.separatorChar + projectName + File.separatorChar + "Firmware" + File.separatorChar + "system" + File.separatorChar + "media" + File.separatorChar + "theme" + File.separatorChar + "default" + File.separatorChar + "icons", true);
             bldprop.write();
             zipTools.zipFile(workDir + File.separatorChar + projectName + File.separatorChar + "Firmware", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", true);
             String firmwareVersion = bldprop.readProp("ro.build.version.incremental");
@@ -1000,7 +1005,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
             //new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + ".zip");
             new signApk().signBuildFile(true, workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.x509.pem", workDir + File.separatorChar + "aApps" + File.separatorChar + "security" + File.separatorChar + "testkey.pk8", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip", workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.signed.zip");
             File signedFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.signed.zip");
-            File finalFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_"+ phoneModel + "_"+ firmwareVersion + /*"_" +Long.toHexString(checksumRandomAccessFile(signedFile.getAbsolutePath()))+*/".zip");
+            File finalFile = new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "miuirussia_" + phoneModel + "_" + firmwareVersion + /*"_" +Long.toHexString(checksumRandomAccessFile(signedFile.getAbsolutePath()))+*/".zip");
             signedFile.renameTo(finalFile);
             new File(workDir + File.separatorChar + projectName + File.separatorChar + "build" + File.separatorChar + "out" + File.separatorChar + "out.zip").delete();
             pbProgress.setIndeterminate(false);
@@ -1595,8 +1600,8 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
         //обновляем интерфейс программы
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                lbProgressstate.setText("Getting files from git ("+fSize.setScale(2, BigDecimal.ROUND_HALF_DOWN)+"MB of "+fTotal.setScale(2, BigDecimal.ROUND_HALF_DOWN)+"MB downloaded)...");
-                pbProgress.setValue((int) Math.round((fsize / ftotal)*100));
+                lbProgressstate.setText("Getting files from git (" + fSize.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "MB of " + fTotal.setScale(2, BigDecimal.ROUND_HALF_DOWN) + "MB downloaded)...");
+                pbProgress.setValue((int) Math.round((fsize / ftotal) * 100));
             }
         });
     }
@@ -1611,7 +1616,7 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
         });
     }
 
-    public void onDeodexStart(){
+    public void onDeodexStart() {
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 pbProgress.setMaximum(100);
@@ -1621,19 +1626,19 @@ public class mainForm extends JFrame implements gitListener, deodexListener {
         });
     }
 
-    public void onDeodexProgressChange(long total, long size){
+    public void onDeodexProgressChange(long total, long size) {
         final double ftotal = total;
         final double fsize = size;
         //обновляем интерфейс программы
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                lbProgressstate.setText("Deodexing ("+ (int)fsize +" of "+ (int)ftotal +" done)...");
-                pbProgress.setValue((int) Math.round((fsize / ftotal)*100));
+                lbProgressstate.setText("Deodexing (" + (int) fsize + " of " + (int) ftotal + " done)...");
+                pbProgress.setValue((int) Math.round((fsize / ftotal) * 100));
             }
         });
     }
 
-    public void onDeodexEnd(){
+    public void onDeodexEnd() {
         //обновляем интерфейс программы
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
